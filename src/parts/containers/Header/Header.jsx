@@ -32,8 +32,8 @@ const Header = () => {
                           <li className="nav-item">
                             <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" className="nav-link dropdown-toggle">
                               <img src="/img/product/pro4.jpg" alt="" />
-                              <span className="admin-name" style={{marginLeft: '5px'}}>Admin</span>
-                              <i className="fa fa-angle-down edu-icon edu-down-arrow" style={{marginLeft: '5px'}}/>
+                              <span className="admin-name">Admin</span>
+                              <i className="fa fa-angle-down edu-icon edu-down-arrow"/>
                             </a>
                             <ul role="menu" className="dropdown-header-top author-log dropdown-menu animated zoomIn">
                               {/* student */}

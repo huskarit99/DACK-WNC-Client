@@ -3,7 +3,7 @@ import React from 'react'
 const MenuBar = () => {
   return (
     <div className="left-sidebar-pro">
-      <nav id="sidebar" className>
+      <nav id="sidebar" className="">
         <div className="sidebar-header">
           <a href="index.html"><img className="main-logo" src="img/logo/logo.png" alt="a" /></a>
           <strong><a href="index.html"><img src="img/logo/logosn.png" alt="a" /></a></strong>
@@ -33,26 +33,47 @@ const MenuBar = () => {
                   <span className="educate-icon educate-library icon-wrap" />
                   <span className="mini-click-non">Lĩnh vực</span></a>
               </li>
+              <li>
+                <a href="/">
+                  <span className="educate-icon educate-home icon-wrap" />
+                  <span className="mini-click-non">Trang chủ</span>
+                </a>
+              </li>
+              <li>
+                <a href="/">
+                  <span className="educate-icon educate-professor icon-wrap" />
+                  <span className="mini-click-non">Giáo viên</span></a>
+              </li>
+              <li>
+                <a href="/">
+                  <span className="educate-icon educate-student icon-wrap" />
+                  <span className="mini-click-non">Học viên</span></a>
+              </li>
+              <li>
+                <a href="/">
+                  <span className="educate-icon educate-library icon-wrap" />
+                  <span className="mini-click-non">Lĩnh vực</span></a>
+              </li>
               {/* teacher, admin */}
               <li>
                 <a href="/">
-                  <span className="educate-icon educate-course icon-wrap"/> 
+                  <span className="educate-icon educate-course icon-wrap" />
                   <span className="mini-click-non">Khóa học</span></a>
               </li>
 
               {/* user */}
               <li>
-                <a className="has-arrow" data-toggle="collapse" href="#collapseRoot" role="button" aria-expanded="false" aria-controls="collapseRoot">
+                <a className="has-arrow" href="/" aria-expanded="false">
                   <span className="educate-icon educate-library icon-wrap"></span>
                   <span className="mini-click-non">Lĩnh vực</span></a>
-                <ul className="submenu-angle" id="collapseRoot" className="collapse">
-                  <li><a className="has-arrow" data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample1">
-                    <span className="mini-sub-pro">Lập trình</span></a>
-                    <ul className="submenu-angle" id="collapseExample1" className="collapse">
-                      <li>
-                        <li><a href="/"><span className="mini-sub-pro">Lập trình mobile</span></a></li>
-                        <li><a href="/"><span className="mini-sub-pro">Lập trình web</span></a></li>
-                      </li>
+                <ul className="submenu-angle" aria-expanded="false">
+                  <li>
+                    <a className="has-arrow" href="/" aria-expanded="false">
+                      <span className="mini-sub-pro">Lập trình</span>
+                    </a>
+                    <ul className="submenu-angle" aria-expanded="false">
+                      <li><a href="/"><span className="mini-sub-pro">Lập trình mobile</span></a></li>
+                      <li><a href="/"><span className="mini-sub-pro">Lập trình web</span></a></li>
                     </ul>
                   </li>
                   <li><a href="/"><span className="mini-sub-pro">Khoa học tự nhiên</span></a></li>
