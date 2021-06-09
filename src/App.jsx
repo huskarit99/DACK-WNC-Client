@@ -48,7 +48,10 @@ const App = () => {
   return (
     <div>
       <MenuBar />
-      <Header />
+      <div class="all-content-wrapper">
+        <Header/>
+      </div>
+
     </div>
 
   );
