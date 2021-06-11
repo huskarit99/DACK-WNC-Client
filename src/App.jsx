@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import './App.css';
 import Header from './parts/containers/Header/Header';
 import MenuBar from './parts/containers/MenuBar/MenuBar';
+import BreadCome from './parts/containers/BreadCome/BreadCome';
+import AdminHome from './pages/Homes/AdminHome/AdminHome';
 import { appendScript } from './utils/appendScripts';
 
 const App = () => {
-  useEffect(()=>{
+  useEffect(() => {
     appendScript('js/vendor/modernizr-2.8.3.min.js');
     appendScript('js/vendor/jquery-1.12.4.min.js');
     //appendScript('js/bootstrap.min.js');
@@ -49,9 +51,21 @@ const App = () => {
     <div>
       <MenuBar />
       <div class="all-content-wrapper">
-        <Header/>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div className="logo-pro">
+                <a href="/"><img className="main-logo" src="img/logo/logo.png" alt="a" /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="header-advance-area">
+        <Header />
+        <BreadCome/>
+        </div>
+        <AdminHome/>
       </div>
-
     </div>
 
   );
