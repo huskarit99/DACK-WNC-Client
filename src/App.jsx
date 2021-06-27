@@ -3,7 +3,6 @@ import './App.css';
 import Header from './parts/containers/Header/Header';
 import MenuBar from './parts/containers/MenuBar/MenuBar';
 import BreadCome from './parts/containers/BreadCome/BreadCome';
-import CategoriesList from './pages/Admin/CategoriesList/CategoriesList';
 import { appendScript } from './utils/appendScripts';
 
 const App = () => {
@@ -64,6 +63,7 @@ const App = () => {
         <Header />
         <BreadCome/>
         </div>
+        {/* Pages */}
       </div>
     </div>
   );
