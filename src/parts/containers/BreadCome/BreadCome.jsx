@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchCourse from '../../components/Courses/SearchCourse'
+import ShowLink from '../../components/ShowLink/ShowLink'
 const BreadCome = () => {
   return (
     <div className="header-advance-area">
@@ -14,12 +15,8 @@ const BreadCome = () => {
                     <SearchCourse/>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <ul className="breadcome-menu">
-                      <li><a href="#">Home</a> <span className="bread-slash">/</span>
-                      </li>
-                      <li><span className="bread-blod">Dashboard V.1</span>
-                      </li>
-                    </ul>
+                    {/* Show link */}
+                    <ShowLink/>
                   </div>
                 </div>
               </div>
