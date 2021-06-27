@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import './App.css';
 import Header from './parts/containers/Header/Header';
 import MenuBar from './parts/containers/MenuBar/MenuBar';
+import Logo from './parts/containers/Logo/Logo';
 import BreadCome from './parts/containers/BreadCome/BreadCome';
 import { appendScript } from './utils/appendScripts';
 
@@ -50,20 +51,13 @@ const App = () => {
     <div>
       <MenuBar />
       <div class="all-content-wrapper">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div className="logo-pro">
-                <a href="/"><img className="main-logo" src="img/logo/logo.png" alt="a" /></a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Logo />
         <div className="header-advance-area">
-        <Header />
-        <BreadCome/>
+          <Header />
+          <BreadCome />
         </div>
-        {/* Pages */}
+        {/* Switch, Route */}
+        
       </div>
     </div>
   );
