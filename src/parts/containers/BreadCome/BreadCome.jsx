@@ -1,5 +1,5 @@
 import React from 'react'
-
+import SearchCourse from '../../components/Courses/SearchCourse'
 const BreadCome = () => {
   return (
     <div className="header-advance-area">
@@ -10,12 +10,8 @@ const BreadCome = () => {
               <div className="breadcome-list">
                 <div className="row">
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div className="breadcome-heading">
-                      <form role="search" className="sr-input-func">
-                        <input type="text" placeholder="Search..." className="search-int form-control" />
-                        <a href="#"><i className="fa fa-search"></i></a>
-                      </form>
-                    </div>
+                    {/* SearchCourse component with user home and Search couse page */}
+                    <SearchCourse/>
                   </div>
                   <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <ul className="breadcome-menu">
