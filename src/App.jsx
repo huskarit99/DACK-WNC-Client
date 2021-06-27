@@ -52,12 +52,10 @@ const App = () => {
       <MenuBar />
       <div class="all-content-wrapper">
         <Logo />
-        <div className="header-advance-area">
-          <Header />
-          <BreadCome />
-        </div>
+        <Header />
+        <BreadCome />
         {/* Switch, Route */}
-        
+
       </div>
     </div>
   );
