@@ -3,7 +3,7 @@ import './App.css';
 import Header from './parts/containers/Header/Header';
 import MenuBar from './parts/containers/MenuBar/MenuBar';
 import BreadCome from './parts/containers/BreadCome/BreadCome';
-import AdminHome from './pages/Homes/AdminHome/AdminHome';
+import CategoriesList from './pages/Admin/CategoriesList/CategoriesList';
 import { appendScript } from './utils/appendScripts';
 
 const App = () => {
@@ -64,10 +64,8 @@ const App = () => {
         <Header />
         <BreadCome/>
         </div>
-        <AdminHome/>
       </div>
     </div>
-
   );
 }
 
