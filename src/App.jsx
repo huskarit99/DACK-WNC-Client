@@ -5,23 +5,15 @@ import MenuBar from './parts/containers/MenuBar/MenuBar';
 import Logo from './parts/containers/Logo/Logo';
 import BreadCome from './parts/containers/BreadCome/BreadCome';
 import { appendScript } from './utils/appendScripts';
+import Home from './pages/Home/Home';
+import AdminHome from './pages/Admin/AdminHome/AdminHome';
 
 const App = () => {
   useEffect(() => {
-    appendScript('js/vendor/modernizr-2.8.3.min.js');
-    appendScript('js/vendor/jquery-1.12.4.min.js');
-    //appendScript('js/bootstrap.min.js');
-    appendScript('js/wow.min.js');
     appendScript('js/jquery-price-slider.js');
-    appendScript('js/jquery.meanmenu.js');
-    appendScript('js/owl.carousel.min.js');
-    appendScript('js/jquery.sticky.js');
-    appendScript('js/jquery.scrollUp.min.js');
     appendScript('js/counterup/jquery.counterup.min.js');
     appendScript('js/counterup/waypoints.min.js');
     appendScript('js/counterup/counterup-active.js');
-    //appendScript('js/scrollbar/jquery.mCustomScrollbar.concat.min.js');
-    //appendScript('js/scrollbar/mCustomScrollbar-active.js');
     appendScript('js/metisMenu/metisMenu.min.js');
     appendScript('js/metisMenu/metisMenu-active.js');
     appendScript('js/morrisjs/raphael-min.js');
@@ -43,9 +35,7 @@ const App = () => {
     appendScript('js/dropzone/dropzone.js');
     appendScript('js/icheck/icheck.min.js');
     appendScript('js/icheck/icheck-active.js');
-    appendScript('js/plugins.js');
     appendScript('js/main.js');
-
   }, []);
   return (
     <div>
@@ -55,7 +45,7 @@ const App = () => {
         <Header />
         <BreadCome />
         {/* Switch, Route */}
-
+        <Home/>
       </div>
     </div>
   );
