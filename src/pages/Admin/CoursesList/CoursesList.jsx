@@ -1,4 +1,5 @@
 import React from 'react'
+import Pagination from '../../../parts/components/Pagination/Pagination'
 
 const CoursesList = () => {
   return (
@@ -42,15 +43,7 @@ const CoursesList = () => {
                   </tr>
                 </table>
               </div>
-              <div className="custom-pagination">
-                <ul className="pagination">
-                  <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                  <li className="page-item"><a className="page-link" href="#">1</a></li>
-                  <li className="page-item"><a className="page-link" href="#">2</a></li>
-                  <li className="page-item"><a className="page-link" href="#">3</a></li>
-                  <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                </ul>
-              </div>
+              <Pagination/>
             </div>
           </div>
         </div>

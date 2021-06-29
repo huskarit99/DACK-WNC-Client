@@ -6,7 +6,6 @@ import Logo from './parts/containers/Logo/Logo';
 import BreadCome from './parts/containers/BreadCome/BreadCome';
 import { appendScript } from './utils/appendScripts';
 import Home from './pages/Home/Home';
-import AdminHome from './pages/Admin/AdminHome/AdminHome';
 
 const App = () => {
   useEffect(() => {
