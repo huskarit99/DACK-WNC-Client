@@ -1,6 +1,7 @@
 import React from 'react'
 import SearchCourse from '../../components/Courses/SearchCourse'
 import ShowLink from '../../components/ShowLink/ShowLink'
+import Sort from '../../components/Sort/Sort'
 const BreadCome = () => {
   return (
     <div className="header-advance-area">
@@ -10,13 +11,16 @@ const BreadCome = () => {
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div className="breadcome-list">
                 <div className="row">
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                     {/* SearchCourse component with user home and Search couse page */}
-                    <SearchCourse/>
+                    <SearchCourse />
                   </div>
-                  <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <Sort/>
+                  </div>
+                  <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     {/* Show link */}
-                    <ShowLink/>
+                    <ShowLink />
                   </div>
                 </div>
               </div>
