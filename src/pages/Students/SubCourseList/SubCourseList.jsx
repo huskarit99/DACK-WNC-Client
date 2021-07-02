@@ -1,7 +1,7 @@
 import React from 'react'
 import CourseItem from '../../../parts/components/Courses/CourseItem'
 import Pagination from '../../../parts/components/Pagination/Pagination'
-const WatchList = () => {
+const SubCourseList = () => {
   return (
     <div>
       <div className="login-form-area edu-pd mg-b-15">
@@ -9,7 +9,7 @@ const WatchList = () => {
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div className="tab-content-details shadow-reset">
-                <h2>Danh sách khóa học yêu thích</h2>
+                <h2>Danh sách khóa học đã đăng ký</h2>
               </div>
             </div>
           </div>
@@ -36,4 +36,4 @@ const WatchList = () => {
   )
 }
 
-export default WatchList
+export default SubCourseList
