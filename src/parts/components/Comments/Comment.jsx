@@ -14,7 +14,7 @@ const Comment = () => {
         <div className="coment-area">
           <form id="comment" action="#" className="comment">
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <StarRatings rating={5} starRatedColor="#faca51" starDimension="18px" starSpacing="1px" />
+              <StarRatings rating={5} starRatedColor="#faca51" starDimension="25px" starSpacing="1px" />
               <div className="form-group">
                 <textarea name="message" cols="30" rows="10" placeholder="Message"></textarea>
               </div>

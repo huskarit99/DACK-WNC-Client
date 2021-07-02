@@ -8,7 +8,7 @@ const CommentItem = () => {
           <img src="img/contact/1.jpg" alt="" />
           <div class="comment-details">
             <h4>minhquoc</h4>
-            <StarRatings rating={4} starRatedColor="#faca51" starDimension="18px" starSpacing="1px" />
+            <StarRatings rating={4} starRatedColor="#faca51" starDimension="25px" starSpacing="1px" />
             <p>Tạm được</p>
           </div>
         </div>
