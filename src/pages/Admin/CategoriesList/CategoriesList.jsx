@@ -1,5 +1,7 @@
 import React from 'react'
 import Pagination from '../../../parts/components/Pagination/Pagination'
+import RootCategoryRow from '../../../parts/components/Categories/RootCategoryRow'
+
 const CategoriesList = () => {
   return (
     <div className="product-status mg-b-15">
@@ -19,33 +21,9 @@ const CategoriesList = () => {
                     <th style={{textAlign: 'center', verticalAlign: 'middle'}}>Xem chi tiết</th>
                     <th style={{textAlign: 'center', verticalAlign: 'middle'}}>Cài đặt</th>
                   </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Web Development Book</td>
-                    <td style={{textAlign: 'center', verticalAlign: 'middle'}}><i class="fa fa-eye" aria-hidden="true"/></td>
-                    <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
-                      <button data-toggle="tooltip" title="Edit" className="pd-setting-ed"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                      <button data-toggle="tooltip" title="Trash" className="pd-setting-ed"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Quality Bol pen</td>
-                    <td  style={{textAlign: 'center', verticalAlign: 'middle'}}><i class="fa fa-eye" aria-hidden="true"/></td>
-                    <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
-                      <button data-toggle="tooltip" title="Edit" className="pd-setting-ed"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                      <button data-toggle="tooltip" title="Trash" className="pd-setting-ed"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Box of pendrive</td>
-                    <td style={{textAlign: 'center', verticalAlign: 'middle'}}><i class="fa fa-eye" aria-hidden="true"/></td>
-                    <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
-                      <button data-toggle="tooltip" title="Edit" className="pd-setting-ed"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                      <button data-toggle="tooltip" title="Trash" className="pd-setting-ed"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                  </tr>
+                  <RootCategoryRow/>
+                  <RootCategoryRow/>
+                  <RootCategoryRow/>
                 </table>
               </div>
               <Pagination/>
