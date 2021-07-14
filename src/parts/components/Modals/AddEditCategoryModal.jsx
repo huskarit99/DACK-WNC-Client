@@ -1,10 +1,9 @@
 import React from 'react'
 
-const AddEditCategoryModal = () => {  // truyền id để mở modal, tên lĩnh vực nếu chỉnh sửa
-  /*
-  id: addRootCategory, addCategory, editRootCategory, editCategory
-  */
+const AddEditCategoryModal = () => {  // truyền id để mở modal
+
   return (
+    // id: addRootCategory, addCategory, editRootCategory, editCategory
     <div id="PrimaryModalalert" className="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
       <div className="modal-dialog">
         <div className="modal-content">
@@ -27,7 +26,6 @@ const AddEditCategoryModal = () => {  // truyền id để mở modal, tên lĩn
               {/* <button type="submit" className="btn btn-primary">Chỉnh sửa</button> */}
             </div>
           </form>
-
         </div>
       </div>
     </div>
