@@ -32,6 +32,8 @@ const App = () => {
     appendScript('js/form-validation/jquery.validate.min.js');
     appendScript('js/form-validation/form-active.js');
     appendScript('js/dropzone/dropzone.js');
+    appendScript('js/summernote/summernote.min.js');
+    appendScript('js/summernote/summernote-active.js');
     appendScript('js/icheck/icheck.min.js');
     appendScript('js/icheck/icheck-active.js');
     appendScript('js/main.js');
