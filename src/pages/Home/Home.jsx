@@ -1,8 +1,12 @@
 import React from "react";
-import CategoryItem from "../../parts/components/Categories/CategoryItem";
-import CourseItem from "../../parts/components/Courses/CourseItem";
+import { Redirect } from "react-router-dom";
 
-const Home = () => {
+import CourseItem from "../../parts/components/Courses/CourseItem";
+import CategoryItem from "../../parts/components/Categories/CategoryItem";
+
+const Home = (props) => {
+  if (props.location.pathname !== props.match.path) return <Redirect to="/" />;
+
   return (
     <div>
       <div className="analytics-sparkle-area">
