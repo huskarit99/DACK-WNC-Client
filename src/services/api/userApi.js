@@ -228,7 +228,7 @@ const loginApi = async (email, password) => {
   }
 };
 
-const signoutApi = async () => {
+const logoutApi = async () => {
   const PATH = ENDPOINT + "refresh-token";
   try {
     await Axios({
@@ -249,7 +249,7 @@ export {
   getUsersApi,
   // signupApi,
   loginApi,
-  signoutApi,
+  logoutApi,
   getSelfInfoApi,
   // updateUserApi,
 };

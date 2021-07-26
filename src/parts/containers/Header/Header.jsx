@@ -1,56 +1,67 @@
-import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import { createBrowserHistory } from "history";
+import React, { useEffect, useState } from "react";
 
 import roleState from "../../../state/roleState";
+import { logoutApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
-const listMenu1 = [
-  <li>
-    <a href="/user-info">
-      <span className="edu-icon edu-user-rounded author-log-ic" />
-      Cá nhân
-    </a>
-  </li>,
-];
-
-const listMenu2 = [
-  <li>
-    <a href="/user-info">
-      <span className="edu-icon edu-user-rounded author-log-ic" />
-      Khóa học yêu thích
-    </a>
-  </li>,
-  <li>
-    <a href="/user-info">
-      <span className="edu-icon edu-user-rounded author-log-ic" />
-      Khóa học đăng ký
-    </a>
-  </li>,
-];
-
-const listMenu3 = [
-  <li>
-    <a href="/user-info">
-      <span className="edu-icon edu-user-rounded author-log-ic" />
-      Khóa học đăng tải
-    </a>
-  </li>,
-];
-
-const listMenu4 = [
-  <li>
-    <a href="/logout">
-      <span className="edu-icon edu-locked author-log-ic" />
-      Đăng xuất
-    </a>
-  </li>,
-];
-
 const Header = () => {
   const role = useRecoilValue(roleState);
+  const history = createBrowserHistory({ forceRefresh: true });
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
   const [listMenu, setlistMenu] = useState([]);
+
+  const handleLogOut = () => {
+    logoutApi().then((res) => {
+      if (res.isSuccess) {
+        history.push("/");
+      }
+    });
+  };
+
+  const listMenu1 = [
+    <li>
+      <a href="/user-info">
+        <span className="edu-icon edu-user-rounded author-log-ic" />
+        Cá nhân
+      </a>
+    </li>,
+  ];
+
+  const listMenu2 = [
+    <li>
+      <a href="/user-info">
+        <span className="edu-icon edu-user-rounded author-log-ic" />
+        Khóa học yêu thích
+      </a>
+    </li>,
+    <li>
+      <a href="/user-info">
+        <span className="edu-icon edu-user-rounded author-log-ic" />
+        Khóa học đăng ký
+      </a>
+    </li>,
+  ];
+
+  const listMenu3 = [
+    <li>
+      <a href="/user-info">
+        <span className="edu-icon edu-user-rounded author-log-ic" />
+        Khóa học đăng tải
+      </a>
+    </li>,
+  ];
+
+  const listMenu4 = [
+    <li onClick={handleLogOut}>
+      <a href="/">
+        <span className="edu-icon edu-locked author-log-ic" />
+        Đăng xuất
+      </a>
+    </li>,
+  ];
 
   useEffect(() => {
     switch (role) {
