@@ -1,22 +1,27 @@
+import React from "react";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
 import "./App.css";
 import Home from "./pages/Home/Home";
-import Logo from "./parts/containers/Logo/Logo";
-import Header from "./parts/containers/Header/Header";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import MenuBar from "./parts/containers/MenuBar/MenuBar";
-import BreadCome from "./parts/containers/BreadCome/BreadCome";
 
 const App = () => {
   return (
-    <div>
-      <MenuBar />
-      <div class="all-content-wrapper">
-        <Logo />
-        <Header />
-        <BreadCome />
-        {/* Switch, Route */}
-        <Home />
-      </div>
-    </div>
+    <BrowserRouter>
+      <MenuBar>
+        <Switch>
+          {/* <PrivateRoute exact path="/room" component={Room} />
+          <PrivateRoute exact path="/lobby" component={Lobby} />
+          
+          <PrivateRoute exact path="/profile" component={Profile} /> */}
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </MenuBar>
+    </BrowserRouter>
   );
 };
 
