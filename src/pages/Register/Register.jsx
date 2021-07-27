@@ -1,6 +1,53 @@
-import React from "react";
+import { createBrowserHistory } from "history";
+import React, { useRef, useState, Fragment } from "react";
+
+import { registerApi } from "../../services/api/userApi";
+import colorAlertEnum from "../../utils/enums/colorAlertEnum";
 
 const Register = () => {
+  const emailRef = useRef(null);
+  const nameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const rePasswordRef = useRef(null);
+  const history = createBrowserHistory({ forceRefresh: true });
+  const [messageAlert, setMessageAlert] = useState(<Fragment />);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    registerApi(
+      emailRef.current.value,
+      nameRef.current.value,
+      passwordRef.current.value,
+      rePasswordRef.current.value
+    ).then((res) => {
+      if (res.isSuccess) {
+        setMessageAlert(
+          <p
+            style={{
+              color: colorAlertEnum.SUCCESS,
+              marginTop: "5px",
+              marginLeft: "20px",
+            }}
+          >
+            {"You'll generally receive the code within a few seconds"}
+          </p>
+        );
+      } else {
+        setMessageAlert(
+          <p
+            style={{
+              color: colorAlertEnum.ERROR,
+              marginTop: "5px",
+              marginLeft: "20px",
+            }}
+          >
+            {res.message}
+          </p>
+        );
+      }
+    });
+  };
+
   return (
     <div className="error-pagewrap" style={{ overflow: "hidden" }}>
       <div className="error-page-int" style={{ overflow: "hidden" }}>
@@ -18,6 +65,7 @@ const Register = () => {
                       required
                       type="text"
                       className="form-control"
+                      ref={emailRef}
                       placeholder="example5599@gmail.com"
                     />
                   </div>
@@ -27,6 +75,7 @@ const Register = () => {
                       required
                       type="text"
                       className="form-control"
+                      ref={nameRef}
                       placeholder="Nguyễn Văn A"
                     />
                   </div>
@@ -36,6 +85,7 @@ const Register = () => {
                       required
                       type="password"
                       placeholder="******"
+                      ref={passwordRef}
                       className="form-control"
                     />
                   </div>
@@ -44,21 +94,25 @@ const Register = () => {
                     <input
                       required
                       type="password"
+                      ref={rePasswordRef}
                       placeholder="******"
                       className="form-control"
                     />
                   </div>
                 </div>
+                {messageAlert}
                 <div className="text-center">
                   <button
                     className="btn btn-success loginbtn"
                     style={{ marginRight: "5px" }}
+                    onClick={handleClick}
                   >
                     Register
                   </button>
                   <button
                     className="btn btn-default"
                     style={{ marginLeft: "5px" }}
+                    onClick={() => history.push("/login")}
                   >
                     Cancel
                   </button>
