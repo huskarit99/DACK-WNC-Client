@@ -18,8 +18,9 @@ const getAllByCriteria = async() => {
   }
 }
 
-const getAllByCategoryId = async(category_id, page) => {
-  const PATH = ENDPOINT + `courses?category-id=${category_id}&page=${page}`
+const getAllByCategoryId = async(search) => {
+  const PATH = ENDPOINT + `courses-by-category-id?categoryid=${search.categoryid}&page=${search.page}`;
+  console.log(PATH);
   try {
     const result = await Axios({
       method: 'get',
@@ -32,5 +33,6 @@ const getAllByCategoryId = async(category_id, page) => {
 }
 
 export {
-  getAllByCriteria
+  getAllByCriteria,
+  getAllByCategoryId
 }

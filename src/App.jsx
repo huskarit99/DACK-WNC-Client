@@ -8,6 +8,8 @@ import Register from "./pages/Register/Register";
 import MenuBar from "./parts/containers/MenuBar/MenuBar";
 import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
 import { appendScript } from './utils/appendScripts';
+import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
+import CourseDetail from "./pages/CourseDetail/CourseDetail";
 
 const App = () => {
   useEffect(() => {
@@ -50,7 +52,8 @@ const App = () => {
           <PrivateRoute exact path="/profile" component={Profile} /> */}
           <PrivateRoute exact path="/login" component={Login} />
           <PrivateRoute exact path="/register" component={Register} />
-          <Route exact path="/courses" component={Home} />
+          <Route exact path="/courses" component={CoursesListByCategory} />
+          <Route exact path="/course" component={CourseDetail} />
           <Route exact path="/courses/search" component={Home} />
           <Route path="/" component={Home} />
         </Switch>

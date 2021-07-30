@@ -9,6 +9,7 @@ import { authTokenApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 import { useLocation } from "react-router-dom";
+import { getAll } from "../../../services/api/categoryApi";
 
 const defaultMenu = [
   {
@@ -65,6 +66,7 @@ const MenuBar = (props) => {
   const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
   const [role, setRole] = useRecoilState(roleState);
   const [listMenu, setListMenu] = useState([]);
+  const [rootCategories, setRootCategories] = useState(null);
 
   useEffect(() => {
     setIsAuthenticated(stateOfAuthentication.PROCESSING);
@@ -91,10 +93,12 @@ const MenuBar = (props) => {
         }
       }
     });
-  }, [setIsAuthenticated, setRole]);
-
+    getAll().then(result => {
+      setRootCategories(result);
+    });
+  }, [setIsAuthenticated, setRole, setRootCategories]);
   return (
-    <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
+    <div >
       <div className="left-sidebar-pro">
         <nav id="sidebar" className="">
           <div className="sidebar-header">
@@ -138,19 +142,52 @@ const MenuBar = (props) => {
                     </Link>
                   </li>
                 ))}
+
                 {role && role !== 'teacher' && role !== 'admin' &&
                   <li>
                     <a className="has-arrow" href="/" aria-expanded="false">
                       <span className="educate-icon educate-library icon-wrap"></span>
                       <span className="mini-click-non" style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          height: "20px",
-                          marginLeft: "10px"
-                        }}>Lĩnh vực</span></a>
+                        alignItems: "center",
+                        height: "20px",
+                        marginLeft: "10px"
+                      }}>Lĩnh vực</span>
+                    </a>
+                    <ul className="submenu-angle" aria-expanded="false">
+                      {rootCategories && rootCategories.root_categories && rootCategories.root_categories.map((root_category, index) => (
+                        <li key={index}>
+                          {root_category && root_category.categories.length>0 ?
+                            <Fragment>
+                              <a className="has-arrow" data-toggle="collapse" href={'#' + index} role="button" aria-expanded="false" aria-controls={index}>
+                                <span className="mini-sub-pro">{root_category.name}</span>
+                              </a>
+                              <ul className="submenu-angle" id={index} className="collapse">
+                                {root_category && root_category.categories && root_category.categories.map((category, index) => (
+                                  <li key={index}>
+                                    <a href={'/courses?categoryid=' + category._id}><span className="mini-sub-pro">{category.name}</span></a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </Fragment> : <a>
+                                <span className="mini-sub-pro">{root_category.name}</span>
+                              </a>}
+
+                        </li>
+                      ))}
+                    </ul>
+                  </li>}
+                {/* {role && role !== 'teacher' && role !== 'admin' &&
+                  <li>
+                    <a className="has-arrow" href="/" aria-expanded="false">
+                      <span className="educate-icon educate-library icon-wrap"></span>
+                      <span className="mini-click-non" style={{
+                        alignItems: "center",
+                        height: "20px",
+                        marginLeft: "10px"
+                      }}>Lĩnh vực</span></a>
                     <ul className="submenu-angle" aria-expanded="false">
                       <li>
-                        <a className="has-arrow" href="/" aria-expanded="false">
+                        <a className="has-arrow" aria-expanded="false">
                           <span className="mini-sub-pro">Lập trình</span>
                         </a>
                         <ul className="submenu-angle" aria-expanded="false">
@@ -160,7 +197,7 @@ const MenuBar = (props) => {
                       </li>
                       <li><a href="/"><span className="mini-sub-pro">Khoa học tự nhiên</span></a></li>
                     </ul>
-                  </li>}
+                  </li>} */}
               </ul>
             </nav>
           </div>
