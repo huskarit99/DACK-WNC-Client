@@ -1,25 +1,26 @@
 import React from 'react'
 import StarRatings from 'react-star-ratings'
+import { Link } from 'react-router-dom'
 
-const CourseItem = () => {
+const CourseItem = ({course}) => {
   return (
-    <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-      <div className="courses-inner mg-b-15">
+    <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" >
+      <div className="courses-inner mg-b-15" style={{ backgroundColor: "rgb(237, 237, 237)"}}>
         <div className="courses-title">
-          <a href="#"><img src="img/courses/1.jpg" alt="" /></a>
-          <h2>Lập trình React</h2>
+          <Link to={`/course/`+ course._id}><img src={course.image} alt="" style={{width: 300, height: 211}}/></Link>
+          <h2>{course.name}</h2>
         </div>
         <div className="courses-alaltic">
-          <span className="cr-ic-r"><span className="course-icon"><i className="fa fa-dollar"></i></span> 500</span>
+          {course.price}
         </div>
         <div className="course-des">
-          <p><span><i className="fa fa-clock"></i></span> <b>Lĩnh vực:</b> Lập trình web</p>
-          <p><span><i className="fa fa-clock"></i></span> <b>Giảng viên:</b> Ngô Ngọc Đăng Khoa</p>
-          <StarRatings rating={4} starRatedColor="#faca51" starDimension="25px" starSpacing="1px" />
-          <p style={{ float: 'right' }}>(100)</p>
+          <p><b>Lĩnh vực:</b> {course.category_name}</p>
+          <p><b>Giảng viên:</b> {course.teacher_name}</p>
+          <StarRatings rating={course.point} starRatedColor="#faca51" starDimension="25px" starSpacing="1px" />
+          <p style={{ float: 'right' }}>({course.number_of_subscribers})</p>
         </div>
         <div className="product-buttons">
-          <button type="button" className="button-default cart-btn">Chi tiết</button>
+        <Link to={`/course/`+ course._id}><button type="button" className="button-default cart-btn">Chi tiết</button></Link>
         </div>
       </div>
     </div>

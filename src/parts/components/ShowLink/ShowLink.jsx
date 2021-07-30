@@ -1,11 +1,12 @@
 import React from 'react'
+import pathEnums from '../../../utils/enums/pathEnums';
+import {  useLocation } from "react-router-dom";
 
 const ShowLink = () => {
+  let location = useLocation();
   return (
     <ul className="breadcome-menu">
-      <li><a href="#">Home</a> <span className="bread-slash">/</span>
-      </li>
-      <li><span className="bread-blod">Dashboard V.1</span>
+      <li><span className="bread-slash">{pathEnums[location.pathname]}</span>
       </li>
     </ul>
   )

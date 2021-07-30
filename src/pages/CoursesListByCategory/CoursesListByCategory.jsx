@@ -3,6 +3,8 @@ import CourseItem from '../../parts/components/Courses/CourseItem'
 import Pagination from '../../parts/components/Pagination/Pagination'
 
 const CoursesListByCategory = () => {
+
+  
   return (
     <div className="courses-area">
       <div className="container-fluid">
