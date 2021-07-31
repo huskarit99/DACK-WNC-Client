@@ -103,11 +103,11 @@ const MenuBar = (props) => {
         <nav id="sidebar" className="">
           <div className="sidebar-header">
             <a href="/">
-              <img className="main-logo" src="img/logo/logo.png" alt="a" />
+              <img className="main-logo" src="/img/logo/logo.png" alt="a" />
             </a>
             <strong>
               <a href="/">
-                <img src="img/logo/logosn.png" alt="a" />
+                <img src="/img/logo/logosn.png" alt="a" />
               </a>
             </strong>
           </div>
