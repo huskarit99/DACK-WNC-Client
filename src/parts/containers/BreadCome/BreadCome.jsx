@@ -17,18 +17,15 @@ const BreadCome = () => {
             <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div className="breadcome-list">
                 <div className="row">
-                  <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                  <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                   {role && role!=='teacher' && role!=='admin' &&
-                    <SearchCourse />
-  }
+                    <SearchCourse />}
                   </div>
                   <div className="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                   {role && role!=='teacher' && role!=='admin' && location.pathname.includes("/courses/search") &&
-                    <Sort/>
-}
+                    <Sort/>}
                   </div>
-                  <div className="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                    {/* Show link */}
+                  <div className="col-lg-7 col-md-7 col-sm-7 col-xs-12">
                     <ShowLink />
                   </div>
                 </div>

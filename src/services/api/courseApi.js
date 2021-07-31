@@ -32,7 +32,21 @@ const getAllByCategoryId = async(search) => {
   }
 }
 
+const getAlllBySearch = async(search) => {
+  const PATH = ENDPOINT + `/search?keyword=${search.keyword}&sort=${search.sort}&page=${search.page}`;
+  try {
+    const result = await Axios({
+      method: 'get',
+      url: PATH
+    });
+    return result.data;
+  } catch (e) {
+    return null;
+  }
+}
+
 export {
   getAllByCriteria,
-  getAllByCategoryId
+  getAllByCategoryId,
+  getAlllBySearch
 }
