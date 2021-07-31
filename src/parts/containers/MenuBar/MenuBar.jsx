@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
-
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { Link } from 'react-router-dom';
 import Logo from "../Logo/Logo";
 import Header from "../Header/Header";
 import BreadCome from "../BreadCome/BreadCome";
@@ -8,6 +8,8 @@ import roleState from "../../../state/roleState";
 import { authTokenApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
+import { useLocation } from "react-router-dom";
+import { getAll } from "../../../services/api/categoryApi";
 
 const defaultMenu = [
   {
@@ -17,6 +19,7 @@ const defaultMenu = [
   },
 ];
 
+// admin
 const listMenu1 = [
   {
     classIcon: "educate-icon educate-professor icon-wrap",
@@ -29,6 +32,8 @@ const listMenu1 = [
     link: "/",
   },
 ];
+
+// admin: table, giáo viên: table=> edit
 const listMenu2 = [
   {
     classIcon: "educate-icon educate-course icon-wrap",
@@ -57,16 +62,19 @@ const listMenu4 = [
 ];
 
 const MenuBar = (props) => {
+  const location = useLocation();
   const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
-  const setRole = useSetRecoilState(roleState);
+  const [role, setRole] = useRecoilState(roleState);
   const [listMenu, setListMenu] = useState([]);
+  const [rootCategories, setRootCategories] = useState(null);
 
   useEffect(() => {
     setIsAuthenticated(stateOfAuthentication.PROCESSING);
     authTokenApi().then((result) => {
       setIsAuthenticated(result.state);
-      setRole(result.role);
+
       if (result.state === stateOfAuthentication.SUCCESS) {
+        setRole(result.role);
         switch (result.role) {
           case "teacher":
             setListMenu(defaultMenu.concat(listMenu2));
@@ -85,10 +93,12 @@ const MenuBar = (props) => {
         }
       }
     });
-  }, [setIsAuthenticated, setRole]);
-
+    getAll().then(result => {
+      setRootCategories(result);
+    });
+  }, [setIsAuthenticated, setRole, setRootCategories]);
   return (
-    <div style={{ backgroundColor: "rgb(240, 240, 240)", overflow: "hidden" }}>
+    <div >
       <div className="left-sidebar-pro">
         <nav id="sidebar" className="">
           <div className="sidebar-header">
@@ -106,7 +116,7 @@ const MenuBar = (props) => {
               <ul className="metismenu" id="menu1">
                 {listMenu.map((row, index) => (
                   <li key={index}>
-                    <a href={row.link}>
+                    <Link to={row.link}>
                       <div
                         style={{
                           display: "inline-flex",
@@ -117,21 +127,77 @@ const MenuBar = (props) => {
                       >
                         <span
                           className={row.classIcon}
-                          style={{ fontSize: "21px" }}
+                          style={{ fontSize: "20px" }}
                         />
                       </div>
                       <div
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          height: "21px",
+                          height: "20px",
                         }}
                       >
                         <span className="mini-click-non">{row.name}</span>
                       </div>
-                    </a>
+                    </Link>
                   </li>
                 ))}
+
+                {role && role !== 'teacher' && role !== 'admin' &&
+                  <li>
+                    <a className="has-arrow" href="/" aria-expanded="false">
+                      <span className="educate-icon educate-library icon-wrap"></span>
+                      <span className="mini-click-non" style={{
+                        alignItems: "center",
+                        height: "20px",
+                        marginLeft: "10px"
+                      }}>Lĩnh vực</span>
+                    </a>
+                    <ul className="submenu-angle" aria-expanded="false">
+                      {rootCategories && rootCategories.root_categories && rootCategories.root_categories.map((root_category, index) => (
+                        <li key={index}>
+                          {root_category && root_category.categories.length>0 ?
+                            <Fragment>
+                              <a className="has-arrow" data-toggle="collapse" href={'#' + index} role="button" aria-expanded="false" aria-controls={index}>
+                                <span className="mini-sub-pro">{root_category.name}</span>
+                              </a>
+                              <ul className="submenu-angle" id={index} className="collapse">
+                                {root_category && root_category.categories && root_category.categories.map((category, index) => (
+                                  <li key={index}>
+                                    <a href={'/courses?categoryid=' + category._id}><span className="mini-sub-pro">{category.name}</span></a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </Fragment> : <a>
+                                <span className="mini-sub-pro">{root_category.name}</span>
+                              </a>}
+
+                        </li>
+                      ))}
+                    </ul>
+                  </li>}
+                {/* {role && role !== 'teacher' && role !== 'admin' &&
+                  <li>
+                    <a className="has-arrow" href="/" aria-expanded="false">
+                      <span className="educate-icon educate-library icon-wrap"></span>
+                      <span className="mini-click-non" style={{
+                        alignItems: "center",
+                        height: "20px",
+                        marginLeft: "10px"
+                      }}>Lĩnh vực</span></a>
+                    <ul className="submenu-angle" aria-expanded="false">
+                      <li>
+                        <a className="has-arrow" aria-expanded="false">
+                          <span className="mini-sub-pro">Lập trình</span>
+                        </a>
+                        <ul className="submenu-angle" aria-expanded="false">
+                          <li><Link to="/courses?category-id=dsds"><span className="mini-sub-pro">Lập trình mobile</span></Link></li>
+                          <li><Link to="/courses/search"><span className="mini-sub-pro">Lập trình web</span></Link></li>
+                        </ul>
+                      </li>
+                      <li><a href="/"><span className="mini-sub-pro">Khoa học tự nhiên</span></a></li>
+                    </ul>
+                  </li>} */}
               </ul>
             </nav>
           </div>
@@ -140,7 +206,8 @@ const MenuBar = (props) => {
       <div className="all-content-wrapper" style={{ overflow: "hidden" }}>
         <Logo />
         <Header />
-        {/* <BreadCome /> */}
+        {location.pathname !== '/login' && location.pathname !== '/register' && <BreadCome />}
+
         {props.children}
       </div>
     </div>

@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 const roleState = atom({
   key: "roleState",
-  default: "",
+  default: "guest",
 });
 
 export default roleState;
