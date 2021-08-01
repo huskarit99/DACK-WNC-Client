@@ -98,7 +98,7 @@ const MenuBar = (props) => {
     });
   }, [setIsAuthenticated, setRole, setRootCategories]);
   return (
-    <div >
+    <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
       <div className="left-sidebar-pro">
         <nav id="sidebar" className="">
           <div className="sidebar-header">

@@ -2,7 +2,7 @@ import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router';
 import React, { useEffect, useState, Fragment } from 'react';
 
-import { getAlllBySearch } from '../../services/api/courseApi';
+import { getAllBySearch } from '../../services/api/courseApi';
 import CourseItem from '../../parts/components/Courses/CourseItem';
 import Pagination from './containers/Pagination/Pagination';
 
@@ -17,7 +17,7 @@ const CoursesListByCategory = () => {
 
   useEffect(() => {
     if (keyword) {
-      getAlllBySearch({keyword, sort, page}).then(result => {
+      getAllBySearch({keyword, sort, page}).then(result => {
         setCourses(result);
       })
     }

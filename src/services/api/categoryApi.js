@@ -3,7 +3,7 @@ import Axios from "axios";
 import categoryEnum from "../../utils/enums/categoryEnum";
 
 const ENDPOINT = 'http://localhost:5000/api/root-category-controller/';
-
+Axios.defaults.withCredentials = true;
 const getAll = async() => {
   const PATH = ENDPOINT + 'root-categories';
   try {
