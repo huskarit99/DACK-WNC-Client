@@ -1,4 +1,3 @@
-import { useRecoilValue } from 'recoil';
 import { useLocation } from 'react-router';
 import React, { useEffect, useState, Fragment } from 'react';
 
@@ -7,8 +6,8 @@ import CourseItem from '../../parts/components/Courses/CourseItem';
 import Pagination from './containers/Pagination/Pagination';
 
 const CoursesListByCategory = () => {
-  let location = useLocation();
-  let params = new URLSearchParams(location.search);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const categoryid = params.get("categoryid");
   const page = Number(params.get("page")) || 1 ;
   const [courses, setCourses] = useState(null);

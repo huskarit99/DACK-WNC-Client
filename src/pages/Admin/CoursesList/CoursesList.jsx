@@ -1,7 +1,24 @@
-import React from 'react'
-import Pagination from '../../../parts/components/Pagination/Pagination'
+import React, { Fragment, useEffect } from 'react'
+import { useLocation } from 'react-router';
+import { useRecoilState } from 'recoil';
+import { getCoursesApi } from '../../../services/api/courseApi';
+import courseState from '../../../state/courseState';
+import CourseRow from './containers/CourseRow.jsx/CourseRow';
+import DeleteModal from './containers/Modal/DeleteModal';
+import Pagination from './containers/Pagination/Pagination';
 
 const CoursesList = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const page = Number(params.get("page")) || 1;
+  const [courses, setCourses] = useRecoilState(courseState);
+
+  useEffect(() => {
+    getCoursesApi(page).then(result => {
+      setCourses(result);
+      console.log(result);
+    })
+  }, []);
   return (
     <div className="product-status mg-b-15">
       <div className="container-fluid">
@@ -11,39 +28,26 @@ const CoursesList = () => {
               <h4>Danh sách khóa học</h4>
               <div className="asset-inner">
                 <table>
-                  <tr>
-                    <th>STT</th>
-                    <th>Khóa học</th>
-                    <th>Giảng viên</th>
-                    <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Cài đặt</th>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>Web Development Book</td>
-                    <td>Web Development Book</td>
-                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                      <button data-toggle="tooltip" title="Trash" className="pd-setting-ed"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Web Development Book</td>
-                    <td>Web Development Book</td>
-                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                      <button data-toggle="tooltip" title="Trash" className="pd-setting-ed"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Web Development Book</td>
-                    <td>Web Development Book</td>
-                    <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                      <button data-toggle="tooltip" title="Trash" className="pd-setting-ed"><i className="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </td>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>Khóa học</th>
+                      <th>Giảng viên</th>
+                      <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Cài đặt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {courses && courses.courses && courses.courses.map((course, index) => {
+                      return <Fragment>
+                        <CourseRow course={course} index={index} key={index} />
+                        <DeleteModal course={course} page={page} index={index} key={index} />
+                      </Fragment>
+                    })}
+                  </tbody>
                 </table>
               </div>
-              <Pagination/>
+              {courses && courses.page_number && <Pagination page={page} page_number={courses.page_number}/>}
+              
             </div>
           </div>
         </div>

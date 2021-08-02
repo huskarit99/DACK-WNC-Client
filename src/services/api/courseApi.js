@@ -5,6 +5,19 @@ import courseEnum from '../../utils/enums/courseEnum';
 const ENDPOINT = 'http://localhost:5000/api/course-controller/';
 Axios.defaults.withCredentials = true;
 
+const getCoursesApi = async(page) => {
+  const PATH = ENDPOINT + `courses?page=${page}`;
+  try {
+    const result = await Axios({
+      method: 'get',
+      url: PATH
+    });
+    return result.data;
+  } catch (e) {
+    return null;
+  }
+}
+
 const getAllByCriteria = async() => {
   const PATH = ENDPOINT + 'criteria';
   try {
@@ -71,10 +84,29 @@ const getMostSubscribedCourses = async(query) => {
   }
 }
 
+const deleteCourseApi = async(id) => {
+  const PATH = ENDPOINT + `course/${id}`;
+  try {
+    const result = await Axios({
+      method: 'delete',
+      url: PATH
+    });
+    return {
+      isSucess: true
+    }
+  } catch (e) {
+    return {
+      isSucess: false
+    }
+  }
+}
+
 export {
+  getCoursesApi,
   getAllByCriteria,
   getAllByCategoryId,
   getAllBySearch,
   getCourseById,
-  getMostSubscribedCourses
+  getMostSubscribedCourses,
+  deleteCourseApi
 }

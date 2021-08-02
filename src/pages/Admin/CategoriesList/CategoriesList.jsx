@@ -1,5 +1,4 @@
 import React from 'react'
-import Pagination from '../../../parts/components/Pagination/Pagination'
 import RootCategoryRow from '../../../parts/components/Categories/RootCategoryRow'
 import ChildCategoryList from '../../../parts/components/Categories/ChildCategoryList'
 
@@ -33,7 +32,7 @@ const CategoriesList = () => {
                 </table>
               </div>
               {/* Phân trang */}
-              <Pagination />
+              {/* <Pagination /> */}
             </div>
           </div>
         </div>
