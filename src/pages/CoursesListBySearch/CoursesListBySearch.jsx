@@ -1,23 +1,22 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useLocation } from 'react-router';
 import React, { useEffect, useState, Fragment } from 'react';
-
-import { getAllBySearch } from '../../services/api/courseApi';
+import { getCoursesBySearchApi } from '../../services/api/courseApi';
 import CourseItem from '../../parts/components/Courses/CourseItem';
 import Pagination from './containers/Pagination/Pagination';
+import { coursesBySearchState } from '../../state/courseState';
 
 const CoursesListByCategory = () => {
-  let location = useLocation();
-  let params = new URLSearchParams(location.search);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
   const keyword = params.get("keyword");
   const sort = params.get('sort') || 'none';
-  console.log(sort);
   const page = Number(params.get("page")) || 1 ;
-  const [courses, setCourses] = useState(null);
+  const [courses, setCourses] = useRecoilState(coursesBySearchState);
 
   useEffect(() => {
     if (keyword) {
-      getAllBySearch({keyword, sort, page}).then(result => {
+      getCoursesBySearchApi({keyword, sort, page}).then(result => {
         setCourses(result);
       })
     }
@@ -33,9 +32,6 @@ const CoursesListByCategory = () => {
         </div>
         <div className="mg-b-30">
           <Pagination
-            page={page}
-            keyword={keyword}
-            sort={sort}
             page_number={courses && courses.page_number} />
         </div>
       </div>

@@ -8,7 +8,7 @@ import Lesson from '../../parts/components/Lesson/Lesson'
 import PurchaseCourse from '../../parts/components/Modals/PurchaseCourse'
 import Heart from 'react-heart'
 import { useLocation, useHistory } from 'react-router'
-import { getCourseById, getMostSubscribedCourses } from '../../services/api/courseApi'
+import { getCourseByIdApi, getMostSubscribedCoursesApi } from '../../services/api/courseApi'
 import { useParams } from 'react-router-dom'
 import { getSubscribersByCourseId } from '../../services/api/subscriberApi'
 import { useRecoilValue } from "recoil";
@@ -28,14 +28,14 @@ const CourseDetail = () => {
   const [updateDay, setUpdateDay] = useState(new Date());
   const [watchList, setWatchList] = useState(false);
   useEffect(() => {
-    getCourseById(id).then(result => {
+    getCourseByIdApi(id).then(result => {
       setCourse(result);
       if (result) {
         getWatchList(id).then(result => {
           setWatchList(result)
         })
         setUpdateDay(new Date(result.updatedAt));
-        getMostSubscribedCourses({ id: id, category_id: result.category_id }).then(result => {
+        getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
           setMostSubscribedCourse(result);
         });
         getSubscribersByCourseId(id).then(result => {
@@ -45,10 +45,7 @@ const CourseDetail = () => {
           setVideos(result);
         });
       }
-
     });
-
-
   }, []);
 
   const addHeart = () => {
@@ -111,10 +108,11 @@ const CourseDetail = () => {
                             </Fragment>}
 
 
-                            <h1><a className="blog-ht" href="#">Danh sách bài học</a></h1>
+                            {videos && videos.length > 0 && <h1><a className="blog-ht" href="#">Danh sách bài học</a></h1>}
                           </div>
 
                           {/* Danh sách bài học */}
+                          {videos && videos.length > 0 && 
                           <div className="sparkline8-list">
                             <div className="sparkline8-graph">
                               <div className="static-table-list">
@@ -134,7 +132,7 @@ const CourseDetail = () => {
                                 </table>
                               </div>
                             </div>
-                          </div>
+                          </div>}
                         </div>
                       </div>
                     </div>
@@ -147,13 +145,14 @@ const CourseDetail = () => {
                     </div>
 
                     {/* Danh sách bình luận */}
+                    {subscribers && subscribers.subscribers_rated && subscribers.subscribers_rated.length >0 &&
                     <div className="row">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div className="comment-head">
                           <h3>Nhận xét</h3>
                         </div>
                       </div>
-                    </div>
+                    </div>}
                     {subscribers && subscribers.subscribers_rated && subscribers.subscribers_rated.map((item, index) => {
                       return <CommentItem subscriber={item} key={index} />;
                     })}

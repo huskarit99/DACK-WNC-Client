@@ -2,21 +2,26 @@ import React, { Fragment, useEffect } from 'react'
 import { useLocation } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { getCoursesApi } from '../../../services/api/courseApi';
-import courseState from '../../../state/courseState';
+import {coursesState} from '../../../state/courseState';
 import CourseRow from './containers/CourseRow.jsx/CourseRow';
 import DeleteModal from './containers/Modal/DeleteModal';
 import Pagination from './containers/Pagination/Pagination';
+import { createBrowserHistory } from "history";
 
 const CoursesList = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const page = Number(params.get("page")) || 1;
-  const [courses, setCourses] = useRecoilState(courseState);
-
+  const [courses, setCourses] = useRecoilState(coursesState);
+  const history = createBrowserHistory({ forceRefresh: true });
+  
   useEffect(() => {
     getCoursesApi(page).then(result => {
-      setCourses(result);
-      console.log(result);
+      if(result.isSucess){
+        setCourses(result.data);
+      }else{
+        history.push('/login');
+      }
     })
   }, []);
   return (
@@ -39,15 +44,15 @@ const CoursesList = () => {
                   <tbody>
                     {courses && courses.courses && courses.courses.map((course, index) => {
                       return <Fragment>
-                        <CourseRow course={course} index={index} key={index} />
-                        <DeleteModal course={course} page={page} index={index} key={index} />
+                        <CourseRow course={course} index={index + 1 + (page - 1) * 5} key={index} />
+                        <DeleteModal course={course} page={page} index={index + 1 + (page - 1) * 5} key={index + 1080} />
                       </Fragment>
                     })}
                   </tbody>
                 </table>
               </div>
-              {courses && courses.page_number && <Pagination page={page} page_number={courses.page_number}/>}
-              
+              {courses && courses.page_number && <Pagination page={page} page_number={courses.page_number} />}
+
             </div>
           </div>
         </div>

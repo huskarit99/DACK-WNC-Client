@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSetRecoilState } from 'recoil';
 import { deleteCourseApi, getCoursesApi } from '../../../../../services/api/courseApi';
-import courseState from '../../../../../state/courseState';
+import {coursesState} from '../../../../../state/courseState';
 const DeleteModal = ({ page, course, index }) => {
 
-  const setCourses = useSetRecoilState (courseState);
+  const setCourses = useSetRecoilState (coursesState);
   const handleClick = () => {
     deleteCourseApi(course._id).then(result => {
       if (result.isSucess) {
@@ -22,7 +22,7 @@ const DeleteModal = ({ page, course, index }) => {
             <a className="close" data-dismiss="modal" href="#"><i className="fa fa-close"></i></a>
           </div>
           <div className="modal-body">
-            <span class="educate-icon educate-warning modal-check-pro information-icon-pro"></span>
+            <span className="educate-icon educate-warning modal-check-pro information-icon-pro"></span>
             <h2>Cảnh báo!</h2>
             <p>Bạn có chắc muốn xóa khóa học {course.name} này không?</p>
           </div>

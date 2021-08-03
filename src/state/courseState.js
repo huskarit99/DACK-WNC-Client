@@ -1,8 +1,22 @@
 import { atom } from "recoil";
 
-const courseState = atom({
+const coursesState = atom({
   key: "courseState",
   default: null,
 });
 
-export default courseState;
+const coursesByCategoryIdState = atom({
+  key: 'coursesByCategoryIdState',
+  default: null
+});
+
+const coursesBySearchState = atom({
+  key: 'coursesBySearch',
+  default: null
+});
+
+export {
+  coursesState,
+  coursesByCategoryIdState,
+  coursesBySearchState
+}

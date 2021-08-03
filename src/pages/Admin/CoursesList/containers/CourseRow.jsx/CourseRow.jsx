@@ -3,7 +3,7 @@ import React from 'react'
 const CourseRow = ({course, index}) => {
   return (
     <tr>
-      <td>{index + 1}</td>
+      <td>{index}</td>
       <td>{course.name}</td>
       <td>{course.teacher_name}</td>
       <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>

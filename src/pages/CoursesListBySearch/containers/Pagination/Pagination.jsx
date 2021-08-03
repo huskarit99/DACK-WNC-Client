@@ -1,8 +1,25 @@
 import React from 'react'
 import { useLocation } from 'react-router';
-const Pagination = ({ page, keyword, sort, page_number }) => {
+import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { getCoursesBySearchApi } from '../../../../services/api/courseApi';
+import { coursesBySearchState } from '../../../../state/courseState';
+const Pagination = ({ page_number }) => {
   const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const keyword = params.get("keyword");
+  const sort = params.get('sort') || 'none';
+  const page = Number(params.get("page")) || 1;
   const pathName = location.pathname;
+  const setCourses = useSetRecoilState(coursesBySearchState);
+
+  const handleClick = (page) => {
+    if (keyword) {
+      getCoursesBySearchApi({ keyword, sort, page }).then(result => {
+        setCourses(result);
+      })
+    }
+  }
   return (
     <div className="custom-pagination">
       <ul className="pagination">
@@ -10,8 +27,15 @@ const Pagination = ({ page, keyword, sort, page_number }) => {
           ? ''
           : <li className="page-item">
             {sort !== 'none' ?
-              <a className="page-link" href={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + `${page - 1}`}>Previous</a>
-              : <a className="page-link" href={pathName + '?keyword=' + keyword + '&page=' + `${page - 1}`}>Previous</a>}
+              <Link className="page-link"
+                to={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + `${page - 1}`}
+                onClick={() => handleClick(page - 1)}>Previous
+              </Link>
+              :
+              <Link className="page-link"
+                to={pathName + '?keyword=' + keyword + '&page=' + `${page - 1}`}
+                onClick={() => handleClick(page - 1)}>Previous
+              </Link>}
 
           </li>}
 
@@ -19,19 +43,39 @@ const Pagination = ({ page, keyword, sort, page_number }) => {
           <li className="page-item" key={index}>
             {page === item ?
               sort !== 'none' ?
-                <a className="page-link" href={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + item} style={{ backgroundColor: '#006DF0', color: '#fff' }}>{item}</a> :
-                <a className="page-link" href={pathName + '?keyword=' + keyword + '&page=' + item} style={{ backgroundColor: '#006DF0', color: '#fff' }}>{item}</a> :
+                <Link className="page-link"
+                  to={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + item}
+                  style={{ backgroundColor: '#006DF0', color: '#fff' }}
+                  onClick={() => handleClick(item)}>{item}
+                </Link> :
+                <Link className="page-link"
+                  to={pathName + '?keyword=' + keyword + '&page=' + item}
+                  style={{ backgroundColor: '#006DF0', color: '#fff' }}
+                  onClick={() => handleClick(item)}>{item}
+                </Link> :
               sort !== 'none' ?
-                <a className="page-link" href={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + item}>{item}</a> :
-                <a className="page-link" href={pathName + '?keyword=' + keyword + '&page=' + item}>{item}</a>}
+                <Link className="page-link"
+                  to={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + item}
+                  onClick={() => handleClick(item)}>{item}</Link> :
+                <Link className="page-link"
+                  to={pathName + '?keyword=' + keyword + '&page=' + item}
+                  onClick={() => handleClick(item)}>{item}
+                </Link>}
           </li>
         ))}
         {(page_number && page === page_number.length) || (page_number && page > page_number.length) || !keyword
           ? ''
           : <li className="page-item">
             {sort !== 'none' ?
-              <a className="page-link" href={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + `${page + 1}`}>Next</a>
-              : <a className="page-link" href={pathName + '?keyword=' + keyword + '&page=' + `${page + 1}`}>Next</a>}
+              <Link className="page-link"
+                to={pathName + '?keyword=' + keyword + '&sort=' + sort + '&page=' + `${page + 1}`}
+                onClick={() => handleClick(page + 1)}>Next
+              </Link>
+              :
+              <Link className="page-link"
+                to={pathName + '?keyword=' + keyword + '&page=' + `${page + 1}`}
+                onClick={() => handleClick(page + 1)}>Next
+              </Link>}
           </li>}
       </ul>
     </div>

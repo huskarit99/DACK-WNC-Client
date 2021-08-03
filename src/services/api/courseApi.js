@@ -12,9 +12,14 @@ const getCoursesApi = async(page) => {
       method: 'get',
       url: PATH
     });
-    return result.data;
+    return {
+      isSucess: true,
+      data: result.data
+    }
   } catch (e) {
-    return null;
+    return {
+      isSucess: false
+    };
   }
 }
 
@@ -31,9 +36,8 @@ const getAllByCriteria = async() => {
   }
 }
 
-const getAllByCategoryId = async(search) => {
+const getCoursesByCategoryIdApi = async(search) => {
   const PATH = ENDPOINT + `courses-by-category-id?categoryid=${search.categoryid}&page=${search.page}`;
-  console.log(PATH);
   try {
     const result = await Axios({
       method: 'get',
@@ -45,7 +49,7 @@ const getAllByCategoryId = async(search) => {
   }
 }
 
-const getAllBySearch = async(search) => {
+const getCoursesBySearchApi = async(search) => {
   const PATH = ENDPOINT + `/search?keyword=${search.keyword}&sort=${search.sort}&page=${search.page}`;
   try {
     const result = await Axios({
@@ -58,7 +62,7 @@ const getAllBySearch = async(search) => {
   }
 }
 
-const getCourseById = async(id) => {
+const getCourseByIdApi = async(id) => {
   const PATH = ENDPOINT + `course/${id}`;
   try {
     const result = await Axios({
@@ -71,7 +75,7 @@ const getCourseById = async(id) => {
   }
 }
 
-const getMostSubscribedCourses = async(query) => {
+const getMostSubscribedCoursesApi = async(query) => {
   const PATH = ENDPOINT + `most-subscribed-courses?id=${query.id}&categoryid=${query.category_id}`;
   try {
     const result = await Axios({
@@ -104,9 +108,9 @@ const deleteCourseApi = async(id) => {
 export {
   getCoursesApi,
   getAllByCriteria,
-  getAllByCategoryId,
-  getAllBySearch,
-  getCourseById,
-  getMostSubscribedCourses,
+  getCoursesByCategoryIdApi,
+  getCoursesBySearchApi,
+  getCourseByIdApi,
+  getMostSubscribedCoursesApi,
   deleteCourseApi
 }
