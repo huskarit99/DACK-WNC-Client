@@ -6,7 +6,7 @@ import roleState from "../../../state/roleState";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
-const routeAdmin = ["/categories", "/courses"];
+const routeAdmin = ["/categories", "/courses", "/students", "/teachers"];
 const routeTeacher = ["/abasdsac", "/asdasddsd"];
 const routeStudent = ["/abfdasc", "/asdasd"];
 

@@ -91,16 +91,16 @@ const getMostSubscribedCoursesApi = async(query) => {
 const deleteCourseApi = async(id) => {
   const PATH = ENDPOINT + `course/${id}`;
   try {
-    const result = await Axios({
+    await Axios({
       method: 'delete',
       url: PATH
     });
     return {
-      isSucess: true
+      isSuccess: true
     }
   } catch (e) {
     return {
-      isSucess: false
+      isSuccess: false
     }
   }
 }

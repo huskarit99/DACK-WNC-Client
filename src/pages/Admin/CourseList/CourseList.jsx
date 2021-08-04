@@ -8,7 +8,7 @@ import DeleteModal from './containers/Modal/DeleteModal';
 import Pagination from './containers/Pagination/Pagination';
 import { createBrowserHistory } from "history";
 
-const CoursesList = () => {
+const CourseList = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const page = Number(params.get("page")) || 1;
@@ -61,4 +61,4 @@ const CoursesList = () => {
   )
 }
 
-export default CoursesList
+export default CourseList

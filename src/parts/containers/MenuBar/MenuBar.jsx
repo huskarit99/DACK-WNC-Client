@@ -33,7 +33,7 @@ const listMenu1 = [
   },
   {
     classIcon: "educate-icon educate-professor icon-wrap",
-    name: "Giáo viên",
+    name: "Giảng viên",
     link: "/teachers",
   },
   {

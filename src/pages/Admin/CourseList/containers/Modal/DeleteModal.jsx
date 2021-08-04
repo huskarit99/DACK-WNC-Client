@@ -7,9 +7,9 @@ const DeleteModal = ({ page, course, index }) => {
   const setCourses = useSetRecoilState (coursesState);
   const handleClick = () => {
     deleteCourseApi(course._id).then(result => {
-      if (result.isSucess) {
+      if (result.isSuccess) {
         getCoursesApi(page).then(result =>{
-          setCourses(result);
+          setCourses(result.data);
         });
       }
     })
