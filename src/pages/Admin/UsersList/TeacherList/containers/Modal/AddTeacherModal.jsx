@@ -3,23 +3,33 @@ import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { addTeacherApi, getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
 import { messageAlertState, teacherListState } from '../../../../../../state/userState';
+import { createBrowserHistory } from 'history';
+import jwtEnum from '../../../../../../utils/enums/jwtEnum';
+
 const AddTeacherModal = ({ page }) => {
   const emailRef = useRef('');
   const nameRef = useRef('');
   const location = useLocation();
   const setTeacherList = useSetRecoilState(teacherListState);
   const setMessageAlert = useSetRecoilState(messageAlertState);
+  const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
     addTeacherApi(emailRef.current.value, nameRef.current.value).then(result => {
       if (result.isSuccess) {
         if (location.pathname === '/teachers') {
           getUsersByRoleNameApi('teacher', page).then(result => {
-            setTeacherList(result.data)
-            emailRef.current.value = '';
-            nameRef.current.value = '';
-            setMessageAlert('');
+            if (result.isSuccess) {
+              setTeacherList(result.data);
+              emailRef.current.value = '';
+              nameRef.current.value = '';
+              setMessageAlert('');
+            } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+              history.push('/login');
+            }
           });
         }
+      } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+        history.push('/login');
       } else {
         setMessageAlert(result.message);
         emailRef.current.value = '';
@@ -30,6 +40,7 @@ const AddTeacherModal = ({ page }) => {
   const onClose = () => {
     emailRef.current.value = '';
     nameRef.current.value = '';
+    setMessageAlert('');
   }
   return (
     <div id="addTeacher" className="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">

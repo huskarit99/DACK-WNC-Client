@@ -1,16 +1,26 @@
 import React from 'react'
 import { useSetRecoilState } from 'recoil';
 import { deleteCourseApi, getCoursesApi } from '../../../../../services/api/courseApi';
-import {coursesState} from '../../../../../state/courseState';
+import { coursesState } from '../../../../../state/courseState';
+import jwtEnum from '../../../../../utils/enums/jwtEnum';
+import { createBrowserHistory } from "history";
+
 const DeleteModal = ({ page, course, index }) => {
 
-  const setCourses = useSetRecoilState (coursesState);
+  const setCourses = useSetRecoilState(coursesState);
+  const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
     deleteCourseApi(course._id).then(result => {
       if (result.isSuccess) {
-        getCoursesApi(page).then(result =>{
-          setCourses(result.data);
+        getCoursesApi(page).then(result => {
+          if (result.isSuccess) {
+            setCourses(result.data);
+          } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+            history.push('/login');
+          }
         });
+      } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+        history.push('/login');
       }
     })
   }

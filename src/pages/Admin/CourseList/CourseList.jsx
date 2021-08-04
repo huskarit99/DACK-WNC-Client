@@ -7,6 +7,7 @@ import CourseRow from './containers/CourseRow.jsx/CourseRow';
 import DeleteModal from './containers/Modal/DeleteModal';
 import Pagination from './containers/Pagination/Pagination';
 import { createBrowserHistory } from "history";
+import jwtEnum from '../../../utils/enums/jwtEnum';
 
 const CourseList = () => {
   const location = useLocation();
@@ -17,9 +18,9 @@ const CourseList = () => {
   
   useEffect(() => {
     getCoursesApi(page).then(result => {
-      if(result.isSucess){
+      if(result.isSuccess){
         setCourses(result.data);
-      }else{
+      }else if(result.message === jwtEnum.TOKEN_IS_EXPIRED ||result.message === jwtEnum.NO_TOKEN){
         history.push('/login');
       }
     })

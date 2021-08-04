@@ -2,16 +2,26 @@ import React from 'react'
 import { useSetRecoilState } from 'recoil';
 import { deleteUserByIdApi, getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
 import { teacherListState } from '../../../../../../state/userState';
+import { createBrowserHistory } from "history";
+import jwtEnum from '../../../../../../utils/enums/jwtEnum';
+
 const DeleteTeacherModal = ({ page, teacher, index }) => {
 
   const setTeacherList = useSetRecoilState(teacherListState);
+  const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
-    deleteUserByIdApi(teacher._id).then(result =>{
+    deleteUserByIdApi(teacher._id).then(result => {
       console.log(result.isSuccess);
-      if(result.isSuccess){
-        getUsersByRoleNameApi('teacher', page).then(result =>{
-          setTeacherList(result.data);
+      if (result.isSuccess) {
+        getUsersByRoleNameApi('teacher', page).then(result => {
+          if (result.isSuccess) {
+            setTeacherList(result.data);
+          } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+            history.push('/login');
+          }
         })
+      } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+        history.push('/login');
       }
     })
   }

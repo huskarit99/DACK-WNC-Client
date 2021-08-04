@@ -1,6 +1,7 @@
 import Axios from 'axios';
 
 import courseEnum from '../../utils/enums/courseEnum';
+import jwtEnum from '../../utils/enums/jwtEnum';
 
 const ENDPOINT = 'http://localhost:5000/api/course-controller/';
 Axios.defaults.withCredentials = true;
@@ -13,12 +14,36 @@ const getCoursesApi = async(page) => {
       url: PATH
     });
     return {
-      isSucess: true,
+      isSuccess: true,
       data: result.data
     }
-  } catch (e) {
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
     return {
-      isSucess: false
+      isSuccess: false,
+      message: message,
     };
   }
 }
@@ -98,10 +123,34 @@ const deleteCourseApi = async(id) => {
     return {
       isSuccess: true
     }
-  } catch (e) {
-    return {
-      isSuccess: false
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
     }
+    console.log(error.response);
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 }
 

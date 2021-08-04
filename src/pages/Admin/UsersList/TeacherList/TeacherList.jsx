@@ -8,6 +8,8 @@ import TeacherRow from './containers/TeacherRow.jsx/TeacherRow';
 import Pagination from './containers/Pagination/Pagination';
 import DeleteTeacherModal from './containers/Modal/DeleteTeacherModal';
 import AddTeacherModal from './containers/Modal/AddTeacherModal';
+import jwtEnum from '../../../../utils/enums/jwtEnum';
+
 const TeacherList = () => {
 
   const location = useLocation();
@@ -21,7 +23,7 @@ const TeacherList = () => {
       getUsersByRoleNameApi('teacher', page).then(result => {
         if (result.isSuccess) {
           setTeacherList(result.data);
-        } else {
+        } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
           history.push('/login');
         }
       });

@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { getCoursesApi } from '../../../../../services/api/courseApi';
 import { coursesState } from '../../../../../state/courseState';
 import { createBrowserHistory } from "history";
-
+import jwtEnum from '../../../../../utils/enums/jwtEnum';
 const Pagination = ({ page, page_number }) => {
   const setCourses = useSetRecoilState(coursesState);
   const history = createBrowserHistory({ forceRefresh: true });
@@ -12,10 +12,10 @@ const Pagination = ({ page, page_number }) => {
   const pathName = location.pathname;
   const handleClick = (page) => {
     getCoursesApi(page).then(result => {
-      if (result.isSucess) {
+      if(result.isSuccess){
         setCourses(result.data);
-      } else {
-        history.push("/");
+      }else if(result.message === jwtEnum.TOKEN_IS_EXPIRED ||result.message === jwtEnum.NO_TOKEN){
+        history.push('/login');
       }
     });
   }

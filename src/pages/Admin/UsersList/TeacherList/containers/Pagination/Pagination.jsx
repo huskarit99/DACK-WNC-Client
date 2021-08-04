@@ -4,6 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { createBrowserHistory } from "history";
 import { teacherListState } from '../../../../../../state/userState';
 import { getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
+import jwtEnum from '../../../../../../utils/enums/jwtEnum';
 
 const Pagination = ({ page, page_number }) => {
   const setTeacherList = useSetRecoilState(teacherListState);
@@ -15,7 +16,7 @@ const Pagination = ({ page, page_number }) => {
       getUsersByRoleNameApi('teacher', page).then(result => {
         if (result.isSuccess) {
           setTeacherList(result.data);
-        } else {
+        } else if(result.message === jwtEnum.TOKEN_IS_EXPIRED ||result.message === jwtEnum.NO_TOKEN){
           history.push('/login');
         }
       });

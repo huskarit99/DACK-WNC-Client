@@ -1,4 +1,5 @@
 import Axios from "axios";
+import jwtEnum from "../../utils/enums/jwtEnum";
 
 import stateOfAuthentication from "../../utils/enums/stateOfAuthentication";
 import {
@@ -41,9 +42,33 @@ const getUsersByRoleNameApi = async(role, page) => {
       data: response.data
     }
   } catch (error) {
-    return {
-      isSuccess: false
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
     }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 };
 const getSelfInfoApi = async() => {
@@ -278,10 +303,34 @@ const deleteUserByIdApi = async(id) => {
     return {
       isSuccess: true
     }
-  } catch (e) {
-    return {
-      isSuccess: false
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
     }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 }
 
@@ -327,6 +376,16 @@ const addTeacherApi = async(email, name) => {
       case addTeacherResponseEnum.SERVER_ERROR:
         {
           message = "Server Error !!!";
+          break;
+        }
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
           break;
         }
       default:

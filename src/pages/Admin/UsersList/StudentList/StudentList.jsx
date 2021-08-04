@@ -7,6 +7,7 @@ import { studentListState } from '../../../../state/userState'
 import StudentRow from './containers/StudentRow.jsx/StudentRow';
 import Pagination from './containers/Pagination/Pagination';
 import DeleteStudentModal from './containers/Modal/DeleteStudentModal';
+import jwtEnum from '../../../../utils/enums/jwtEnum';
 
 const StudentList = () => {
 
@@ -20,7 +21,7 @@ const StudentList = () => {
       getUsersByRoleNameApi('student', page).then(result => {
         if (result.isSuccess) {
           setStudentList(result.data);
-        } else {
+        } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
           history.push('/login');
         }
       });

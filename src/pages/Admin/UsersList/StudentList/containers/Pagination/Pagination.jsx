@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { createBrowserHistory } from "history";
 import { studentListState } from '../../../../../../state/userState';
 import { getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
-
+import jwtEnum from '../../../../../../utils/enums/jwtEnum';
 const Pagination = ({ page, page_number }) => {
   const setStudentList = useSetRecoilState(studentListState);
   const history = createBrowserHistory({ forceRefresh: true });
@@ -15,7 +15,7 @@ const Pagination = ({ page, page_number }) => {
       getUsersByRoleNameApi('student', page).then(result => {
         if (result.isSuccess) {
           setStudentList(result.data);
-        } else {
+        } else if(result.message === jwtEnum.TOKEN_IS_EXPIRED ||result.message === jwtEnum.NO_TOKEN){
           history.push('/login');
         }
       });

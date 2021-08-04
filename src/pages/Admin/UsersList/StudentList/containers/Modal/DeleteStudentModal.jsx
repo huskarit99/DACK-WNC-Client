@@ -2,16 +2,25 @@ import React from 'react'
 import { useSetRecoilState } from 'recoil';
 import { deleteUserByIdApi, getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
 import { studentListState } from '../../../../../../state/userState';
+import jwtEnum from '../../../../../../utils/enums/jwtEnum';
+import { createBrowserHistory } from "history";
+
 const DeleteStudentModal = ({ page, student, index }) => {
 
   const setStudentList = useSetRecoilState(studentListState);
+  const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
-    deleteUserByIdApi(student._id).then(result =>{
-      console.log(result.isSuccess);
-      if(result.isSuccess){
-        getUsersByRoleNameApi('student', page).then(result =>{
-          setStudentList(result.data);
+    deleteUserByIdApi(student._id).then(result => {
+      if (result.isSuccess) {
+        getUsersByRoleNameApi('student', page).then(result => {
+          if (result.isSuccess) {
+            setStudentList(result.data);
+          } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+            history.push('/login');
+          }
         })
+      } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+        history.push('/login');
       }
     })
   }
