@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { getCoursesByCategoryIdApi } from '../../../../services/api/courseApi';
 import { coursesByCategoryIdState } from '../../../../state/courseState';
+import messageAlertState from '../../../../state/messageAlertState';
 const Pagination = ({ page_number }) => {
   const location = useLocation();
   const pathName = location.pathname;
@@ -11,11 +12,17 @@ const Pagination = ({ page_number }) => {
   const categoryid = params.get("categoryid");
   const page = Number(params.get("page")) || 1;
   const setCourses = useSetRecoilState(coursesByCategoryIdState);
+  const setmessageAlert = useSetRecoilState(messageAlertState);
 
   const handleClick = (page) => {
     if (categoryid) {
       getCoursesByCategoryIdApi({ categoryid, page }).then(result => {
-        setCourses(result);
+        if (result.isSuccess) {
+          setCourses(result.data);
+          setmessageAlert('');
+        } else {
+          setmessageAlert(result.message);
+        }
       })
     }
   }

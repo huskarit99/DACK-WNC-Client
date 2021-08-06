@@ -2,27 +2,26 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil';
 import { createBrowserHistory } from "history";
-import { teacherListState } from '../../../../../../state/userState';
-import { getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
-import jwtEnum from '../../../../../../utils/enums/jwtEnum';
-import messageAlertState from '../../../../../../state/messageAlertState';
+import jwtEnum from '../../../../../utils/enums/jwtEnum';
+import { getCategoriesByPageApi } from '../../../../../services/api/categoryApi';
+import categoryListState from '../../../../../state/categoryState';
+import messageAlertState from '../../../../../state/messageAlertState';
+
 const Pagination = ({ page, page_number }) => {
-  const setTeacherList = useSetRecoilState(teacherListState);
+  const setCategoryList = useSetRecoilState(categoryListState);
   const setMessageAlert = useSetRecoilState(messageAlertState);
   const history = createBrowserHistory({ forceRefresh: true });
   const location = useLocation();
   const pathName = location.pathname;
   const handleClick = (page) => {
-    if (location.pathname === '/teachers') {
-      getUsersByRoleNameApi('teacher', page).then(result => {
-        if (result.isSuccess) {
-          setTeacherList(result.data);
-          setMessageAlert('');
-        } else if(result.message === jwtEnum.TOKEN_IS_EXPIRED ||result.message === jwtEnum.NO_TOKEN){
-          history.push('/login');
-        }
-      });
-    }
+    getCategoriesByPageApi(page).then(result =>{
+      if (result.isSuccess) {
+        setCategoryList(result.data);
+        setMessageAlert('');
+      } else if (result.message === jwtEnum.NO_TOKEN || result.message === jwtEnum.TOKEN_IS_EXPIRED) {
+        history.push('/login');
+      }
+    })
   }
   return (
     <div className="custom-pagination">

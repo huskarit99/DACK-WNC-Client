@@ -46,9 +46,9 @@ const StudentList = () => {
                   </thead>
                   <tbody>
                     {studentList && studentList.users && studentList.users.map((student, index) => {
-                      return <Fragment>
-                        <StudentRow student={student} key={index} index={index + 1 + (page - 1) * 5} page={page} />
-                        <DeleteStudentModal student={student} key={index + 1024} index={index + 1 + (page - 1) * 5} page={page} />
+                      return <Fragment key={index}>
+                        <StudentRow student={student} index={index + 1 + (page - 1) * 5} page={page} />
+                        <DeleteStudentModal student={student} index={index + 1 + (page - 1) * 5} page={page} />
                       </Fragment>
                     })}
                   </tbody>

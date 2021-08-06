@@ -44,9 +44,9 @@ const CourseList = () => {
                   </thead>
                   <tbody>
                     {courses && courses.courses && courses.courses.map((course, index) => {
-                      return <Fragment>
-                        <CourseRow course={course} index={index + 1 + (page - 1) * 5} key={index} />
-                        <DeleteModal course={course} page={page} index={index + 1 + (page - 1) * 5} key={index + 1080} />
+                      return <Fragment key={index}>
+                        <CourseRow course={course} index={index + 1 + (page - 1) * 5}  />
+                        <DeleteModal course={course} page={page} index={index + 1 + (page - 1) * 5}  />
                       </Fragment>
                     })}
                   </tbody>

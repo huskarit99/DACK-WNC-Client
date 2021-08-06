@@ -15,14 +15,8 @@ const teacherListState = atom({
   default: null
 });
 
-const messageAlertState = atom({
-  key: 'messageAlertState',
-  default: ''
-})
-
 export {
   userState,
   studentListState,
   teacherListState,
-  messageAlertState
 }

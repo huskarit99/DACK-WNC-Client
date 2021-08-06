@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import categoryEnum from '../../utils/enums/categoryEnum';
 
 import courseEnum from '../../utils/enums/courseEnum';
 import jwtEnum from '../../utils/enums/jwtEnum';
@@ -68,9 +69,37 @@ const getCoursesByCategoryIdApi = async(search) => {
       method: 'get',
       url: PATH
     });
-    return result.data;
-  } catch (e) {
-    return null;
+    return {
+      isSuccess: true,
+      data: result.data
+    }
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case categoryEnum.CATEGORY_HAS_BEEN_DELETED:
+        {
+          message = 'Danh mục đã bị xóa.';
+        }
+      case categoryEnum.CATEGORY_ID_IS_INVALID:
+        {
+          message = 'Id danh mục không tồn tại.';
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 }
 
@@ -131,7 +160,6 @@ const deleteCourseApi = async(id) => {
         message: "Server Error !!!",
       };
     }
-    console.log(error.response);
     switch (error.response.data.code) {
       case jwtEnum.NO_TOKEN:
         {

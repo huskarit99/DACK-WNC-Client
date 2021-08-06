@@ -360,17 +360,17 @@ const addTeacherApi = async(email, name) => {
     switch (error.response.data.code) {
       case addTeacherResponseEnum.EMAIL_IS_UNAVAILABLE:
         {
-          message = "Email is unavailable !!!";
+          message = "Email không khả dụng !!!";
           break;
         }
       case addTeacherResponseEnum.EMAIL_IS_EMPTY:
         {
-          message = "Email is empty !!!";
+          message = "Email rỗng !!!";
           break;
         }
       case addTeacherResponseEnum.NAME_IS_EMPTY:
         {
-          message = "Name is empty !!!";
+          message = "Name rỗng !!!";
           break;
         }
       case addTeacherResponseEnum.SERVER_ERROR:

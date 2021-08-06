@@ -9,7 +9,7 @@ import { authTokenApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 import { useLocation } from "react-router-dom";
-import { getAll } from "../../../services/api/categoryApi";
+import { getCategoriesApi } from "../../../services/api/categoryApi";
 
 const defaultMenu = [
   {
@@ -99,7 +99,7 @@ const MenuBar = (props) => {
         }
       }
     });
-    getAll().then(result => {
+    getCategoriesApi().then(result => {
       setRootCategories(result);
     });
   }, [setIsAuthenticated, setRole, setRootCategories]);

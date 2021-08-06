@@ -1,6 +1,6 @@
 const pathEnums = {
   '/': 'Trang chủ',
-  '/courses': 'Trang chủ / Khóa học',
+  '/courses/category': 'Trang chủ / Khóa học theo danh mục',
   '/login': 'Trang chủ / Đăng nhập',
   '/register': 'Trang chủ / Đăng ký',
   '/courses/search': 'Trang chủ / Tìm kiếm',

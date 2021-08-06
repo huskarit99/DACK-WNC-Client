@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom'
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { createBrowserHistory } from 'history';
 import { getUsersByRoleNameApi } from '../../../../services/api/userApi';
-import { messageAlertState, teacherListState } from '../../../../state/userState'
+import {  teacherListState } from '../../../../state/userState'
+import messageAlertState from '../../../../state/messageAlertState';
 import TeacherRow from './containers/TeacherRow.jsx/TeacherRow';
 import Pagination from './containers/Pagination/Pagination';
 import DeleteTeacherModal from './containers/Modal/DeleteTeacherModal';
@@ -51,9 +52,9 @@ const TeacherList = () => {
                   </tr></thead>
                   <tbody>
                     {teacherList && teacherList.users && teacherList.users.map((teacher, index) => {
-                      return <Fragment>
-                        <TeacherRow teacher={teacher} key={index} index={index + 1 + (page - 1) * 5} page={page} />
-                        <DeleteTeacherModal teacher={teacher} key={index + 1024} index={index + 1 + (page - 1) * 5} page={page} />
+                      return <Fragment key={index}>
+                        <TeacherRow teacher={teacher} index={index + 1 + (page - 1) * 5} page={page} />
+                        <DeleteTeacherModal teacher={teacher} index={index + 1 + (page - 1) * 5} page={page} />
                       </Fragment>
                     })}
                   </tbody>

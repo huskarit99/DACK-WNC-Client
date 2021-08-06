@@ -1,10 +1,11 @@
-import React, { useState, useRef, Fragment } from 'react'
+import React, { useRef } from 'react'
 import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { addTeacherApi, getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
-import { messageAlertState, teacherListState } from '../../../../../../state/userState';
+import { teacherListState } from '../../../../../../state/userState';
 import { createBrowserHistory } from 'history';
 import jwtEnum from '../../../../../../utils/enums/jwtEnum';
+import messageAlertState from '../../../../../../state/messageAlertState';
 
 const AddTeacherModal = ({ page }) => {
   const emailRef = useRef('');
@@ -61,7 +62,7 @@ const AddTeacherModal = ({ page }) => {
             </div>
           </div>
           <div className="modal-footer">
-            <button class="btn"
+            <button className="btn"
               data-dismiss="modal"
               style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px", marginRight: "10px" }}
               onClick={onClose}>Đóng
