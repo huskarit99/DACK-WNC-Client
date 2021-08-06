@@ -8,7 +8,7 @@ import Lesson from '../../parts/components/Lesson/Lesson'
 import PurchaseCourse from '../../parts/components/Modals/PurchaseCourse'
 import Heart from 'react-heart'
 import { useLocation, useHistory } from 'react-router'
-import { getCourseByIdApi, getMostSubscribedCoursesApi } from '../../services/api/courseApi'
+import { getCourseByIdApi, getMostSubscribedCoursesApi, updateCourseViewApi } from '../../services/api/courseApi'
 import { useParams } from 'react-router-dom'
 import { getSubscribersByCourseId } from '../../services/api/subscriberApi'
 import { useRecoilValue } from "recoil";
@@ -31,6 +31,7 @@ const CourseDetail = () => {
     getCourseByIdApi(id).then(result => {
       setCourse(result);
       if (result) {
+        updateCourseViewApi(id);
         getWatchList(id).then(result => {
           setWatchList(result)
         })

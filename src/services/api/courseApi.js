@@ -182,6 +182,23 @@ const deleteCourseApi = async(id) => {
   }
 }
 
+const updateCourseViewApi = async(id) => {
+  const PATH = ENDPOINT + `course-view/${id}`;
+  try {
+    await Axios({
+      method: 'put',
+      url: PATH
+    });
+    return {
+      isSuccess: true
+    }
+  } catch (error) {
+    return {
+      isSuccess: false,
+    };
+  }
+}
+
 export {
   getCoursesApi,
   getAllByCriteria,
@@ -189,5 +206,6 @@ export {
   getCoursesBySearchApi,
   getCourseByIdApi,
   getMostSubscribedCoursesApi,
-  deleteCourseApi
+  deleteCourseApi,
+  updateCourseViewApi
 }
