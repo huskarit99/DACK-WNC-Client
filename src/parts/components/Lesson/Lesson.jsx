@@ -20,6 +20,7 @@ const Lesson = ({ video, index }) => {
             data-target={`#lesson` + index}
             onClick={() => {
               setShow(true);
+              videoRef.current.seekTo(60);
             }}
           >
             Xem trước
