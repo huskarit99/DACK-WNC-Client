@@ -5,8 +5,7 @@ const Lesson = ({ video, index }) => {
   const videoRef = useRef(null);
   const [show, setShow] = useState(false);
   const getProgress = () => {
-    console.log(videoRef.current.props);
-    console.log(videoRef.current.props.onProgress());
+    console.log(videoRef.current.getCurrentTime());
   };
 
   return (
