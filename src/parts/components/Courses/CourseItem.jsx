@@ -1,13 +1,12 @@
 import React from 'react'
 import StarRatings from 'react-star-ratings'
-import { Link } from 'react-router-dom'
 
 const CourseItem = ({course}) => {
   return (
     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" >
       <div className="courses-inner mg-b-15">
         <div className="courses-title">
-          <Link to={`/course/`+ course._id}><img src={course.image} alt="" style={{width: 300, height: 211}}/></Link>
+          <a href={`/course/`+ course._id}><img src={course.image} alt="" style={{width: 300, height: 211}}/></a>
           <h2>{course.name}</h2>
         </div>
         <div className="courses-alaltic">
@@ -20,7 +19,7 @@ const CourseItem = ({course}) => {
           <p style={{ float: 'right' }}>{course.number_of_subscribers ===0 ? '': `(${course.number_of_subscribers})`}</p>
         </div>
         <div className="product-buttons">
-        <Link to={`/course/`+ course._id}><button type="button" className="button-default cart-btn">Chi tiết</button></Link>
+        <a href={`/course/`+ course._id}><button type="button" className="button-default cart-btn">Chi tiết</button></a>
         </div>
       </div>
     </div>

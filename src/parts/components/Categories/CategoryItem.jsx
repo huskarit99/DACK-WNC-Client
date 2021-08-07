@@ -6,7 +6,7 @@ const CategoryItem = ({category}) => {
     <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12">
       <div className="analytics-sparkle-line reso-mg-b-30">
         <div className="analytics-content">
-          <Link to={"/courses?category-id="+category._id}><h5>{category.name}</h5></Link>
+          <Link to={"/courses?categoryid="+category._id}><h5>{category.name}</h5></Link>
         </div>
       </div>
     </div>
