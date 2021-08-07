@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ReactPlayer from "react-player";
 
 const Lesson = ({ video, index }) => {
+  const videoRef = useRef(null);
   const [show, setShow] = useState(false);
+  const getProgress = () => {
+    console.log(videoRef.current.props);
+    console.log(videoRef.current.props.onProgress());
+  };
 
   return (
     <tr>
@@ -28,6 +33,9 @@ const Lesson = ({ video, index }) => {
         id={"lesson" + index}
         className="modal modal-edu-general default-popup-PrimaryModal fade"
         role="dialog"
+        onClick={() => {
+          setShow(false);
+        }}
       >
         <div className="modal-dialog">
           <div
@@ -40,6 +48,7 @@ const Lesson = ({ video, index }) => {
                 data-dismiss="modal"
                 onClick={() => {
                   setShow(false);
+                  getProgress();
                 }}
               >
                 <i className="fa fa-close"></i>
@@ -53,6 +62,7 @@ const Lesson = ({ video, index }) => {
             }}
           >
             <ReactPlayer
+              ref={videoRef}
               playing={show}
               style={{ position: "absolute", top: "0", left: "0" }}
               url="/videos/1.mp4"
