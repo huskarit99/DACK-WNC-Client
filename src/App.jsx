@@ -11,6 +11,10 @@ import { appendScript } from './utils/appendScripts';
 import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
 import CourseDetail from "./pages/CourseDetail/CourseDetail";
 import CoursesListBySearch from './pages/CoursesListBySearch/CoursesListBySearch';
+import CourseList from "./pages/Admin/CourseList/CourseList";
+import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
+import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
+import CategoryList from "./pages/Admin/CategoryList/CategoryList";
 
 const App = () => {
   useEffect(() => {
@@ -53,7 +57,12 @@ const App = () => {
           <PrivateRoute exact path="/profile" component={Profile} /> */}
           <PrivateRoute exact path="/login" component={Login} />
           <PrivateRoute exact path="/register" component={Register} />
-          <Route exact path="/courses" component={CoursesListByCategory} />
+          {/* admin */}
+          <PrivateRoute exact path="/categories" component={CategoryList}/>
+          <PrivateRoute exact path="/courses" component={CourseList}/>
+          <PrivateRoute exact path="/students" component={StudentList}/>
+          <PrivateRoute exact path="/teachers" component={TeacherList}/>
+          <Route exact path="/courses/category" component={CoursesListByCategory} />
           <Route exact path="/course/:id" component={CourseDetail} />
           <Route exact path="/courses/search" component={CoursesListBySearch} />
           <Route path="/" component={Home} />

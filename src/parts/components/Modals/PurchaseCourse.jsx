@@ -1,10 +1,41 @@
 import React from 'react'
-
-const PurchaseCourse = () => {
+import { useHistory } from 'react-router';
+import { useRecoilValue } from "recoil";
+import { subscribe } from '../../../services/api/subscriberApi';
+import roleState from '../../../state/roleState';
+import { useRecoilState } from 'recoil'
+import subscriberState from '../../../state/subscriberState';
+const PurchaseCourse = ({id}) => {
+  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
+  let history = useHistory();
+  const role = useRecoilValue(roleState);
+  const handleClick = () =>{
+    subscribe(id).then(result =>{
+      if(result.isSuccess){
+        let tmp = JSON.parse(JSON.stringify(subscribers));
+        tmp.is_subscribed = result.is_subscribed;
+        tmp.subscribers.push(result.subscriber);
+        setSubscribers(tmp);
+      }
+    })
+  }
   return (
     <div className="shadow-inner">
       <div className="modal-area-button">
-        <a className="Primary" href="#" data-toggle="modal" data-target="#PrimaryModalalert">Mua khóa học</a>
+        {role && role === 'student'
+          // ? <a className="Primary" href="#" data-toggle="modal" data-target="#PrimaryModalalert">Mua khóa học</a>: 
+          // <a className="Primary" href="/login">Mua khóa học</a>}
+          ? <button
+            className="btn"
+            data-toggle="modal" data-target="#PrimaryModalalert"
+            style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px" }}
+          >Mua khoá học</button> :
+          <button
+            className="btn"
+            style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px" }}
+            onClick={() => history.push("/login")}
+          >Mua khoá học</button>
+        }
       </div>
       <div id="PrimaryModalalert" className="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
         <div className="modal-dialog">
@@ -17,8 +48,12 @@ const PurchaseCourse = () => {
               <p>Bạn có chắc muốn mua khóa học</p>
             </div>
             <div className="modal-footer">
-              <a data-dismiss="modal" href="#">Trở về</a>
-              <a href="#">Có</a>
+              <button data-dismiss="modal" className="btn" style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px", marginRight: "10px" }}>Trở về</button>
+              <button
+                className="btn"
+                style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px" }}
+                onClick={handleClick} data-dismiss="modal"
+              >Có</button>
             </div>
           </div>
         </div>

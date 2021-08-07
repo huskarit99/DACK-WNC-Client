@@ -9,7 +9,7 @@ import { authTokenApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 import { useLocation } from "react-router-dom";
-import { getAll } from "../../../services/api/categoryApi";
+import { getCategoriesApi } from "../../../services/api/categoryApi";
 
 const defaultMenu = [
   {
@@ -22,14 +22,24 @@ const defaultMenu = [
 // admin
 const listMenu1 = [
   {
+    classIcon: "educate-icon educate-library icon-wrap",
+    name: "Lĩnh vực",
+    link: "/categories",
+  },
+  {
+    classIcon: "educate-icon educate-course icon-wrap",
+    name: "Khóa học",
+    link: "/courses",
+  },
+  {
     classIcon: "educate-icon educate-professor icon-wrap",
-    name: "Giáo viên",
-    link: "/",
+    name: "Giảng viên",
+    link: "/teachers",
   },
   {
     classIcon: "educate-icon educate-student icon-wrap",
     name: "Học sinh",
-    link: "/",
+    link: "/students",
   },
 ];
 
@@ -42,11 +52,7 @@ const listMenu2 = [
   },
 ];
 const listMenu3 = [
-  {
-    classIcon: "educate-icon educate-library icon-wrap",
-    name: "Lĩnh vực",
-    link: "/",
-  },
+  
 ];
 const listMenu4 = [
   {
@@ -93,12 +99,12 @@ const MenuBar = (props) => {
         }
       }
     });
-    getAll().then(result => {
+    getCategoriesApi().then(result => {
       setRootCategories(result);
     });
   }, [setIsAuthenticated, setRole, setRootCategories]);
   return (
-    <div >
+    <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
       <div className="left-sidebar-pro">
         <nav id="sidebar" className="">
           <div className="sidebar-header">
@@ -116,7 +122,7 @@ const MenuBar = (props) => {
               <ul className="metismenu" id="menu1">
                 {listMenu.map((row, index) => (
                   <li key={index}>
-                    <Link to={row.link}>
+                    <a href={row.link}>
                       <div
                         style={{
                           display: "inline-flex",
@@ -139,24 +145,35 @@ const MenuBar = (props) => {
                       >
                         <span className="mini-click-non">{row.name}</span>
                       </div>
-                    </Link>
+                    </a>
                   </li>
                 ))}
 
                 {role && role !== 'teacher' && role !== 'admin' &&
                   <li>
                     <a className="has-arrow" href="/" aria-expanded="false">
-                      <span className="educate-icon educate-library icon-wrap"></span>
-                      <span className="mini-click-non" style={{
-                        alignItems: "center",
-                        height: "20px",
-                        marginLeft: "10px"
-                      }}>Lĩnh vực</span>
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          height: "21px",
+                          width: "35px",
+                        }}
+                      ><span className="educate-icon educate-library icon-wrap"></span>
+                      </div>
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          height: "20px",
+                        }}
+                      ><span className="mini-click-non" >Lĩnh vực</span>
+                      </div>
                     </a>
-                    <ul className="submenu-angle" aria-expanded="false">
+                    <ul className="submenu-angle" aria-expanded="false" style={{ marginLeft: '10px' }}>
                       {rootCategories && rootCategories.root_categories && rootCategories.root_categories.map((root_category, index) => (
                         <li key={index}>
-                          {root_category && root_category.categories.length>0 ?
+                          {root_category && root_category.categories.length > 0 ?
                             <Fragment>
                               <a className="has-arrow" data-toggle="collapse" href={'#' + index} role="button" aria-expanded="false" aria-controls={index}>
                                 <span className="mini-sub-pro">{root_category.name}</span>
@@ -164,13 +181,13 @@ const MenuBar = (props) => {
                               <ul className="submenu-angle" id={index} className="collapse">
                                 {root_category && root_category.categories && root_category.categories.map((category, index) => (
                                   <li key={index}>
-                                    <a href={'/courses?categoryid=' + category._id}><span className="mini-sub-pro">{category.name}</span></a>
+                                    <a href={'/courses/category?categoryid=' + category._id}><span className="mini-sub-pro">{category.name}</span></a>
                                   </li>
                                 ))}
                               </ul>
                             </Fragment> : <a>
-                                <span className="mini-sub-pro">{root_category.name}</span>
-                              </a>}
+                              <span className="mini-sub-pro">{root_category.name}</span>
+                            </a>}
 
                         </li>
                       ))}

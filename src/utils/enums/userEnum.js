@@ -28,4 +28,11 @@ const updateOneResponseEnum = {
   PASSWORD_IS_LESS_THAN_6_LETTERS: 'password_is_less_than_6_letters'
 }
 
-export { loginResponseEnum, registerResponseEnum, updateOneResponseEnum };
+const addTeacherResponseEnum = {
+  NAME_IS_EMPTY: 'name_is_empty',
+  EMAIL_IS_EMPTY: 'email_is_empty',
+  EMAIL_IS_UNAVAILABLE: 'email_is_unavailable',
+  SERVER_ERROR: 'server_error',
+}
+
+export { loginResponseEnum, registerResponseEnum, updateOneResponseEnum, addTeacherResponseEnum };
