@@ -3,32 +3,28 @@ import { Redirect } from "react-router-dom";
 
 import CourseItem from "../../parts/components/Courses/CourseItem";
 import CategoryItem from "../../parts/components/Categories/CategoryItem";
-import {getAllByCriteria} from '../../services/api/courseApi';
-import { useRecoilState } from "recoil";
-import {criteriaState} from '../../state/criteriaState';  
+import { getAllByCriteria } from "../../services/api/courseApi";
 
 const Home = (props) => {
-    
   const [criteria, setCriteria] = useState(null);
 
-  useEffect(() =>{
-    getAllByCriteria().then(result =>{
+  useEffect(() => {
+    getAllByCriteria().then((result) => {
       setCriteria(result);
-    })
+    });
   }, []);
-  console.log(criteria);
   if (props.location.pathname !== props.match.path) return <Redirect to="/" />;
-
-
 
   return (
     <div>
       <div className="analytics-sparkle-area">
         <div className="container-fluid">
           <div className="row">
-            {criteria && criteria.most_subscribed_categories && criteria.most_subscribed_categories.map((categoryItem, index)=>{
-              return <CategoryItem category={categoryItem} key={index}/>;
-            })} 
+            {criteria &&
+              criteria.most_subscribed_categories &&
+              criteria.most_subscribed_categories.map((categoryItem, index) => {
+                return <CategoryItem category={categoryItem} key={index} />;
+              })}
           </div>
         </div>
       </div>
@@ -65,9 +61,15 @@ const Home = (props) => {
                     <div className="courses-area">
                       <div className="container-fluid">
                         <div className="row">
-                          {criteria && criteria.featured_courses && criteria.featured_courses.map((courseItem, index) =>{
-                            return <CourseItem course={courseItem} key={index}/>
-                          })}
+                          {criteria &&
+                            criteria.featured_courses &&
+                            criteria.featured_courses.map(
+                              (courseItem, index) => {
+                                return (
+                                  <CourseItem course={courseItem} key={index} />
+                                );
+                              }
+                            )}
                         </div>
                       </div>
                     </div>
@@ -79,9 +81,15 @@ const Home = (props) => {
                     <div className="courses-area">
                       <div className="container-fluid">
                         <div className="row">
-                        {criteria && criteria.most_viewed_courses && criteria.most_viewed_courses.map((courseItem, index) =>{
-                            return <CourseItem course={courseItem} key={index}/>
-                          })}
+                          {criteria &&
+                            criteria.most_viewed_courses &&
+                            criteria.most_viewed_courses.map(
+                              (courseItem, index) => {
+                                return (
+                                  <CourseItem course={courseItem} key={index} />
+                                );
+                              }
+                            )}
                         </div>
                       </div>
                     </div>
@@ -93,9 +101,13 @@ const Home = (props) => {
                     <div className="courses-area">
                       <div className="container-fluid">
                         <div className="row">
-                        {criteria && criteria.latest_courses && criteria.latest_courses.map((courseItem, index) =>{
-                            return <CourseItem course={courseItem} key={index}/>
-                          })}
+                          {criteria &&
+                            criteria.latest_courses &&
+                            criteria.latest_courses.map((courseItem, index) => {
+                              return (
+                                <CourseItem course={courseItem} key={index} />
+                              );
+                            })}
                         </div>
                       </div>
                     </div>
