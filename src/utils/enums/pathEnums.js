@@ -7,6 +7,9 @@ const pathEnums = {
   // admin
   '/courses': 'Trang chủ / Quản lý khóa học',
   '/teachers': 'Trang chủ / Quản lý giảng viên',
-  '/students': 'Trang chủ / Quản lý học viên'
+  '/students': 'Trang chủ / Quản lý học viên',
+
+  // user
+  '/watch-list': 'Trang chủ / Danh sách khóa học yêu thích'
 }
 export default pathEnums;
