@@ -1,17 +1,28 @@
 import { useRecoilValue } from "recoil";
 import { createBrowserHistory } from "history";
 import React, { useEffect, useState } from "react";
+import { Grid, Avatar, Typography } from "@material-ui/core";
 
+import useStyles from "./style";
 import roleState from "../../../state/roleState";
-import { logoutApi } from "../../../services/api/userApi";
+import { getSelfInfoApi, logoutApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
 const Header = () => {
+  const classes = useStyles();
+  const [user, setUser] = useState(null);
   const role = useRecoilValue(roleState);
   const history = createBrowserHistory({ forceRefresh: true });
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
   const [listMenu, setlistMenu] = useState([]);
+
+  useEffect(() => {
+    getSelfInfoApi().then((result) => {
+      setUser(result);
+      console.log(result);
+    });
+  }, []);
 
   const handleLogOut = () => {
     logoutApi().then((res) => {
@@ -110,14 +121,45 @@ const Header = () => {
                               aria-expanded="false"
                               className="nav-link dropdown-toggle"
                             >
-                              <img src="/img/product/pro4.jpg" alt="" />
-                              <span
-                                className="admin-name"
-                                style={{ margin: "0 5px 0 15px" }}
-                              >
-                                {role && role}
-                              </span>
-                              <i className="fa fa-angle-down edu-icon edu-down-arrow" />
+                              <Grid container>
+                                <Grid item xs={3} className={classes.item}>
+                                  <Avatar
+                                    varient="rounded"
+                                    className={classes.avatar}
+                                  >
+                                    {user ? user.email[0] + user.email[1] : ""}
+                                  </Avatar>
+                                </Grid>
+                                <Grid item xs={7} className={classes.item}>
+                                  <Grid container>
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      style={{ textAlign: "right" }}
+                                    >
+                                      <Typography
+                                        className={classes.typography}
+                                      >
+                                        {user && user.name}
+                                      </Typography>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      style={{ textAlign: "right" }}
+                                    >
+                                      <Typography
+                                        className={classes.typography}
+                                      >
+                                        {user && user.role}
+                                      </Typography>
+                                    </Grid>
+                                  </Grid>
+                                </Grid>
+                                <Grid item xs={2} className={classes.item}>
+                                  <i className="fa fa-angle-down edu-icon edu-down-arrow" />
+                                </Grid>
+                              </Grid>
                             </a>
                             <ul
                               role="menu"
