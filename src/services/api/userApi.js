@@ -293,12 +293,16 @@ const logoutApi = async() => {
   }
 };
 
-const deleteUserByIdApi = async(id) => {
-  const PATH = ENDPOINT + `user/${id}`;
+const updateUserByIdApi = async(id, status) => {
+  const PATH = ENDPOINT + `user`;
   try {
     await Axios({
-      method: 'delete',
-      url: PATH
+      method: 'put',
+      url: PATH,
+      data: {
+        id: id,
+        status: status
+      }
     });
     return {
       isSuccess: true
@@ -337,7 +341,7 @@ const deleteUserByIdApi = async(id) => {
 const addTeacherApi = async(email, name) => {
   const PATH = ENDPOINT + 'teacher';
   try {
-    const result = await Axios({
+    await Axios({
       method: 'post',
       url: PATH,
       data: {
@@ -346,7 +350,8 @@ const addTeacherApi = async(email, name) => {
       }
     });
     return {
-      isSuccess: true
+      isSuccess: true,
+      message: "Thêm giảng viên thành công"
     }
 
   } catch (error) {
@@ -360,17 +365,17 @@ const addTeacherApi = async(email, name) => {
     switch (error.response.data.code) {
       case addTeacherResponseEnum.EMAIL_IS_UNAVAILABLE:
         {
-          message = "Email không khả dụng !!!";
+          message = "Email giảng viên đã tồn tại !!!";
           break;
         }
       case addTeacherResponseEnum.EMAIL_IS_EMPTY:
         {
-          message = "Email rỗng !!!";
+          message = "Email giảng viên rỗng !!!";
           break;
         }
       case addTeacherResponseEnum.NAME_IS_EMPTY:
         {
-          message = "Name rỗng !!!";
+          message = "Tên giảng viên rỗng !!!";
           break;
         }
       case addTeacherResponseEnum.SERVER_ERROR:
@@ -407,7 +412,7 @@ export {
   loginApi,
   logoutApi,
   getSelfInfoApi,
-  deleteUserByIdApi,
+  updateUserByIdApi,
   addTeacherApi
   // updateUserApi,
 };

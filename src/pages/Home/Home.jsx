@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 
-import CourseItem from "../../parts/components/Courses/CourseItem";
+import CourseItem from "../../parts/components/CourseItem/CourseItem";
 import CategoryItem from "../../parts/components/Categories/CategoryItem";
 import { getAllByCriteria } from "../../services/api/courseApi";
 
@@ -10,6 +10,7 @@ const Home = (props) => {
 
   useEffect(() => {
     getAllByCriteria().then((result) => {
+      console.log(result);
       setCriteria(result);
     });
   }, []);

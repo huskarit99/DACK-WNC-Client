@@ -5,18 +5,6 @@ const userState = atom({
   default: "",
 });
 
-const studentListState = atom({
-  key: 'studentListState',
-  default: null
-});
-
-const teacherListState = atom({
-  key: 'teacherListState',
-  default: null
-});
-
 export {
-  userState,
-  studentListState,
-  teacherListState,
+  userState
 }

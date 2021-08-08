@@ -1,7 +1,6 @@
 import React from 'react'
-import pathEnums from '../../../utils/enums/pathEnums';
 import {  useLocation } from "react-router-dom";
-
+import pathEnums from '../../../../../utils/enums/pathEnums';
 const ShowLink = () => {
   let location = useLocation();
   return (

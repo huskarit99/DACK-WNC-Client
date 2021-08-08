@@ -1,25 +1,14 @@
-import React from 'react'
-import { useSetRecoilState } from 'recoil';
-import { deleteUserByIdApi, getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
-import { teacherListState } from '../../../../../../state/userState';
+import React, { useState, Fragment } from 'react'
+import { updateUserByIdApi } from '../../../../../../services/api/userApi';
 import { createBrowserHistory } from "history";
 import jwtEnum from '../../../../../../utils/enums/jwtEnum';
 
-const DeleteTeacherModal = ({ page, teacher, index }) => {
-
-  const setTeacherList = useSetRecoilState(teacherListState);
+const UpdateTeacherModal = ({ teacher, index, forceUpdate }) => {
   const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
-    deleteUserByIdApi(teacher._id).then(result => {
-      console.log(result.isSuccess);
+    updateUserByIdApi(teacher._id, !teacher.status).then(result => {
       if (result.isSuccess) {
-        getUsersByRoleNameApi('teacher', page).then(result => {
-          if (result.isSuccess) {
-            setTeacherList(result.data);
-          } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
-            history.push('/login');
-          }
-        })
+        forceUpdate();
       } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
         history.push('/login');
       }
@@ -35,16 +24,17 @@ const DeleteTeacherModal = ({ page, teacher, index }) => {
           <div className="modal-body">
             <span className="educate-icon educate-warning modal-check-pro information-icon-pro"></span>
             <h2>Cảnh báo!</h2>
-            <p>Bạn có chắc muốn xóa giảng viên {teacher.name} này không?</p>
+            {teacher.status ? <p>Bạn có chắc muốn khóa giảng viên {teacher.name} này không?</p>
+              : <p>Bạn có chắc muốn mở khóa giảng viên {teacher.name} này không?</p>}
           </div>
           <div className="modal-footer warning-md">
             <button data-dismiss="modal" className="btn" style={{ backgroundColor: "#65b12d", color: "white", fontSize: "16px", marginRight: "10px" }}>Trở về</button>
             <button
               className="btn"
-              style={{ backgroundColor: "#65b12d", color: "white", fontSize: "16px" }}
               data-dismiss="modal"
+              style={{ backgroundColor: "#65b12d", color: "white", fontSize: "16px" }}
               onClick={handleClick}
-            >Xóa</button>
+            >{teacher.status ? 'Khóa' : 'Mở khóa'}</button>
           </div>
         </div>
       </div>
@@ -52,4 +42,4 @@ const DeleteTeacherModal = ({ page, teacher, index }) => {
   )
 }
 
-export default DeleteTeacherModal
+export default UpdateTeacherModal

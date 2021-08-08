@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import StarRatings from 'react-star-ratings'
-import CourseItem from '../../parts/components/Courses/CourseItem'
+import CourseItem from '../../parts/components/CourseItem/CourseItem'
 import Comment from '../../parts/components/Comments/Comment'
 import CommentItem from '../../parts/components/Comments/CommentItem'
 import Lesson from '../../parts/components/Lesson/Lesson'
@@ -17,6 +17,8 @@ import subscriberState from '../../state/subscriberState'
 import { addWatchListApi, deleteWatchListApi, getWatchListApi } from '../../services/api/watchListApi'
 import { createBrowserHistory } from "history";
 import jwtEnum from '../../utils/enums/jwtEnum';
+import apiStateEnum from '../../utils/enums/apiStateEnum'
+
 const CourseDetail = () => {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
@@ -27,25 +29,34 @@ const CourseDetail = () => {
   const [updateDay, setUpdateDay] = useState(new Date());
   const [watchList, setWatchList] = useState(false);
   const history = createBrowserHistory({ forceRefresh: true });
+  const [messageAlert, setMessageAlert] = useState('');
+  const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
 
   useEffect(() => {
     getCourseByIdApi(id).then(result => {
-      setCourse(result);
-      if (result) {
-        updateCourseViewApi(id);
-        getWatchListApi(id).then(result => {
-          setWatchList(result)
-        })
-        setUpdateDay(new Date(result.updatedAt));
-        getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
-          setMostSubscribedCourse(result);
-        });
-        getSubscribersByCourseId(id).then(result => {
-          setSubscribers(result);
-        });
-        getVideosByCourseId(id).then(result => {
-          setVideos(result);
-        });
+      if (result.isSuccess) {
+        setApiState(apiStateEnum.SUCCESS)
+        setCourse(result.data);
+        setMessageAlert('');
+        if (result.data) {
+          updateCourseViewApi(id);
+          getWatchListApi(id).then(result => {
+            setWatchList(result)
+          })
+          setUpdateDay(new Date(result.data.updatedAt));
+          getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
+            setMostSubscribedCourse(result);
+          });
+          getSubscribersByCourseId(id).then(result => {
+            setSubscribers(result);
+          });
+          getVideosByCourseId(id).then(result => {
+            setVideos(result);
+          });
+        }
+      } else {
+        setApiState(apiStateEnum.FAIL);
+        setMessageAlert(result.message);
       }
     });
   }, []);
@@ -70,8 +81,8 @@ const CourseDetail = () => {
     }
   }
   return (
-    <div>
-      {course ?
+    <Fragment>
+      {apiState === apiStateEnum.SUCCESS ?
         <Fragment>
           <div className="blog-details-area mg-b-15">
             <div className="container-fluid">
@@ -85,7 +96,7 @@ const CourseDetail = () => {
                             {course && <img src={course.image} alt="" style={{ width: '1920px', height: '700px' }} />}
 
                             <div className="blog-date">
-                              <p><span className="blog-day">{updateDay.getDate()}</span> {updateDay.toLocaleString('en-us', { month: 'short' })}</p>
+                              {updateDay && <p><span className="blog-day">{updateDay.getDate()}</span> {updateDay.toLocaleString('en-us', { month: 'short' })}</p>}
                             </div>
                           </div>
                           <div className="blog-details blog-sig-details">
@@ -186,14 +197,14 @@ const CourseDetail = () => {
             </div>
           </div>
         </Fragment>
-        :
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div className="alert alert-danger alert-mg-b alert-st-four" role="alert">
-            <i className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
-            <p className="message-mg-rt message-alert-none"><strong>Oh!</strong> Khóa học đã bị xóa.</p>
-          </div>
-        </div>}
-    </div>
+        : apiState === apiStateEnum.FAIL ?
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div className="alert alert-danger alert-mg-b alert-st-four" role="alert">
+              <i className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
+              <p className="message-mg-rt message-alert-none"><strong>Oh!</strong> {messageAlert}.</p>
+            </div>
+          </div> : <Fragment />}
+    </Fragment>
   )
 }
 

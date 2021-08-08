@@ -110,9 +110,21 @@ const getCoursesBySearchApi = async(search) => {
       method: 'get',
       url: PATH
     });
-    return result.data;
-  } catch (e) {
-    return null;
+    return {
+      isSuccess: true,
+      data: result.data
+    }
+  } catch (error) {
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    return {
+      isSuccess: false,
+      message: "Server Error !!!",
+    };
   }
 }
 
@@ -123,9 +135,37 @@ const getCourseByIdApi = async(id) => {
       method: 'get',
       url: PATH
     });
-    return result.data.course;
-  } catch (e) {
-    return null;
+    return {
+      isSuccess: true,
+      data: result.data.course
+    }
+  } catch (error) {
+    let message = '';
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case courseEnum.ID_IS_INVALID:
+        {
+          message = 'ID khóa học không hợp lệ';
+        }
+      case courseEnum.COURSE_HAS_BEEN_DELETED:
+        {
+          message = 'Khóa học đã bị xóa';
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 }
 
@@ -142,12 +182,16 @@ const getMostSubscribedCoursesApi = async(query) => {
   }
 }
 
-const deleteCourseApi = async(id) => {
-  const PATH = ENDPOINT + `course/${id}`;
+const updateCourseByAdminApi = async(id, status) => {
+  const PATH = ENDPOINT + `course-by-admin`;
   try {
     await Axios({
-      method: 'delete',
-      url: PATH
+      method: 'put',
+      url: PATH,
+      data: {
+        id: id,
+        status: status
+      }
     });
     return {
       isSuccess: true
@@ -206,6 +250,6 @@ export {
   getCoursesBySearchApi,
   getCourseByIdApi,
   getMostSubscribedCoursesApi,
-  deleteCourseApi,
+  updateCourseByAdminApi,
   updateCourseViewApi
 }

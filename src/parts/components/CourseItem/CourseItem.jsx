@@ -2,28 +2,18 @@ import React from 'react'
 import StarRatings from 'react-star-ratings'
 import Heart from 'react-heart'
 import { useLocation } from 'react-router-dom'
-import { getWatchListByStudentIdApi, deleteWatchListApi } from '../../../services/api/watchListApi'
+import { deleteWatchListApi } from '../../../services/api/watchListApi'
+import jwtEnum from '../../../utils/enums/jwtEnum'
 import { createBrowserHistory } from "history";
-import jwtEnum from '../../../utils/enums/jwtEnum';
-const CourseItem = ({ course, setMessageAlert, setWatchList }) => {
+const CourseItem = ({ course, forceUpdate }) => {
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const page = Number(params.get("page")) || 1;
   const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
     deleteWatchListApi(course._id).then(result => {
       if (result.isSuccess) {
-        getWatchListByStudentIdApi(page).then(result => {
-          if (result.isSuccess) {
-            setWatchList(result.data);
-            console.log(result.data);
-            setMessageAlert('');
-          } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
-            history.push('/login');
-          } else {
-            setMessageAlert(result.message);
-          }
-        });
+        forceUpdate();
+      } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+        history.push('/login');
       }
     });
   }
