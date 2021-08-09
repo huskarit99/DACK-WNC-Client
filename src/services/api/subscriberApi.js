@@ -1,9 +1,10 @@
 import Axios from 'axios';
+import jwtEnum from '../../utils/enums/jwtEnum';
 
 const ENDPOINT = 'http://localhost:5000/api/subscriber-controller/';
 Axios.defaults.withCredentials = true;
 
-const getSubscribersByCourseId = async(id) => {
+const getSubscribersByCourseIdApi = async(id) => {
   const PATH = ENDPOINT + `subscribers/${id}`;
   try {
     const result = await Axios({
@@ -16,7 +17,7 @@ const getSubscribersByCourseId = async(id) => {
   }
 }
 
-const subscribe = async(course_id) => {
+const subscribeApi = async(course_id) => {
   const PATH = ENDPOINT + 'subscribe';
   try {
     const result = await Axios({
@@ -31,15 +32,38 @@ const subscribe = async(course_id) => {
       subscriber: result.data.subscriber,
       is_subscribed: result.data.is_subscribed
     }
-  } catch (e) {
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
     return {
       isSuccess: false,
-    }
+      message: message,
+    };
   }
 }
 
-const rating = async(request) => {
-  console.log(request);
+const ratingApi = async(request) => {
   const PATH = ENDPOINT + 'rating';
   try {
     const result = await Axios({
@@ -56,15 +80,39 @@ const rating = async(request) => {
       subscriber: result.data.subscriber,
       is_rated: result.data.is_rated
     }
-  } catch (e) {
-    return {
-      isSuccess: false
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
     }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 }
 
 export {
-  getSubscribersByCourseId,
-  subscribe,
-  rating
+  getSubscribersByCourseIdApi,
+  subscribeApi,
+  ratingApi
 }

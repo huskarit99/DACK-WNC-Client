@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 
 import CourseItem from "../../parts/components/CourseItem/CourseItem";
-import CategoryItem from "../../parts/components/Categories/CategoryItem";
+import CategoryItem from "./containers/CategoryItem/CategoryItem";
 import { getAllByCriteria } from "../../services/api/courseApi";
 
 const Home = (props) => {

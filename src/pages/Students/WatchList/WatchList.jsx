@@ -49,7 +49,7 @@ const WatchList = () => {
           <div className="container-fluid">
             <div className="row">
               {watchList && watchList.watch_lists && watchList.watch_lists.map((course, index) => {
-                return <CourseItem course={course} key={index} forceUpdate={forceUpdate}/>
+                return <CourseItem course={course} key={course._id} forceUpdate={forceUpdate}/>
               })}
             </div>
             <div className="mg-b-30">
