@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { createBrowserHistory } from "history";
 import React, { useEffect, useState } from "react";
-import { Grid, Avatar, Typography } from "@material-ui/core";
+import { Avatar, Typography } from "@material-ui/core";
 
 import useStyles from "./style";
 import roleState from "../../../state/roleState";
@@ -120,46 +120,28 @@ const Header = () => {
                               role="button"
                               aria-expanded="false"
                               className="nav-link dropdown-toggle"
+                              style={{ minWidth: "280px" }}
                             >
-                              <Grid container>
-                                <Grid item xs={3} className={classes.item}>
+                              <div className={classes.div1}>
+                                <div className={classes.div2}>
                                   <Avatar
                                     varient="rounded"
                                     className={classes.avatar}
                                   >
                                     {user ? user.email[0] + user.email[1] : ""}
                                   </Avatar>
-                                </Grid>
-                                <Grid item xs={7} className={classes.item}>
-                                  <Grid container>
-                                    <Grid
-                                      item
-                                      xs={12}
-                                      style={{ textAlign: "right" }}
-                                    >
-                                      <Typography
-                                        className={classes.typography}
-                                      >
-                                        {user && user.name}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={12}
-                                      style={{ textAlign: "right" }}
-                                    >
-                                      <Typography
-                                        className={classes.typography}
-                                      >
-                                        {user && user.role}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                </Grid>
-                                <Grid item xs={2} className={classes.item}>
+                                </div>
+                                <div className={classes.div3}>
+                                  <Typography className={classes.typography}>
+                                    {user && user.name}
+                                    {" - "}
+                                    {user && user.role}
+                                  </Typography>
+                                </div>
+                                <div className={classes.div4}>
                                   <i className="fa fa-angle-down edu-icon edu-down-arrow" />
-                                </Grid>
-                              </Grid>
+                                </div>
+                              </div>
                             </a>
                             <ul
                               role="menu"

@@ -66,6 +66,7 @@ const Lesson = ({ video, index }) => {
               playing={show}
               style={{ position: "absolute", top: "0", left: "0" }}
               url="/videos/1.mp4"
+              // url="https://www.youtube.com/watch?v=pSFXJ7teisw"
               controls
               width="100%"
               height="100%"
