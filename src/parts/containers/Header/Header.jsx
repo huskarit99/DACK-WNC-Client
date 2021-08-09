@@ -43,7 +43,7 @@ const Header = () => {
 
   const listMenu2 = [
     <li>
-      <a href="/user-info">
+      <a href="/watch-list">
         <span className="edu-icon edu-user-rounded author-log-ic" />
         Khóa học yêu thích
       </a>

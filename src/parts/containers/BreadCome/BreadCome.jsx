@@ -1,10 +1,10 @@
 import React from 'react'
-import SearchCourse from '../../components/Courses/SearchCourse'
-import ShowLink from '../../components/ShowLink/ShowLink'
-import Sort from '../../components/Sort/Sort'
+import SearchCourse from './components/SearchCourse/SearchCourse'
+import Sort from './components/Sort/Sort'
 import { useRecoilValue } from "recoil";
 import roleState from "../../../state/roleState";
 import {  useLocation } from "react-router-dom";
+import ShowLink from './components/ShowLink/ShowLink';
 
 const BreadCome = () => {
   const location = useLocation();

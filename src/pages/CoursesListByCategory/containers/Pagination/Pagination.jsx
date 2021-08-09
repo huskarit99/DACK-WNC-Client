@@ -1,31 +1,8 @@
 import React from 'react'
-import { useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { getCoursesByCategoryIdApi } from '../../../../services/api/courseApi';
-import { coursesByCategoryIdState } from '../../../../state/courseState';
-import messageAlertState from '../../../../state/messageAlertState';
-const Pagination = ({ page_number }) => {
-  const location = useLocation();
-  const pathName = location.pathname;
-  const params = new URLSearchParams(location.search);
-  const categoryid = params.get("categoryid");
-  const page = Number(params.get("page")) || 1;
-  const setCourses = useSetRecoilState(coursesByCategoryIdState);
-  const setmessageAlert = useSetRecoilState(messageAlertState);
 
-  const handleClick = (page) => {
-    if (categoryid) {
-      getCoursesByCategoryIdApi({ categoryid, page }).then(result => {
-        if (result.isSuccess) {
-          setCourses(result.data);
-          setmessageAlert('');
-        } else {
-          setmessageAlert(result.message);
-        }
-      })
-    }
-  }
+const Pagination = ({ page_number, page, categoryid, pathName }) => {
+
   return (
     <div className="custom-pagination">
       <ul className="pagination">
@@ -34,8 +11,7 @@ const Pagination = ({ page_number }) => {
           :
           <li className="page-item">
             <Link className="page-link"
-              to={pathName + '?categoryid=' + categoryid + '&page=' + `${page - 1}`}
-              onClick={() => handleClick(page - 1)}>Previous
+              to={pathName + '?categoryid=' + categoryid + '&page=' + `${page - 1}`}>Previous
             </Link>
           </li>}
 
@@ -44,22 +20,19 @@ const Pagination = ({ page_number }) => {
             {page === item ?
               <Link className="page-link"
                 to={pathName + '?categoryid=' + categoryid + '&page=' + item}
-                style={{ backgroundColor: '#006DF0', color: '#fff' }}
-                onClick={() => handleClick(item)}>{item}
+                style={{ backgroundColor: '#006DF0', color: '#fff' }}>{item}
               </Link> :
               <Link className="page-link"
-                to={pathName + '?categoryid=' + categoryid + '&page=' + item}
-                onClick={() => handleClick(item)}>{item}
+                to={pathName + '?categoryid=' + categoryid + '&page=' + item}>{item}
               </Link>}
           </li>
         ))}
-        {(page_number && page === page_number.length) || (page_number && page > page_number.length) || !categoryid
+        {(page_number && page >= page_number.length) || !page || !page_number || !categoryid
           ? ''
           :
           <li className="page-item">
             <Link className="page-link"
-              to={pathName + '?categoryid=' + categoryid + '&page=' + `${page + 1}`}
-              onClick={() => handleClick(page + 1)}>Next
+              to={pathName + '?categoryid=' + categoryid + '&page=' + `${page + 1}`}>Next
             </Link>
           </li>}
       </ul>

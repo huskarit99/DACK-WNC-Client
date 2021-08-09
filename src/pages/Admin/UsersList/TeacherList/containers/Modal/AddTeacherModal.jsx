@@ -1,47 +1,26 @@
-import React, { useRef } from 'react'
-import { useLocation } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { addTeacherApi, getUsersByRoleNameApi } from '../../../../../../services/api/userApi';
-import { teacherListState } from '../../../../../../state/userState';
+import React, { useRef, useState, Fragment } from 'react'
+import { addTeacherApi } from '../../../../../../services/api/userApi';
 import { createBrowserHistory } from 'history';
 import jwtEnum from '../../../../../../utils/enums/jwtEnum';
-import messageAlertState from '../../../../../../state/messageAlertState';
 
-const AddTeacherModal = ({ page }) => {
+const AddTeacherModal = ({ forceUpdate }) => {
   const emailRef = useRef('');
   const nameRef = useRef('');
-  const location = useLocation();
-  const setTeacherList = useSetRecoilState(teacherListState);
-  const setMessageAlert = useSetRecoilState(messageAlertState);
   const history = createBrowserHistory({ forceRefresh: true });
+  const [messageAlert, setMessageAlert] = useState(<Fragment />);
   const handleClick = () => {
     addTeacherApi(emailRef.current.value, nameRef.current.value).then(result => {
       if (result.isSuccess) {
-        if (location.pathname === '/teachers') {
-          getUsersByRoleNameApi('teacher', page).then(result => {
-            if (result.isSuccess) {
-              setTeacherList(result.data);
-              emailRef.current.value = '';
-              nameRef.current.value = '';
-              setMessageAlert('');
-            } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
-              history.push('/login');
-            }
-          });
-        }
+        emailRef.current.value = '';
+        nameRef.current.value = '';
+        setMessageAlert(<p style={{ color: 'green' }}>{result.message}</p>);
+        forceUpdate();
       } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
         history.push('/login');
       } else {
-        setMessageAlert(result.message);
-        emailRef.current.value = '';
-        nameRef.current.value = '';
+        setMessageAlert(<p style={{ color: 'red' }}>{result.message}</p>);
       }
     })
-  }
-  const onClose = () => {
-    emailRef.current.value = '';
-    nameRef.current.value = '';
-    setMessageAlert('');
   }
   return (
     <div id="addTeacher" className="modal modal-edu-general default-popup-PrimaryModal fade" role="dialog">
@@ -50,7 +29,7 @@ const AddTeacherModal = ({ page }) => {
           <div className="modal-close-area modal-close-df">
             <a className="close" data-dismiss="modal" href="#"><i className="fa fa-close"></i></a>
           </div>
-          <div className="modal-body">
+          <div className="modal-body" style={{ padding: "50px 70px 30px 70px" }}>
             <h2>Thêm giảng viên</h2>
             <div className="form-group">
               <input name="name" type="text" className="form-control"
@@ -60,15 +39,17 @@ const AddTeacherModal = ({ page }) => {
               <input name="name" type="text" className="form-control"
                 placeholder="Tên giảng viên" required ref={nameRef} />
             </div>
+            <div className="form-group" style={{ textAlign: "left" }}>
+              {messageAlert}
+            </div>
           </div>
           <div className="modal-footer">
             <button className="btn"
               data-dismiss="modal"
-              style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px", marginRight: "10px" }}
-              onClick={onClose}>Đóng
+              style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px", marginRight: "10px" }}>Đóng
             </button>
             <button className="btn"
-              data-dismiss="modal"
+              // data-dismiss="modal"
               style={{ backgroundColor: "#006DF0", color: "white", fontSize: "16px", marginRight: "10px" }}
               onClick={handleClick}>Thêm
             </button>

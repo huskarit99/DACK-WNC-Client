@@ -1,35 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useLocation } from "react-router";
 import { getCoursesByCategoryIdApi } from "../../services/api/courseApi";
-import CourseItem from "../../parts/components/Courses/CourseItem";
+import CourseItem from "../../parts/components/CourseItem/CourseItem";
 import Pagination from "./containers/Pagination/Pagination";
-import { useRecoilState } from "recoil";
-import { coursesByCategoryIdState } from "../../state/courseState";
-import messageAlertState from "../../state/messageAlertState";
+import apiStateEnum from "../../utils/enums/apiStateEnum";
+
 const CoursesListByCategory = () => {
   const location = useLocation();
+  const pathName = location.pathname;
   const params = new URLSearchParams(location.search);
   const categoryid = params.get("categoryid");
   const page = Number(params.get("page")) || 1;
-  const [courses, setCourses] = useRecoilState(coursesByCategoryIdState);
-  const [messageAlert, setmessageAlert] = useRecoilState(messageAlertState);
+  const [courses, setCourses] = useState(null);
+  const [messageAlert, setMessageAlert] = useState('');
+  const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
 
   useEffect(() => {
     if (categoryid) {
       getCoursesByCategoryIdApi({ categoryid, page }).then((result) => {
         if (result.isSuccess) {
           setCourses(result.data);
-          setmessageAlert("");
+          setMessageAlert("");
+          setApiState(apiStateEnum.SUCCESS);
         } else {
-          setmessageAlert(result.message);
+          setMessageAlert(result.message);
+          setApiState(apiStateEnum.FAIL);
         }
       });
     }
-  }, []);
-
+  }, [useLocation()]);
   return (
-    <div>
-      {messageAlert === "" ? (
+    <Fragment>
+      {apiState === apiStateEnum.SUCCESS ?
         <div className="courses-area">
           <div className="container-fluid">
             <div className="row">
@@ -40,27 +42,24 @@ const CoursesListByCategory = () => {
                 })}
             </div>
             <div className="mg-b-30">
-              <Pagination page_number={courses && courses.page_number} />
+              <Pagination
+                page_number={courses && courses.page_number}
+                pathName={pathName}
+                page={page}
+                categoryid={categoryid} />
             </div>
           </div>
         </div>
-      ) : (
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div
-            className="alert alert-danger alert-mg-b alert-st-four"
-            role="alert"
-          >
-            <i
-              className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none"
-              aria-hidden="true"
-            ></i>
-            <p className="message-mg-rt message-alert-none">
-              <strong>Oh!</strong> {messageAlert}
-            </p>
-          </div>
-        </div>
-      )}
-    </div>
+        : apiState === apiStateEnum.FAIL ?
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div className="alert alert-danger alert-mg-b alert-st-four" role="alert">
+              <i className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none" aria-hidden="true" />
+              <p className="message-mg-rt message-alert-none"><strong>Oh!</strong> {messageAlert}</p>
+            </div>
+          </div> :
+          <Fragment />
+      }
+    </Fragment>
   );
 };
 

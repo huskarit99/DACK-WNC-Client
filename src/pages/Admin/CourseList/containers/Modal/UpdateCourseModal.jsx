@@ -1,24 +1,15 @@
 import React from 'react'
-import { useSetRecoilState } from 'recoil';
-import { deleteCourseApi, getCoursesApi } from '../../../../../services/api/courseApi';
-import { coursesState } from '../../../../../state/courseState';
+import { updateCourseByAdminApi} from '../../../../../services/api/courseApi';
 import jwtEnum from '../../../../../utils/enums/jwtEnum';
 import { createBrowserHistory } from "history";
 
-const DeleteModal = ({ page, course, index }) => {
+const UpdateCourseModal = ({ course, index, forceUpdate }) => {
 
-  const setCourses = useSetRecoilState(coursesState);
   const history = createBrowserHistory({ forceRefresh: true });
   const handleClick = () => {
-    deleteCourseApi(course._id).then(result => {
+    updateCourseByAdminApi(course._id, !course.status).then(result => {
       if (result.isSuccess) {
-        getCoursesApi(page).then(result => {
-          if (result.isSuccess) {
-            setCourses(result.data);
-          } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
-            history.push('/login');
-          }
-        });
+        forceUpdate();
       } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
         history.push('/login');
       }
@@ -34,7 +25,8 @@ const DeleteModal = ({ page, course, index }) => {
           <div className="modal-body">
             <span className="educate-icon educate-warning modal-check-pro information-icon-pro"></span>
             <h2>Cảnh báo!</h2>
-            <p>Bạn có chắc muốn xóa khóa học {course.name} này không?</p>
+            {course.status ? <p>Bạn có chắc muốn khóa khóa học {course.name} này không?</p>
+            :<p>Bạn có chắc muốn mở khóa khóa học {course.name} này không?</p>}
           </div>
           <div className="modal-footer warning-md">
             <button data-dismiss="modal" className="btn" style={{ backgroundColor: "#65b12d", color: "white", fontSize: "16px", marginRight: "10px" }}>Trở về</button>
@@ -43,7 +35,7 @@ const DeleteModal = ({ page, course, index }) => {
               style={{ backgroundColor: "#65b12d", color: "white", fontSize: "16px" }}
               data-dismiss="modal"
               onClick={handleClick}
-            >Xóa</button>
+            >{course.status ? 'Khóa' : 'Mở khóa'}</button>
           </div>
         </div>
       </div>
@@ -51,4 +43,4 @@ const DeleteModal = ({ page, course, index }) => {
   )
 }
 
-export default DeleteModal
+export default UpdateCourseModal

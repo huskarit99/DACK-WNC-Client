@@ -1,13 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import StarRatings from 'react-star-ratings'
-import CourseItem from '../../parts/components/Courses/CourseItem'
+import CourseItem from '../../parts/components/CourseItem/CourseItem'
 import Comment from '../../parts/components/Comments/Comment'
 import CommentItem from '../../parts/components/Comments/CommentItem'
 import Lesson from '../../parts/components/Lesson/Lesson'
 import PurchaseCourse from '../../parts/components/Modals/PurchaseCourse'
 import Heart from 'react-heart'
-import { useLocation, useHistory } from 'react-router'
 import { getCourseByIdApi, getMostSubscribedCoursesApi, updateCourseViewApi } from '../../services/api/courseApi'
 import { useParams } from 'react-router-dom'
 import { getSubscribersByCourseId } from '../../services/api/subscriberApi'
@@ -15,11 +14,13 @@ import { useRecoilValue } from "recoil";
 import roleState from '../../state/roleState';
 import { getVideosByCourseId } from '../../services/api/videoApi'
 import subscriberState from '../../state/subscriberState'
-import { addWatchList, deleteWatchList, getWatchList } from '../../services/api/watchListApi'
+import { addWatchListApi, deleteWatchListApi, getWatchListApi } from '../../services/api/watchListApi'
+import { createBrowserHistory } from "history";
+import jwtEnum from '../../utils/enums/jwtEnum';
+import apiStateEnum from '../../utils/enums/apiStateEnum'
 
 const CourseDetail = () => {
   const { id } = useParams();
-  const history = useHistory();
   const [course, setCourse] = useState(null);
   const [subscribers, setSubscribers] = useRecoilState(subscriberState);
   const [videos, setVideos] = useState(null);
@@ -27,46 +28,61 @@ const CourseDetail = () => {
   const role = useRecoilValue(roleState);
   const [updateDay, setUpdateDay] = useState(new Date());
   const [watchList, setWatchList] = useState(false);
+  const history = createBrowserHistory({ forceRefresh: true });
+  const [messageAlert, setMessageAlert] = useState('');
+  const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
+
   useEffect(() => {
     getCourseByIdApi(id).then(result => {
-      setCourse(result);
-      if (result) {
-        updateCourseViewApi(id);
-        getWatchList(id).then(result => {
-          setWatchList(result)
-        })
-        setUpdateDay(new Date(result.updatedAt));
-        getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
-          setMostSubscribedCourse(result);
-        });
-        getSubscribersByCourseId(id).then(result => {
-          setSubscribers(result);
-        });
-        getVideosByCourseId(id).then(result => {
-          setVideos(result);
-        });
+      if (result.isSuccess) {
+        setApiState(apiStateEnum.SUCCESS)
+        setCourse(result.data);
+        setMessageAlert('');
+        if (result.data) {
+          updateCourseViewApi(id);
+          getWatchListApi(id).then(result => {
+            setWatchList(result)
+          })
+          setUpdateDay(new Date(result.data.updatedAt));
+          getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
+            setMostSubscribedCourse(result);
+          });
+          getSubscribersByCourseId(id).then(result => {
+            setSubscribers(result);
+          });
+          getVideosByCourseId(id).then(result => {
+            setVideos(result);
+          });
+        }
+      } else {
+        setApiState(apiStateEnum.FAIL);
+        setMessageAlert(result.message);
       }
     });
   }, []);
 
   const addHeart = () => {
     if (!watchList) {
-      addWatchList(id).then(result => {
+      addWatchListApi(id).then(result => {
         if (result.isSuccess) {
           setWatchList(!watchList)
+        } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+          history.push('/login');
         }
       });
     } else {
-      deleteWatchList(id).then(result => {
+      deleteWatchListApi(id).then(result => {
         if (result.isSuccess) {
           setWatchList(!watchList)
+        } else if (result.message === jwtEnum.TOKEN_IS_EXPIRED || result.message === jwtEnum.NO_TOKEN) {
+          history.push('/login');
         }
       })
     }
   }
   return (
-    <div>
-      {course ?
+    <Fragment>
+      {apiState === apiStateEnum.SUCCESS ?
         <Fragment>
           <div className="blog-details-area mg-b-15">
             <div className="container-fluid">
@@ -80,7 +96,7 @@ const CourseDetail = () => {
                             {course && <img src={course.image} alt="" style={{ width: '1920px', height: '700px' }} />}
 
                             <div className="blog-date">
-                              <p><span className="blog-day">{updateDay.getDate()}</span> {updateDay.toLocaleString('en-us', { month: 'short' })}</p>
+                              {updateDay && <p><span className="blog-day">{updateDay.getDate()}</span> {updateDay.toLocaleString('en-us', { month: 'short' })}</p>}
                             </div>
                           </div>
                           <div className="blog-details blog-sig-details">
@@ -91,7 +107,7 @@ const CourseDetail = () => {
                                 <span><a href="#"><i className="fa fa-comments-o"></i> <b>Giảng Viên:</b> {course.teacher_name}</a></span>
                               </div>
                               <div style={{ width: "2rem", float: "right" }}>
-                                {subscribers && subscribers.is_subscribed && <Heart isActive={watchList} onClick={addHeart} />}
+                                <Heart isActive={watchList} onClick={addHeart} />
                               </div>
                               <h1><a className="blog-ht" href="#">Mô tả ngắn gọn</a></h1>
                               <p>{course.description}</p>
@@ -113,27 +129,27 @@ const CourseDetail = () => {
                           </div>
 
                           {/* Danh sách bài học */}
-                          {videos && videos.length > 0 && 
-                          <div className="sparkline8-list">
-                            <div className="sparkline8-graph">
-                              <div className="static-table-list">
-                                <table className="table">
-                                  <thead>
-                                    <tr>
-                                      <th>#</th>
-                                      <th>Tên Bài</th>
-                                      <th>Trạng thái</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {videos && videos.map((video, index) => {
-                                      return <Lesson video={video} index={index} key={index} />;
-                                    })}
-                                  </tbody>
-                                </table>
+                          {videos && videos.length > 0 &&
+                            <div className="sparkline8-list">
+                              <div className="sparkline8-graph">
+                                <div className="static-table-list">
+                                  <table className="table">
+                                    <thead>
+                                      <tr>
+                                        <th>#</th>
+                                        <th>Tên Bài</th>
+                                        <th>Trạng thái</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {videos && videos.map((video, index) => {
+                                        return <Lesson video={video} index={index} key={index} />;
+                                      })}
+                                    </tbody>
+                                  </table>
+                                </div>
                               </div>
-                            </div>
-                          </div>}
+                            </div>}
                         </div>
                       </div>
                     </div>
@@ -146,14 +162,14 @@ const CourseDetail = () => {
                     </div>
 
                     {/* Danh sách bình luận */}
-                    {subscribers && subscribers.subscribers_rated && subscribers.subscribers_rated.length >0 &&
-                    <div className="row">
-                      <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div className="comment-head">
-                          <h3>Nhận xét</h3>
+                    {subscribers && subscribers.subscribers_rated && subscribers.subscribers_rated.length > 0 &&
+                      <div className="row">
+                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div className="comment-head">
+                            <h3>Nhận xét</h3>
+                          </div>
                         </div>
-                      </div>
-                    </div>}
+                      </div>}
                     {subscribers && subscribers.subscribers_rated && subscribers.subscribers_rated.map((item, index) => {
                       return <CommentItem subscriber={item} key={index} />;
                     })}
@@ -181,14 +197,14 @@ const CourseDetail = () => {
             </div>
           </div>
         </Fragment>
-        :
-        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div className="alert alert-danger alert-mg-b alert-st-four" role="alert">
-            <i className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
-            <p className="message-mg-rt message-alert-none"><strong>Oh!</strong> Khóa học đã bị xóa.</p>
-          </div>
-        </div>}
-    </div>
+        : apiState === apiStateEnum.FAIL ?
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div className="alert alert-danger alert-mg-b alert-st-four" role="alert">
+              <i className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none" aria-hidden="true"></i>
+              <p className="message-mg-rt message-alert-none"><strong>Oh!</strong> {messageAlert}.</p>
+            </div>
+          </div> : <Fragment />}
+    </Fragment>
   )
 }
 
