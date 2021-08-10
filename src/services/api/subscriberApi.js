@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import jwtEnum from '../../utils/enums/jwtEnum';
+import subscriberEnum from '../../utils/enums/subscriberEnum';
 
 const ENDPOINT = 'http://localhost:5000/api/subscriber-controller/';
 Axios.defaults.withCredentials = true;
@@ -14,6 +15,62 @@ const getSubscribersByCourseIdApi = async(id) => {
     return result.data;
   } catch (e) {
     return null;
+  }
+}
+
+const getSubscribersByStudentIdApi = async(page) => {
+  const PATH = ENDPOINT + `subscribers?page=${page}`;
+  try {
+    const result = await Axios({
+      method: 'get',
+      url: PATH
+    });
+    return {
+      isSuccess: true,
+      data: result.data
+    }
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      case subscriberEnum.SUBSCRIBER_LIST_IS_EMPTY:
+        {
+          message = 'Danh sách khóa học đã đăng ký rỗng !!!';
+          break;
+        }
+      case subscriberEnum.STUDENT_ID_IS_EMPTY:
+        {
+          message = 'ID sinh viên rỗng !!!';
+          break;
+        }
+      case subscriberEnum.STUDENT_ID_IS_INVALID:
+        {
+          message = 'ID sinh viên không hợp lệ !!!';
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
   }
 }
 
@@ -113,6 +170,7 @@ const ratingApi = async(request) => {
 
 export {
   getSubscribersByCourseIdApi,
+  getSubscribersByStudentIdApi,
   subscribeApi,
   ratingApi
 }

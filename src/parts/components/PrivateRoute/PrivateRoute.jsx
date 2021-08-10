@@ -8,7 +8,7 @@ import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
 const routeAdmin = ["/categories", "/courses", "/students", "/teachers"];
 const routeTeacher = ["/abasdsac", "/asdasddsd"];
-const routeStudent = ["/watch-list", "/asdasd"];
+const routeStudent = ["/watch-list", "/subscribed-courses"];
 
 const roleBelongToRoute = {
   teacher: routeTeacher,

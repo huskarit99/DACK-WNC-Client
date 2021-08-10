@@ -42,7 +42,7 @@ const CourseDetail = () => {
             setWatchList(result)
           })
           setUpdateDay(new Date(result.data.updatedAt));
-          getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
+          getMostSubscribedCoursesApi({ id: id, category_id: result.data.category_id }).then(result => {
             setMostSubscribedCourse(result);
           });
           getSubscribersByCourseIdApi(id).then(result => {
