@@ -17,6 +17,7 @@ import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
 import CategoryList from "./pages/Admin/CategoryList/CategoryList";
 import WatchList from "./pages/Students/WatchList/WatchList";
 import Profile from "./parts/components/Profile/Profile";
+import AddEditCourse from "./pages/Teachers/AddEditCourse/AddEditCourse";
 
 const App = () => {
   useEffect(() => {
@@ -53,10 +54,7 @@ const App = () => {
     <BrowserRouter>
       <MenuBar>
         <Switch>
-          {/* <PrivateRoute exact path="/room" component={Room} />
-          <PrivateRoute exact path="/lobby" component={Lobby} />
-          
-          <PrivateRoute exact path="/profile" component={Profile} /> */}
+          {/* guest */}
           <PrivateRoute exact path="/login" component={Login} />
           <PrivateRoute exact path="/register" component={Register} />
           <PrivateRoute exact path="/profile" component={Profile} />
@@ -67,6 +65,9 @@ const App = () => {
           <PrivateRoute exact path="/teachers" component={TeacherList} />
           {/* user */}
           <PrivateRoute exact path="/watch-list" component={WatchList} />
+          {/* teacher */}
+          <PrivateRoute exact path="/upload-course" component={AddEditCourse} />
+          {/* general */}
           <Route
             exact
             path="/courses/category"

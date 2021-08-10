@@ -47,7 +47,7 @@ const listMenu2 = [
   {
     classIcon: "educate-icon educate-course icon-wrap",
     name: "Khóa học",
-    link: "/",
+    link: "/upload-course",
   },
 ];
 const listMenu3 = [];

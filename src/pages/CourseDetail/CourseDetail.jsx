@@ -154,12 +154,16 @@ const CourseDetail = () => {
                                     </a>
                                   </span>
                                 </div>
-                                <div style={{ width: "2rem", float: "right" }}>
-                                  <Heart
-                                    isActive={watchList}
-                                    onClick={addHeart}
-                                  />
-                                </div>
+                                {user && user.role === "student" && (
+                                  <div
+                                    style={{ width: "2rem", float: "right" }}
+                                  >
+                                    <Heart
+                                      isActive={watchList}
+                                      onClick={addHeart}
+                                    />
+                                  </div>
+                                )}
                                 <h1>
                                   <a className="blog-ht" href="#">
                                     Mô tả ngắn gọn
@@ -276,7 +280,8 @@ const CourseDetail = () => {
                       })}
 
                     {/* Viết bình luận, chỉ hiển thị khi người đó đăng nhập và chưa bình luận */}
-                    {user.role &&
+                    {user &&
+                      user.role &&
                       user.role === "student" &&
                       subscribers &&
                       subscribers.is_subscribed &&

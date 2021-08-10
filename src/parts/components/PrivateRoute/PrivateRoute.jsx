@@ -13,7 +13,7 @@ const routeAdmin = [
   "/teachers",
   "/profile",
 ];
-const routeTeacher = ["/profile"];
+const routeTeacher = ["/profile", "/upload-course"];
 const routeStudent = ["/watch-list", "/profile"];
 
 const roleBelongToRoute = {
@@ -26,7 +26,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const location = useLocation();
   const user = useRecoilValue(userState);
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
-  if (isAuthenticated === stateOfAuthentication.PROCESSING) {
+  if (isAuthenticated === stateOfAuthentication.PROCESSING || !user) {
     return <Fragment />;
   } else {
     if (location.pathname === "/login" || location.pathname === "/register") {

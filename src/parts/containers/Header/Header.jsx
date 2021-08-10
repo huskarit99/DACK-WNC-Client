@@ -22,13 +22,13 @@ const Header = () => {
         setUser(result);
         switch (result.role) {
           case "teacher":
-            setlistMenu(listMenu1.concat(listMenu3, listMenu4));
+            setlistMenu(listMenu1.concat(listMenu3));
             break;
           case "admin":
-            setlistMenu(listMenu1.concat(listMenu4));
+            setlistMenu(listMenu1.concat(listMenu3));
             break;
           case "student":
-            setlistMenu(listMenu1.concat(listMenu2, listMenu4));
+            setlistMenu(listMenu1.concat(listMenu2, listMenu3));
             break;
           default:
             break;
@@ -70,15 +70,6 @@ const Header = () => {
   ];
 
   const listMenu3 = [
-    <li>
-      <a href="/user-info">
-        <span className="edu-icon edu-user-rounded author-log-ic" />
-        Khóa học đăng tải
-      </a>
-    </li>,
-  ];
-
-  const listMenu4 = [
     <li onClick={handleLogOut}>
       <a href="/">
         <span className="edu-icon edu-locked author-log-ic" />
