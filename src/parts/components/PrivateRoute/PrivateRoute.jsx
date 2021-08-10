@@ -26,7 +26,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const location = useLocation();
   const user = useRecoilValue(userState);
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
-  if (isAuthenticated === stateOfAuthentication.PROCESSING || !user) {
+  if (isAuthenticated === stateOfAuthentication.PROCESSING) {
     return <Fragment />;
   } else {
     if (location.pathname === "/login" || location.pathname === "/register") {
@@ -50,6 +50,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               return <Redirect to="/" />;
             } else {
               if (isAuthenticated === stateOfAuthentication.SUCCESS) {
+                if (!user) return <Fragment />;
                 if (roleBelongToRoute[user.role].includes(location.pathname)) {
                   return <Component />;
                 }

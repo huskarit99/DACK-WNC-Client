@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 import { DropzoneArea } from "material-ui-dropzone";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import "./style.css";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const AddEditCourse = () => {
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const onEditorStateChange = (editorState) => {
+    setEditorState(editorState);
+  };
+
   return (
     <div className="single-pro-review-area mt-t-30 mg-b-15">
       <div className="container-fluid">
@@ -76,10 +88,22 @@ const AddEditCourse = () => {
                                 <h2>Mô tả ngắn gọn khóa học</h2>
                               </div>
                               <div className="form-group">
-                                <textarea
-                                  name="description"
-                                  placeholder="Mô tả ngắn gọn"
-                                ></textarea>
+                                <div>
+                                  <Editor
+                                    editorState={editorState}
+                                    wrapperClassName="demo-wrapper"
+                                    editorClassName="demo-editor"
+                                    onEditorStateChange={onEditorStateChange}
+                                  />
+                                  {/* <textarea
+                                    disabled
+                                    value={draftToHtml(
+                                      convertToRaw(
+                                        editorState.getCurrentContent()
+                                      )
+                                    )}
+                                  /> */}
+                                </div>
                               </div>
                             </div>
                           </div>
