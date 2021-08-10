@@ -16,6 +16,7 @@ import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
 import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
 import CategoryList from "./pages/Admin/CategoryList/CategoryList";
 import WatchList from "./pages/Students/WatchList/WatchList";
+import Profile from "./parts/components/Profile/Profile";
 
 const App = () => {
   useEffect(() => {
@@ -58,14 +59,19 @@ const App = () => {
           <PrivateRoute exact path="/profile" component={Profile} /> */}
           <PrivateRoute exact path="/login" component={Login} />
           <PrivateRoute exact path="/register" component={Register} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           {/* admin */}
-          <PrivateRoute exact path="/categories" component={CategoryList}/>
-          <PrivateRoute exact path="/courses" component={CourseList}/>
-          <PrivateRoute exact path="/students" component={StudentList}/>
-          <PrivateRoute exact path="/teachers" component={TeacherList}/>
+          <PrivateRoute exact path="/categories" component={CategoryList} />
+          <PrivateRoute exact path="/courses" component={CourseList} />
+          <PrivateRoute exact path="/students" component={StudentList} />
+          <PrivateRoute exact path="/teachers" component={TeacherList} />
           {/* user */}
-          <PrivateRoute exact path="/watch-list" component={WatchList}/>
-          <Route exact path="/courses/category" component={CoursesListByCategory} />
+          <PrivateRoute exact path="/watch-list" component={WatchList} />
+          <Route
+            exact
+            path="/courses/category"
+            component={CoursesListByCategory}
+          />
           <Route exact path="/course/:id" component={CourseDetail} />
           <Route exact path="/courses/search" component={CoursesListBySearch} />
           <Route path="/" component={Home} />

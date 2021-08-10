@@ -2,13 +2,19 @@ import React, { Fragment } from "react";
 import { useRecoilValue } from "recoil";
 import { Route, Redirect, useLocation } from "react-router-dom";
 
-import roleState from "../../../state/roleState";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
+import userState from "../../../state/userState";
 
-const routeAdmin = ["/categories", "/courses", "/students", "/teachers"];
-const routeTeacher = ["/abasdsac", "/asdasddsd"];
-const routeStudent = ["/watch-list", "/asdasd"];
+const routeAdmin = [
+  "/categories",
+  "/courses",
+  "/students",
+  "/teachers",
+  "/profile",
+];
+const routeTeacher = ["/profile"];
+const routeStudent = ["/watch-list", "/profile"];
 
 const roleBelongToRoute = {
   teacher: routeTeacher,
@@ -18,7 +24,7 @@ const roleBelongToRoute = {
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const location = useLocation();
-  const role = useRecoilValue(roleState);
+  const user = useRecoilValue(userState);
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
   if (isAuthenticated === stateOfAuthentication.PROCESSING) {
     return <Fragment />;
@@ -44,7 +50,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               return <Redirect to="/" />;
             } else {
               if (isAuthenticated === stateOfAuthentication.SUCCESS) {
-                if (roleBelongToRoute[role].includes(location.pathname)) {
+                if (roleBelongToRoute[user.role].includes(location.pathname)) {
                   return <Component />;
                 }
               }

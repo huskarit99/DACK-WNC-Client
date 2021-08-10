@@ -1,28 +1,41 @@
-import { useRecoilValue } from "recoil";
 import { createBrowserHistory } from "history";
-import React, { useEffect, useState } from "react";
 import { Avatar, Typography } from "@material-ui/core";
+import { useRecoilState, useRecoilValue } from "recoil";
+import React, { useEffect, useState, Fragment } from "react";
 
 import useStyles from "./style";
-import roleState from "../../../state/roleState";
-import { getSelfInfoApi, logoutApi } from "../../../services/api/userApi";
+import userState from "../../../state/userState";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
+import { getSelfInfoApi, logoutApi } from "../../../services/api/userApi";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
 const Header = () => {
   const classes = useStyles();
-  const [user, setUser] = useState(null);
-  const role = useRecoilValue(roleState);
+  const [user, setUser] = useRecoilState(userState);
   const history = createBrowserHistory({ forceRefresh: true });
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
   const [listMenu, setlistMenu] = useState([]);
 
   useEffect(() => {
-    getSelfInfoApi().then((result) => {
-      setUser(result);
-      console.log(result);
-    });
-  }, []);
+    if (isAuthenticated === stateOfAuthentication.SUCCESS) {
+      getSelfInfoApi().then((result) => {
+        setUser(result);
+        switch (result.role) {
+          case "teacher":
+            setlistMenu(listMenu1.concat(listMenu3, listMenu4));
+            break;
+          case "admin":
+            setlistMenu(listMenu1.concat(listMenu4));
+            break;
+          case "student":
+            setlistMenu(listMenu1.concat(listMenu2, listMenu4));
+            break;
+          default:
+            break;
+        }
+      });
+    }
+  }, [isAuthenticated]);
 
   const handleLogOut = () => {
     logoutApi().then((res) => {
@@ -34,7 +47,7 @@ const Header = () => {
 
   const listMenu1 = [
     <li>
-      <a href="/user-info">
+      <a href="/profile">
         <span className="edu-icon edu-user-rounded author-log-ic" />
         Cá nhân
       </a>
@@ -73,22 +86,6 @@ const Header = () => {
       </a>
     </li>,
   ];
-
-  useEffect(() => {
-    switch (role) {
-      case "teacher":
-        setlistMenu(listMenu1.concat(listMenu3, listMenu4));
-        break;
-      case "admin":
-        setlistMenu(listMenu1.concat(listMenu4));
-        break;
-      case "student":
-        setlistMenu(listMenu1.concat(listMenu2, listMenu4));
-        break;
-      default:
-        break;
-    }
-  }, [isAuthenticated, role]);
 
   return (
     <div className="header-advance-area">
@@ -147,7 +144,9 @@ const Header = () => {
                               role="menu"
                               className="dropdown-header-top author-log dropdown-menu animated zoomIn"
                             >
-                              {listMenu.map((row) => row)}
+                              {listMenu.map((row, index) => (
+                                <Fragment key={index}>{row}</Fragment>
+                              ))}
                             </ul>
                           </li>
                         </ul>
