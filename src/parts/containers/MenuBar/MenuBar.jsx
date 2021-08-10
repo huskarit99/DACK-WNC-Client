@@ -66,7 +66,7 @@ const listMenu4 = [
 
 const MenuBar = (props) => {
   const location = useLocation();
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("guest");
   const [listMenu, setListMenu] = useState([]);
   const [rootCategories, setRootCategories] = useState(null);
   const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
@@ -98,7 +98,8 @@ const MenuBar = (props) => {
     getCategoriesApi().then((result) => {
       setRootCategories(result);
     });
-  }, [setIsAuthenticated, setRootCategories, setRole]);
+  }, [setIsAuthenticated, setRootCategories, role]);
+  console.log(role);
   return (
     <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
       <div className="left-sidebar-pro">

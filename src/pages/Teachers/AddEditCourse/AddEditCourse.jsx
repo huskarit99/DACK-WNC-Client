@@ -1,4 +1,5 @@
 import React from "react";
+import { DropzoneArea } from "material-ui-dropzone";
 
 const AddEditCourse = () => {
   return (
@@ -56,8 +57,18 @@ const AddEditCourse = () => {
                                 />
                               </div>
                             </div>
-                            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12"></div>
-                            <div className="col-lg-3 col-md-3 col-sm-3 col-xs-12"></div>
+                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              <DropzoneArea
+                                acceptedFiles={["image/*"]}
+                                dropzoneText={
+                                  "Drag and drop an image here or click"
+                                }
+                                filesLimit="1"
+                                onChange={(files) => {
+                                  console.log("Files:", files);
+                                }}
+                              />
+                            </div>
                           </div>
                           <div className="row">
                             <div className="tinymce-single responsive-mg-b-30">
@@ -70,7 +81,6 @@ const AddEditCourse = () => {
                                   placeholder="Mô tả ngắn gọn"
                                 ></textarea>
                               </div>
-                              <div id="summernote1"></div>
                             </div>
                           </div>
                           <div className="row">
@@ -84,7 +94,6 @@ const AddEditCourse = () => {
                                   placeholder="Mô tả chi tiết"
                                 ></textarea>
                               </div>
-                              <div id="summernote1"></div>
                             </div>
                           </div>
                           <div>
