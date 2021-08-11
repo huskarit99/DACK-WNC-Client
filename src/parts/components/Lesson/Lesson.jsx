@@ -20,7 +20,7 @@ const Lesson = ({ video, index }) => {
             data-target={`#lesson` + index}
             onClick={() => {
               setShow(true);
-              videoRef.current.seekTo(60);
+              videoRef.current.seekTo(5);
             }}
           >
             Xem trước
@@ -65,7 +65,7 @@ const Lesson = ({ video, index }) => {
               ref={videoRef}
               playing={show}
               style={{ position: "absolute", top: "0", left: "0" }}
-              url="/videos/1.mp4"
+              url="https://res.cloudinary.com/drzosgsbu/video/upload/v1628703777/zjhqd9chta8dufdfnpcf.mp4"
               // url="https://www.youtube.com/watch?v=pSFXJ7teisw"
               controls
               width="100%"

@@ -6,9 +6,18 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "./style.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Theaters } from "@material-ui/icons";
 
 const AddEditCourse = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const handlePreviewIcon = (fileObject, classes) => {
+    const { type } = fileObject.file;
+    const iconProps = {
+      className: classes.image,
+    };
+    if (type.startsWith("video/")) return <Theaters {...iconProps} />;
+  };
 
   const onEditorStateChange = (editorState) => {
     // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
@@ -85,6 +94,30 @@ const AddEditCourse = () => {
                                       reader.readAsDataURL(files[0]);
                                       reader.onload = () => {
                                         baseURL = reader.result;
+                                        console.log(baseURL);
+                                        resolve(baseURL);
+                                      };
+                                    });
+                                }}
+                              />
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                              <DropzoneArea
+                                getPreviewIcon={handlePreviewIcon}
+                                acceptedFiles={["video/*"]}
+                                dropzoneText={
+                                  "Drag and drop an file here or click"
+                                }
+                                filesLimit="1"
+                                onChange={(files) => {
+                                  if (files && files.length > 0)
+                                    return new Promise((resolve) => {
+                                      let baseURL = "";
+                                      let reader = new FileReader();
+                                      reader.readAsDataURL(files[0]);
+                                      reader.onload = () => {
+                                        baseURL = reader.result;
+                                        console.log(baseURL);
                                         resolve(baseURL);
                                       };
                                     });
