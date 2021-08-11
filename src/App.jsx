@@ -5,19 +5,19 @@ import "./App.css";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import MenuBar from "./parts/containers/MenuBar/MenuBar";
-import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
 import { appendScript } from "./utils/appendScripts";
-import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
+import Profile from "./parts/components/Profile/Profile";
+import MenuBar from "./parts/containers/MenuBar/MenuBar";
 import CourseDetail from "./pages/CourseDetail/CourseDetail";
-import CoursesListBySearch from "./pages/CoursesListBySearch/CoursesListBySearch";
 import CourseList from "./pages/Admin/CourseList/CourseList";
+import WatchList from "./pages/Students/WatchList/WatchList";
+import CategoryList from "./pages/Admin/CategoryList/CategoryList";
+import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
+import AddEditCourse from "./pages/Teachers/AddEditCourse/AddEditCourse";
 import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
 import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
-import CategoryList from "./pages/Admin/CategoryList/CategoryList";
-import WatchList from "./pages/Students/WatchList/WatchList";
-import Profile from "./parts/components/Profile/Profile";
-import AddEditCourse from "./pages/Teachers/AddEditCourse/AddEditCourse";
+import CoursesListBySearch from "./pages/CoursesListBySearch/CoursesListBySearch";
+import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
 
 const App = () => {
   useEffect(() => {

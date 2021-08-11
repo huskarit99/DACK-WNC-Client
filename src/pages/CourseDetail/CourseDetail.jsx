@@ -1,44 +1,44 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import StarRatings from "react-star-ratings";
-import CourseItem from "../../parts/components/CourseItem/CourseItem";
-import Comment from "../../parts/components/Comments/Comment";
-import CommentItem from "../../parts/components/Comments/CommentItem";
-import Lesson from "../../parts/components/Lesson/Lesson";
-import PurchaseCourse from "../../parts/components/Modals/PurchaseCourse";
 import Heart from "react-heart";
+import { useParams } from "react-router-dom";
+import StarRatings from "react-star-ratings";
+import { createBrowserHistory } from "history";
+import { useRecoilState, useRecoilValue } from "recoil";
+import React, { Fragment, useEffect, useState } from "react";
+
+import roleState from "../../state/roleState";
+import jwtEnum from "../../utils/enums/jwtEnum";
+import Lesson from "../../parts/components/Lesson/Lesson";
+import subscriberState from "../../state/subscriberState";
+import apiStateEnum from "../../utils/enums/apiStateEnum";
+import Comment from "../../parts/components/Comments/Comment";
+import { getVideosByCourseId } from "../../services/api/videoApi";
+import CourseItem from "../../parts/components/CourseItem/CourseItem";
+import CommentItem from "../../parts/components/Comments/CommentItem";
+import PurchaseCourse from "../../parts/components/Modals/PurchaseCourse";
+import { getSubscribersByCourseId } from "../../services/api/subscriberApi";
 import {
   getCourseByIdApi,
   getMostSubscribedCoursesApi,
   updateCourseViewApi,
 } from "../../services/api/courseApi";
-import { useParams } from "react-router-dom";
-import { getSubscribersByCourseId } from "../../services/api/subscriberApi";
-import { useRecoilValue } from "recoil";
-import { getVideosByCourseId } from "../../services/api/videoApi";
-import subscriberState from "../../state/subscriberState";
 import {
   addWatchListApi,
   deleteWatchListApi,
   getWatchListApi,
 } from "../../services/api/watchListApi";
-import { createBrowserHistory } from "history";
-import jwtEnum from "../../utils/enums/jwtEnum";
-import apiStateEnum from "../../utils/enums/apiStateEnum";
-import userState from "../../state/userState";
 
 const CourseDetail = () => {
   const { id } = useParams();
+  const role = useRecoilValue(roleState);
   const [course, setCourse] = useState(null);
-  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
   const [videos, setVideos] = useState(null);
-  const [mostSubscribedCourse, setMostSubscribedCourse] = useState(null);
-  const user = useRecoilValue(userState);
-  const [updateDay, setUpdateDay] = useState(new Date());
   const [watchList, setWatchList] = useState(false);
-  const history = createBrowserHistory({ forceRefresh: true });
   const [messageAlert, setMessageAlert] = useState("");
+  const [updateDay, setUpdateDay] = useState(new Date());
+  const history = createBrowserHistory({ forceRefresh: true });
   const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
+  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
+  const [mostSubscribedCourse, setMostSubscribedCourse] = useState(null);
 
   useEffect(() => {
     getCourseByIdApi(id).then((result) => {
@@ -154,7 +154,7 @@ const CourseDetail = () => {
                                     </a>
                                   </span>
                                 </div>
-                                {user && user.role === "student" && (
+                                {role === "student" && (
                                   <div
                                     style={{ width: "2rem", float: "right" }}
                                   >
@@ -280,9 +280,7 @@ const CourseDetail = () => {
                       })}
 
                     {/* Viết bình luận, chỉ hiển thị khi người đó đăng nhập và chưa bình luận */}
-                    {user &&
-                      user.role &&
-                      user.role === "student" &&
+                    {role === "student" &&
                       subscribers &&
                       subscribers.is_subscribed &&
                       !subscribers.is_rated && <Comment id={id} />}

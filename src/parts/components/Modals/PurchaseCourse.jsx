@@ -1,15 +1,16 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { useRecoilValue } from "recoil";
-import { subscribe } from "../../../services/api/subscriberApi";
 import { useRecoilState } from "recoil";
+import { useHistory } from "react-router";
+import roleState from "../../../state/roleState";
 import subscriberState from "../../../state/subscriberState";
-import userState from "../../../state/userState";
+import { subscribe } from "../../../services/api/subscriberApi";
 
 const PurchaseCourse = ({ id }) => {
-  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
   let history = useHistory();
-  const user = useRecoilValue(userState);
+  const role = useRecoilValue(roleState);
+  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
+
   const handleClick = () => {
     subscribe(id).then((result) => {
       if (result.isSuccess) {
@@ -23,7 +24,7 @@ const PurchaseCourse = ({ id }) => {
   return (
     <div className="shadow-inner">
       <div className="modal-area-button">
-        {user && user.role && user.role === "student" ? (
+        {role === "student" ? (
           // ? <a className="Primary" href="#" data-toggle="modal" data-target="#PrimaryModalalert">Mua khóa học</a>:
           // <a className="Primary" href="/login">Mua khóa học</a>}
           <button
@@ -36,7 +37,7 @@ const PurchaseCourse = ({ id }) => {
               fontSize: "16px",
             }}
           >
-            Mua khoá học
+            {"Mua khoá học"}
           </button>
         ) : (
           <button
@@ -48,7 +49,7 @@ const PurchaseCourse = ({ id }) => {
             }}
             onClick={() => history.push("/login")}
           >
-            Mua khoá học
+            {"Mua khoá học"}
           </button>
         )}
       </div>
@@ -65,8 +66,8 @@ const PurchaseCourse = ({ id }) => {
               </a>
             </div>
             <div className="modal-body">
-              <h2>Xác nhận!</h2>
-              <p>Bạn có chắc muốn mua khóa học</p>
+              <h2>{"Xác nhận!"}</h2>
+              <p>{"Bạn có chắc muốn mua khóa học"}</p>
             </div>
             <div className="modal-footer">
               <button
@@ -79,7 +80,7 @@ const PurchaseCourse = ({ id }) => {
                   marginRight: "10px",
                 }}
               >
-                Trở về
+                {"Trở về"}
               </button>
               <button
                 className="btn"
@@ -91,7 +92,7 @@ const PurchaseCourse = ({ id }) => {
                 onClick={handleClick}
                 data-dismiss="modal"
               >
-                Có
+                {"Có"}
               </button>
             </div>
           </div>

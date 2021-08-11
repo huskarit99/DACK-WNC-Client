@@ -5,6 +5,7 @@ import React, { useEffect, useState, Fragment } from "react";
 
 import useStyles from "./style";
 import userState from "../../../state/userState";
+import roleState from "../../../state/roleState";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import { getSelfInfoApi, logoutApi } from "../../../services/api/userApi";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
@@ -12,6 +13,7 @@ import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 const Header = () => {
   const classes = useStyles();
   const [user, setUser] = useRecoilState(userState);
+  const role = useRecoilValue(roleState);
   const history = createBrowserHistory({ forceRefresh: true });
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
   const [listMenu, setlistMenu] = useState([]);
@@ -20,7 +22,7 @@ const Header = () => {
     if (isAuthenticated === stateOfAuthentication.SUCCESS) {
       getSelfInfoApi().then((result) => {
         setUser(result);
-        switch (result.role) {
+        switch (role) {
           case "teacher":
             setlistMenu(listMenu1.concat(listMenu3));
             break;
@@ -123,7 +125,7 @@ const Header = () => {
                                   <Typography className={classes.typography}>
                                     {user && user.name}
                                     {" - "}
-                                    {user && user.role}
+                                    {role}
                                   </Typography>
                                 </div>
                                 <div className={classes.div4}>

@@ -11,6 +11,7 @@ const AddEditCourse = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const onEditorStateChange = (editorState) => {
+    // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
     setEditorState(editorState);
   };
 
@@ -77,7 +78,16 @@ const AddEditCourse = () => {
                                 }
                                 filesLimit="1"
                                 onChange={(files) => {
-                                  console.log("Files:", files);
+                                  if (files && files.length > 0)
+                                    return new Promise((resolve) => {
+                                      let baseURL = "";
+                                      let reader = new FileReader();
+                                      reader.readAsDataURL(files[0]);
+                                      reader.onload = () => {
+                                        baseURL = reader.result;
+                                        resolve(baseURL);
+                                      };
+                                    });
                                 }}
                               />
                             </div>
@@ -88,22 +98,12 @@ const AddEditCourse = () => {
                                 <h2>Mô tả ngắn gọn khóa học</h2>
                               </div>
                               <div className="form-group">
-                                <div>
-                                  <Editor
-                                    editorState={editorState}
-                                    wrapperClassName="demo-wrapper"
-                                    editorClassName="demo-editor"
-                                    onEditorStateChange={onEditorStateChange}
-                                  />
-                                  {/* <textarea
-                                    disabled
-                                    value={draftToHtml(
-                                      convertToRaw(
-                                        editorState.getCurrentContent()
-                                      )
-                                    )}
-                                  /> */}
-                                </div>
+                                <Editor
+                                  editorState={editorState}
+                                  wrapperClassName="demo-wrapper"
+                                  editorClassName="demo-editor"
+                                  onEditorStateChange={onEditorStateChange}
+                                />
                               </div>
                             </div>
                           </div>
@@ -113,10 +113,12 @@ const AddEditCourse = () => {
                                 <h2>Mô tả chi tiết khóa học</h2>
                               </div>
                               <div className="form-group">
-                                <textarea
-                                  name="description"
-                                  placeholder="Mô tả chi tiết"
-                                ></textarea>
+                                <Editor
+                                  // editorState={editorState}
+                                  wrapperClassName="demo-wrapper"
+                                  editorClassName="demo-editor"
+                                  // onEditorStateChange={onEditorStateChange}
+                                />
                               </div>
                             </div>
                           </div>

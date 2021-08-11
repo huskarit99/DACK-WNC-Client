@@ -1,10 +1,11 @@
 import { useLocation } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import React, { Fragment, useEffect, useState } from "react";
 
 import Logo from "../Logo/Logo";
 import Header from "../Header/Header";
 import BreadCome from "../BreadCome/BreadCome";
+import roleState from "../../../state/roleState";
 import { authTokenApi } from "../../../services/api/userApi";
 import { getCategoriesApi } from "../../../services/api/categoryApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
@@ -66,8 +67,8 @@ const listMenu4 = [
 
 const MenuBar = (props) => {
   const location = useLocation();
-  const [role, setRole] = useState("guest");
   const [listMenu, setListMenu] = useState([]);
+  const [role, setRole] = useRecoilState(roleState);
   const [rootCategories, setRootCategories] = useState(null);
   const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
 
@@ -98,8 +99,8 @@ const MenuBar = (props) => {
     getCategoriesApi().then((result) => {
       setRootCategories(result);
     });
-  }, [setIsAuthenticated, setRootCategories, role]);
-  console.log(role);
+  }, [setIsAuthenticated, setRootCategories, setRole]);
+
   return (
     <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
       <div className="left-sidebar-pro">
