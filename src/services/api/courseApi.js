@@ -49,6 +49,49 @@ const getCoursesApi = async(page) => {
   }
 }
 
+const getCoursesByTeacherIdApi = async(page, id) => {
+  const PATH = ENDPOINT + `courses?id=${id}&page=${page}`;
+  try {
+    const result = await Axios({
+      method: 'get',
+      url: PATH
+    });
+    return {
+      isSuccess: true,
+      data: result.data
+    }
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
+  }
+}
+
+
 const getAllByCriteria = async() => {
   const PATH = ENDPOINT + 'criteria';
   try {
@@ -251,5 +294,6 @@ export {
   getCourseByIdApi,
   getMostSubscribedCoursesApi,
   updateCourseByAdminApi,
-  updateCourseViewApi
+  updateCourseViewApi,
+  getCoursesByTeacherIdApi
 }
