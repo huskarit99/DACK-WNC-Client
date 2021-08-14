@@ -47,8 +47,8 @@ const listMenu1 = [
 const listMenu2 = [
   {
     classIcon: "educate-icon educate-course icon-wrap",
-    name: "Khóa học",
-    link: "/upload-course",
+    name: "Quản lý Khóa học",
+    link: "/teacher/courses",
   },
 ];
 const listMenu3 = [];

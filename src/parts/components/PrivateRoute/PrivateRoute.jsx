@@ -13,7 +13,7 @@ const routeAdmin = [
   "/teachers",
   "/profile",
 ];
-const routeTeacher = ["/profile", "/upload-course"];
+const routeTeacher = ["/profile", "/upload-course", "/teacher/courses"];
 const routeStudent = ["/watch-list", "/profile"];
 
 const roleBelongToRoute = {

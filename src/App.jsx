@@ -11,9 +11,10 @@ import MenuBar from "./parts/containers/MenuBar/MenuBar";
 import CourseDetail from "./pages/CourseDetail/CourseDetail";
 import CourseList from "./pages/Admin/CourseList/CourseList";
 import WatchList from "./pages/Students/WatchList/WatchList";
+import MyCourses from "./pages/Teachers/MyCourses/MyCourses";
 import CategoryList from "./pages/Admin/CategoryList/CategoryList";
+import UploadCourse from "./pages/Teachers/UploadCourse/UploadCourse";
 import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
-import AddEditCourse from "./pages/Teachers/AddEditCourse/AddEditCourse";
 import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
 import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
 import CoursesListBySearch from "./pages/CoursesListBySearch/CoursesListBySearch";
@@ -66,7 +67,8 @@ const App = () => {
           {/* user */}
           <PrivateRoute exact path="/watch-list" component={WatchList} />
           {/* teacher */}
-          <PrivateRoute exact path="/upload-course" component={AddEditCourse} />
+          <PrivateRoute exact path="/teacher/courses" component={MyCourses} />
+          {/* <PrivateRoute exact path="/upload-course" component={AddEditCourse} /> */}
           {/* general */}
           <Route
             exact
