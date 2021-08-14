@@ -1,44 +1,42 @@
-import Heart from "react-heart";
-import { useParams } from "react-router-dom";
-import StarRatings from "react-star-ratings";
-import { createBrowserHistory } from "history";
-import { useRecoilState, useRecoilValue } from "recoil";
 import React, { Fragment, useEffect, useState } from "react";
-
-import roleState from "../../state/roleState";
-import jwtEnum from "../../utils/enums/jwtEnum";
-import Lesson from "../../parts/components/Lesson/Lesson";
-import subscriberState from "../../state/subscriberState";
-import apiStateEnum from "../../utils/enums/apiStateEnum";
-import Comment from "../../parts/components/Comments/Comment";
-import { getVideosByCourseId } from "../../services/api/videoApi";
+import StarRatings from "react-star-ratings";
 import CourseItem from "../../parts/components/CourseItem/CourseItem";
-import CommentItem from "../../parts/components/Comments/CommentItem";
-import PurchaseCourse from "../../parts/components/Modals/PurchaseCourse";
-import { getSubscribersByCourseId } from "../../services/api/subscriberApi";
+import Comment from "./containers/Comment/Comment";
+import CommentItem from "./containers/CommentItem/CommentItem";
+import Lesson from "./containers/Lesson/Lesson";
+import PurchaseCourse from "./containers/PurchaseCourse/PurchaseCourse";
+import Heart from "react-heart";
 import {
   getCourseByIdApi,
   getMostSubscribedCoursesApi,
   updateCourseViewApi,
 } from "../../services/api/courseApi";
+import { useParams } from "react-router-dom";
+import { getSubscribersByCourseIdApi } from "../../services/api/subscriberApi";
+import { useRecoilValue } from "recoil";
+import roleState from "../../state/roleState";
+import { getVideosByCourseId } from "../../services/api/videoApi";
 import {
   addWatchListApi,
   deleteWatchListApi,
   getWatchListApi,
 } from "../../services/api/watchListApi";
+import { createBrowserHistory } from "history";
+import jwtEnum from "../../utils/enums/jwtEnum";
+import apiStateEnum from "../../utils/enums/apiStateEnum";
 
 const CourseDetail = () => {
   const { id } = useParams();
-  const role = useRecoilValue(roleState);
   const [course, setCourse] = useState(null);
+  const [subscribers, setSubscribers] = useState(null);
   const [videos, setVideos] = useState(null);
-  const [watchList, setWatchList] = useState(false);
-  const [messageAlert, setMessageAlert] = useState("");
-  const [updateDay, setUpdateDay] = useState(new Date());
-  const history = createBrowserHistory({ forceRefresh: true });
-  const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
-  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
   const [mostSubscribedCourse, setMostSubscribedCourse] = useState(null);
+  const role = useRecoilValue(roleState);
+  const [updateDay, setUpdateDay] = useState(new Date());
+  const [watchList, setWatchList] = useState(false);
+  const history = createBrowserHistory({ forceRefresh: true });
+  const [messageAlert, setMessageAlert] = useState("");
+  const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
 
   useEffect(() => {
     getCourseByIdApi(id).then((result) => {
@@ -54,11 +52,11 @@ const CourseDetail = () => {
           setUpdateDay(new Date(result.data.updatedAt));
           getMostSubscribedCoursesApi({
             id: id,
-            category_id: result.category_id,
+            category_id: result.data.category_id,
           }).then((result) => {
             setMostSubscribedCourse(result);
           });
-          getSubscribersByCourseId(id).then((result) => {
+          getSubscribersByCourseIdApi(id).then((result) => {
             setSubscribers(result);
           });
           getVideosByCourseId(id).then((result) => {
@@ -154,16 +152,12 @@ const CourseDetail = () => {
                                     </a>
                                   </span>
                                 </div>
-                                {role === "student" && (
-                                  <div
-                                    style={{ width: "2rem", float: "right" }}
-                                  >
-                                    <Heart
-                                      isActive={watchList}
-                                      onClick={addHeart}
-                                    />
-                                  </div>
-                                )}
+                                <div style={{ width: "2rem", float: "right" }}>
+                                  <Heart
+                                    isActive={watchList}
+                                    onClick={addHeart}
+                                  />
+                                </div>
                                 <h1>
                                   <a className="blog-ht" href="#">
                                     Mô tả ngắn gọn
@@ -256,7 +250,11 @@ const CourseDetail = () => {
                         {subscribers && subscribers.is_subscribed ? (
                           ""
                         ) : (
-                          <PurchaseCourse id={id} />
+                          <PurchaseCourse
+                            id={id}
+                            subscribers={subscribers}
+                            setSubscribers={setSubscribers}
+                          />
                         )}
                       </div>
                     </div>
@@ -280,10 +278,17 @@ const CourseDetail = () => {
                       })}
 
                     {/* Viết bình luận, chỉ hiển thị khi người đó đăng nhập và chưa bình luận */}
-                    {role === "student" &&
+                    {role &&
+                      role === "student" &&
                       subscribers &&
                       subscribers.is_subscribed &&
-                      !subscribers.is_rated && <Comment id={id} />}
+                      !subscribers.is_rated && (
+                        <Comment
+                          id={id}
+                          subscribers={subscribers}
+                          setSubscribers={setSubscribers}
+                        />
+                      )}
                   </div>
                 </div>
               </div>

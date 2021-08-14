@@ -104,7 +104,7 @@ const MenuBar = (props) => {
   return (
     <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
       <div className="left-sidebar-pro">
-        <nav id="sidebar" className="">
+        <nav id="sidebar">
           <div className="sidebar-header">
             <a href="/">
               <img className="main-logo" src="/img/logo/logo.png" alt="a" />
@@ -125,6 +125,7 @@ const MenuBar = (props) => {
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
+                          justifyContent: "center",
                           height: "21px",
                           width: "35px",
                         }}
@@ -154,6 +155,7 @@ const MenuBar = (props) => {
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
+                          justifyContent: "center",
                           height: "21px",
                           width: "35px",
                         }}
@@ -181,10 +183,12 @@ const MenuBar = (props) => {
                           (root_category, index) => (
                             <li key={index}>
                               {root_category &&
+                              root_category.categories &&
                               root_category.categories.length > 0 ? (
                                 <Fragment>
                                   <a
                                     className="has-arrow"
+                                    style={{ paddingRight: "35px" }}
                                     data-toggle="collapse"
                                     href={"#" + index}
                                     role="button"

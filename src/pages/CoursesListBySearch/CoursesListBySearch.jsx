@@ -38,7 +38,7 @@ const CoursesListByCategory = () => {
           <div className="container-fluid">
             <div className="row">
               {courses && courses.courses && courses.courses.map((course, index) => {
-                return <CourseItem course={course} key={index} />
+                return <CourseItem course={course} key={course._id} />
               })}
             </div>
             <div className="mg-b-30">

@@ -10,6 +10,7 @@ const pathEnums = {
   '/students': 'Trang chủ / Quản lý học viên',
 
   // user
-  '/watch-list': 'Trang chủ / Danh sách khóa học yêu thích'
+  '/watch-list': 'Trang chủ / Danh sách khóa học yêu thích',
+  '/subscribed-courses': 'Trang chủ / Danh sách khóa học đã đăng ký'
 }
 export default pathEnums;

@@ -64,7 +64,7 @@ const Header = () => {
       </a>
     </li>,
     <li>
-      <a href="/user-info">
+      <a href="/subscribed-courses">
         <span className="edu-icon edu-user-rounded author-log-ic" />
         Khóa học đăng ký
       </a>

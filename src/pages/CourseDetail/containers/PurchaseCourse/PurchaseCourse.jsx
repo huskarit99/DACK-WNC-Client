@@ -1,23 +1,26 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { useRecoilState } from "recoil";
-import { useHistory } from "react-router";
-import roleState from "../../../state/roleState";
-import subscriberState from "../../../state/subscriberState";
-import { subscribe } from "../../../services/api/subscriberApi";
 
-const PurchaseCourse = ({ id }) => {
-  let history = useHistory();
+import { createBrowserHistory } from "history";
+import roleState from "../../../../state/roleState";
+import jwtEnum from "../../../../utils/enums/jwtEnum";
+import { subscribeApi } from "../../../../services/api/subscriberApi";
+
+const PurchaseCourse = ({ id, subscribers, setSubscribers }) => {
+  const history = createBrowserHistory({ forceRefresh: true });
   const role = useRecoilValue(roleState);
-  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
-
   const handleClick = () => {
-    subscribe(id).then((result) => {
+    subscribeApi(id).then((result) => {
       if (result.isSuccess) {
         let tmp = JSON.parse(JSON.stringify(subscribers));
         tmp.is_subscribed = result.is_subscribed;
         tmp.subscribers.push(result.subscriber);
         setSubscribers(tmp);
+      } else if (
+        result.message === jwtEnum.TOKEN_IS_EXPIRED ||
+        result.message === jwtEnum.NO_TOKEN
+      ) {
+        history.push("/login");
       }
     });
   };

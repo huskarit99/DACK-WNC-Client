@@ -14,7 +14,7 @@ const routeAdmin = [
   "/profile",
 ];
 const routeTeacher = ["/profile", "/upload-course", "/teacher/courses"];
-const routeStudent = ["/watch-list", "/profile"];
+const routeStudent = ["/watch-list", "/profile", "/subscribed-courses"];
 
 const roleBelongToRoute = {
   teacher: routeTeacher,
