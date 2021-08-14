@@ -68,7 +68,7 @@ const App = () => {
           <PrivateRoute exact path="/watch-list" component={WatchList} />
           {/* teacher */}
           <PrivateRoute exact path="/teacher/courses" component={MyCourses} />
-          {/* <PrivateRoute exact path="/upload-course" component={AddEditCourse} /> */}
+          <PrivateRoute exact path="/upload-course" component={UploadCourse} />
           {/* general */}
           <Route
             exact

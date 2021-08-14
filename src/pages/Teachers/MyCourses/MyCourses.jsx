@@ -43,6 +43,9 @@ const MyCourse = () => {
               <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div className="product-status-wrap">
                   <h4>Danh sách khóa học</h4>
+                  <div className="add-product">
+                    <a href="/upload-course">{"Thêm khóa học"}</a>
+                  </div>
                   <div className="asset-inner">
                     <table>
                       <thead>
