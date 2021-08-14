@@ -49,8 +49,8 @@ const getCoursesApi = async(page) => {
   }
 }
 
-const getCoursesByTeacherIdApi = async(page, id) => {
-  const PATH = ENDPOINT + `courses?id=${id}&page=${page}`;
+const getCoursesByTeacherIdApi = async(page) => {
+  const PATH = ENDPOINT + `teacher/courses?page=${page}`;
   try {
     const result = await Axios({
       method: 'get',

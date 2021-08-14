@@ -1,12 +1,13 @@
-import React, { Fragment, useEffect, useState, useReducer } from 'react'
 import { useLocation } from 'react-router';
-import { getCoursesApi } from '../../../services/api/courseApi';
-import CourseRow from './containers/CourseRow.jsx/CourseRow';
-import UpdateCourseModal from './containers/Modal/UpdateCourseModal';
-import Pagination from './containers/Pagination/Pagination';
 import { createBrowserHistory } from "history";
+import React, { Fragment, useEffect, useState, useReducer } from 'react';
+
 import jwtEnum from '../../../utils/enums/jwtEnum';
+import CourseRow from './containers/CourseRow/CourseRow';
+import Pagination from './containers/Pagination/Pagination';
 import apiStateEnum from '../../../utils/enums/apiStateEnum';
+import UpdateCourseModal from './containers/Modal/UpdateCourseModal';
+import { getCoursesByTeacherIdApi } from '../../../services/api/courseApi';
 
 const MyCourse = () => {
   const location = useLocation();
@@ -20,7 +21,7 @@ const MyCourse = () => {
   const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
 
   useEffect(() => {
-    getCoursesApi(page).then(result => {
+    getCoursesByTeacherIdApi(page).then(result => {
       if (result.isSuccess) {
         setCourses(result.data);
         setMessageAlert('');
