@@ -4,9 +4,9 @@ const colorAvatar = ["red", "green", "blue", "orange", "gray", "black"];
 
 const useStyles = makeStyles(() => ({
   avatar: {
-    width: "42px",
-    height: "42px",
-    fontSize: "16px",
+    width: "30px",
+    height: "30px",
+    fontSize: "12px",
     textTransform: "uppercase",
     fontWeight: "bold",
     backgroundColor: colorAvatar[Math.floor(Math.random() * 7)],
@@ -19,10 +19,28 @@ const useStyles = makeStyles(() => ({
   typography: {
     fontSize: "0.875rem",
   },
-  item: {
+  div1: {
+    display: "inline-flex",
+    width: "100%",
+    height: "100%",
+  },
+  div2: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    width: "30px",
+  },
+  div3: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  div4: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "40px",
   },
 }));
 

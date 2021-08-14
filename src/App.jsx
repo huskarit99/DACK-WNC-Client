@@ -5,17 +5,20 @@ import "./App.css";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import MenuBar from "./parts/containers/MenuBar/MenuBar";
-import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
 import { appendScript } from "./utils/appendScripts";
-import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
+import Profile from "./parts/components/Profile/Profile";
+import MenuBar from "./parts/containers/MenuBar/MenuBar";
 import CourseDetail from "./pages/CourseDetail/CourseDetail";
-import CoursesListBySearch from "./pages/CoursesListBySearch/CoursesListBySearch";
 import CourseList from "./pages/Admin/CourseList/CourseList";
+import WatchList from "./pages/Students/WatchList/WatchList";
+import MyCourses from "./pages/Teachers/MyCourses/MyCourses";
+import CategoryList from "./pages/Admin/CategoryList/CategoryList";
+import UploadCourse from "./pages/Teachers/UploadCourse/UploadCourse";
+import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
 import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
 import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
-import CategoryList from "./pages/Admin/CategoryList/CategoryList";
-import WatchList from "./pages/Students/WatchList/WatchList";
+import CoursesListBySearch from "./pages/CoursesListBySearch/CoursesListBySearch";
+import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
 import SubscribedCourseList from "./pages/Students/SubscribedCourseList/SubscriedCourseList";
 
 const App = () => {
@@ -53,21 +56,36 @@ const App = () => {
     <BrowserRouter>
       <MenuBar>
         <Switch>
-          {/* <PrivateRoute exact path="/room" component={Room} />
-          <PrivateRoute exact path="/lobby" component={Lobby} />
-          
-          <PrivateRoute exact path="/profile" component={Profile} /> */}
+          {/* guest */}
           <PrivateRoute exact path="/login" component={Login} />
           <PrivateRoute exact path="/register" component={Register} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           {/* admin */}
-          <PrivateRoute exact path="/categories" component={CategoryList}/>
-          <PrivateRoute exact path="/courses" component={CourseList}/>
-          <PrivateRoute exact path="/students" component={StudentList}/>
-          <PrivateRoute exact path="/teachers" component={TeacherList}/>
-          {/* user */}
-          <PrivateRoute exact path="/watch-list" component={WatchList}/>
-          <PrivateRoute exact path="/subscribed-courses" component={SubscribedCourseList}/>
-          <Route exact path="/courses/category" component={CoursesListByCategory} />
+          <PrivateRoute exact path="/categories" component={CategoryList} />
+          <PrivateRoute exact path="/courses" component={CourseList} />
+          <PrivateRoute exact path="/students" component={StudentList} />
+          <PrivateRoute exact path="/teachers" component={TeacherList} />
+          {/* student */}
+          <PrivateRoute exact path="/watch-list" component={WatchList} />
+          <PrivateRoute
+            exact
+            path="/subscribed-courses"
+            component={SubscribedCourseList}
+          />
+          {/* teacher */}
+          <PrivateRoute exact path="/teacher/courses" component={MyCourses} />
+          <PrivateRoute exact path="/upload-course" component={UploadCourse} />
+          {/* general */}
+          <Route
+            exact
+            path="/courses/category"
+            component={CoursesListByCategory}
+          />
+          <Route
+            exact
+            path="/courses/category"
+            component={CoursesListByCategory}
+          />
           <Route exact path="/course/:id" component={CourseDetail} />
           <Route exact path="/courses/search" component={CoursesListBySearch} />
           <Route path="/" component={Home} />

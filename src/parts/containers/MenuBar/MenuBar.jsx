@@ -1,15 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { Link } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from "react";
+
 import Logo from "../Logo/Logo";
 import Header from "../Header/Header";
 import BreadCome from "../BreadCome/BreadCome";
 import roleState from "../../../state/roleState";
 import { authTokenApi } from "../../../services/api/userApi";
+import { getCategoriesApi } from "../../../services/api/categoryApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
-import { useLocation } from "react-router-dom";
-import { getCategoriesApi } from "../../../services/api/categoryApi";
 
 const defaultMenu = [
   {
@@ -47,13 +47,11 @@ const listMenu1 = [
 const listMenu2 = [
   {
     classIcon: "educate-icon educate-course icon-wrap",
-    name: "Khóa học",
-    link: "/",
+    name: "Quản lý Khóa học",
+    link: "/teacher/courses",
   },
 ];
-const listMenu3 = [
-  
-];
+const listMenu3 = [];
 const listMenu4 = [
   {
     classIcon: "fa fa-sign-in icon-wrap",
@@ -69,16 +67,15 @@ const listMenu4 = [
 
 const MenuBar = (props) => {
   const location = useLocation();
-  const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
-  const [role, setRole] = useRecoilState(roleState);
   const [listMenu, setListMenu] = useState([]);
+  const [role, setRole] = useRecoilState(roleState);
   const [rootCategories, setRootCategories] = useState(null);
+  const setIsAuthenticated = useSetRecoilState(isAuthenticatedState);
 
   useEffect(() => {
     setIsAuthenticated(stateOfAuthentication.PROCESSING);
     authTokenApi().then((result) => {
       setIsAuthenticated(result.state);
-
       if (result.state === stateOfAuthentication.SUCCESS) {
         setRole(result.role);
         switch (result.role) {
@@ -99,10 +96,11 @@ const MenuBar = (props) => {
         }
       }
     });
-    getCategoriesApi().then(result => {
+    getCategoriesApi().then((result) => {
       setRootCategories(result);
     });
-  }, [setIsAuthenticated, setRole, setRootCategories]);
+  }, [setIsAuthenticated, setRootCategories, setRole]);
+
   return (
     <div style={{ backgroundColor: "rgb(237, 237, 237)", overflow: "hidden" }}>
       <div className="left-sidebar-pro">
@@ -150,7 +148,7 @@ const MenuBar = (props) => {
                   </li>
                 ))}
 
-                {role && role !== 'teacher' && role !== 'admin' &&
+                {role && role !== "teacher" && role !== "admin" && (
                   <li>
                     <a className="has-arrow" href="/" aria-expanded="false">
                       <div
@@ -161,7 +159,8 @@ const MenuBar = (props) => {
                           height: "21px",
                           width: "35px",
                         }}
-                      ><span className="educate-icon educate-library icon-wrap"></span>
+                      >
+                        <span className="educate-icon educate-library icon-wrap"></span>
                       </div>
                       <div
                         style={{
@@ -169,54 +168,75 @@ const MenuBar = (props) => {
                           alignItems: "center",
                           height: "20px",
                         }}
-                      ><span className="mini-click-non" >Lĩnh vực</span>
+                      >
+                        <span className="mini-click-non">Lĩnh vực</span>
                       </div>
                     </a>
-                    <ul className="submenu-angle" aria-expanded="false" style={{ marginLeft: '10px' }}>
-                      {rootCategories && rootCategories.root_categories && rootCategories.root_categories.map((root_category, index) => (
-                        <li key={index}>
-                          {root_category && root_category.categories && root_category.categories.length > 0 ?
-                            <Fragment>
-                              <a className="has-arrow" style={{paddingRight: '35px'}} data-toggle="collapse" href={'#' + index} role="button" aria-expanded="false" aria-controls={index}>
-                                <span className="mini-sub-pro">{root_category.name}</span>
-                              </a>
-                              <ul className="submenu-angle" id={index} className="collapse">
-                                {root_category && root_category.categories && root_category.categories.map((category, index) => (
-                                  <li key={index}>
-                                    <a href={'/courses/category?categoryid=' + category._id}><span className="mini-sub-pro">{category.name}</span></a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </Fragment> : <a>
-                              <span className="mini-sub-pro">{root_category.name}</span>
-                            </a>}
-
-                        </li>
-                      ))}
+                    <ul
+                      className="submenu-angle"
+                      aria-expanded="false"
+                      style={{ marginLeft: "10px" }}
+                    >
+                      {rootCategories &&
+                        rootCategories.root_categories &&
+                        rootCategories.root_categories.map(
+                          (root_category, index) => (
+                            <li key={index}>
+                              {root_category &&
+                              root_category.categories &&
+                              root_category.categories.length > 0 ? (
+                                <Fragment>
+                                  <a
+                                    className="has-arrow"
+                                    style={{ paddingRight: "35px" }}
+                                    data-toggle="collapse"
+                                    href={"#" + index}
+                                    role="button"
+                                    aria-expanded="false"
+                                    aria-controls={index}
+                                  >
+                                    <span className="mini-sub-pro">
+                                      {root_category.name}
+                                    </span>
+                                  </a>
+                                  <ul
+                                    className="submenu-angle"
+                                    id={index}
+                                    className="collapse"
+                                  >
+                                    {root_category &&
+                                      root_category.categories &&
+                                      root_category.categories.map(
+                                        (category, index) => (
+                                          <li key={index}>
+                                            <a
+                                              href={
+                                                "/courses/category?categoryid=" +
+                                                category._id
+                                              }
+                                            >
+                                              <span className="mini-sub-pro">
+                                                {category.name}
+                                              </span>
+                                            </a>
+                                          </li>
+                                        )
+                                      )}
+                                  </ul>
+                                </Fragment>
+                              ) : (
+                                <a>
+                                  <span className="mini-sub-pro">
+                                    {root_category.name}
+                                  </span>
+                                </a>
+                              )}
+                            </li>
+                          )
+                        )}
                     </ul>
-                  </li>}
-                {/* {role && role !== 'teacher' && role !== 'admin' &&
-                  <li>
-                    <a className="has-arrow" href="/" aria-expanded="false">
-                      <span className="educate-icon educate-library icon-wrap"></span>
-                      <span className="mini-click-non" style={{
-                        alignItems: "center",
-                        height: "20px",
-                        marginLeft: "10px"
-                      }}>Lĩnh vực</span></a>
-                    <ul className="submenu-angle" aria-expanded="false">
-                      <li>
-                        <a className="has-arrow" aria-expanded="false">
-                          <span className="mini-sub-pro">Lập trình</span>
-                        </a>
-                        <ul className="submenu-angle" aria-expanded="false">
-                          <li><Link to="/courses?category-id=dsds"><span className="mini-sub-pro">Lập trình mobile</span></Link></li>
-                          <li><Link to="/courses/search"><span className="mini-sub-pro">Lập trình web</span></Link></li>
-                        </ul>
-                      </li>
-                      <li><a href="/"><span className="mini-sub-pro">Khoa học tự nhiên</span></a></li>
-                    </ul>
-                  </li>} */}
+                  </li>
+                )}
               </ul>
             </nav>
           </div>
@@ -225,8 +245,8 @@ const MenuBar = (props) => {
       <div className="all-content-wrapper" style={{ overflow: "hidden" }}>
         <Logo />
         <Header />
-        {location.pathname !== '/login' && location.pathname !== '/register' && <BreadCome />}
-
+        {location.pathname !== "/login" &&
+          location.pathname !== "/register" && <BreadCome />}
         {props.children}
       </div>
     </div>

@@ -6,9 +6,15 @@ import roleState from "../../../state/roleState";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
-const routeAdmin = ["/categories", "/courses", "/students", "/teachers"];
-const routeTeacher = ["/abasdsac", "/asdasddsd"];
-const routeStudent = ["/watch-list", "/subscribed-courses"];
+const routeAdmin = [
+  "/categories",
+  "/courses",
+  "/students",
+  "/teachers",
+  "/profile",
+];
+const routeTeacher = ["/profile", "/upload-course", "/teacher/courses"];
+const routeStudent = ["/watch-list", "/profile", "/subscribed-courses"];
 
 const roleBelongToRoute = {
   teacher: routeTeacher,

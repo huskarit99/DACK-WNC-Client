@@ -1,28 +1,43 @@
-import { useRecoilValue } from "recoil";
 import { createBrowserHistory } from "history";
-import React, { useEffect, useState } from "react";
-import { Grid, Avatar, Typography } from "@material-ui/core";
+import { Avatar, Typography } from "@material-ui/core";
+import { useRecoilState, useRecoilValue } from "recoil";
+import React, { useEffect, useState, Fragment } from "react";
 
 import useStyles from "./style";
+import userState from "../../../state/userState";
 import roleState from "../../../state/roleState";
-import { getSelfInfoApi, logoutApi } from "../../../services/api/userApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
+import { getSelfInfoApi, logoutApi } from "../../../services/api/userApi";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
 const Header = () => {
   const classes = useStyles();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useRecoilState(userState);
   const role = useRecoilValue(roleState);
   const history = createBrowserHistory({ forceRefresh: true });
   const isAuthenticated = useRecoilValue(isAuthenticatedState);
   const [listMenu, setlistMenu] = useState([]);
 
   useEffect(() => {
-    getSelfInfoApi().then((result) => {
-      setUser(result);
-      console.log(result);
-    });
-  }, []);
+    if (isAuthenticated === stateOfAuthentication.SUCCESS) {
+      getSelfInfoApi().then((result) => {
+        setUser(result);
+        switch (role) {
+          case "teacher":
+            setlistMenu(listMenu1.concat(listMenu3));
+            break;
+          case "admin":
+            setlistMenu(listMenu1.concat(listMenu3));
+            break;
+          case "student":
+            setlistMenu(listMenu1.concat(listMenu2, listMenu3));
+            break;
+          default:
+            break;
+        }
+      });
+    }
+  }, [isAuthenticated]);
 
   const handleLogOut = () => {
     logoutApi().then((res) => {
@@ -34,7 +49,7 @@ const Header = () => {
 
   const listMenu1 = [
     <li>
-      <a href="/user-info">
+      <a href="/profile">
         <span className="edu-icon edu-user-rounded author-log-ic" />
         Cá nhân
       </a>
@@ -57,15 +72,6 @@ const Header = () => {
   ];
 
   const listMenu3 = [
-    <li>
-      <a href="/user-info">
-        <span className="edu-icon edu-user-rounded author-log-ic" />
-        Khóa học đăng tải
-      </a>
-    </li>,
-  ];
-
-  const listMenu4 = [
     <li onClick={handleLogOut}>
       <a href="/">
         <span className="edu-icon edu-locked author-log-ic" />
@@ -73,22 +79,7 @@ const Header = () => {
       </a>
     </li>,
   ];
-
-  useEffect(() => {
-    switch (role) {
-      case "teacher":
-        setlistMenu(listMenu1.concat(listMenu3, listMenu4));
-        break;
-      case "admin":
-        setlistMenu(listMenu1.concat(listMenu4));
-        break;
-      case "student":
-        setlistMenu(listMenu1.concat(listMenu2, listMenu4));
-        break;
-      default:
-        break;
-    }
-  }, [isAuthenticated, role]);
+  console.log(user);
 
   return (
     <div className="header-advance-area">
@@ -120,52 +111,36 @@ const Header = () => {
                               role="button"
                               aria-expanded="false"
                               className="nav-link dropdown-toggle"
+                              style={{ minWidth: "280px" }}
                             >
-                              <Grid container>
-                                <Grid item xs={3} className={classes.item}>
+                              <div className={classes.div1}>
+                                <div className={classes.div2}>
                                   <Avatar
                                     varient="rounded"
                                     className={classes.avatar}
                                   >
                                     {user ? user.email[0] + user.email[1] : ""}
                                   </Avatar>
-                                </Grid>
-                                <Grid item xs={7} className={classes.item}>
-                                  <Grid container>
-                                    <Grid
-                                      item
-                                      xs={12}
-                                      style={{ textAlign: "right" }}
-                                    >
-                                      <Typography
-                                        className={classes.typography}
-                                      >
-                                        {user && user.name}
-                                      </Typography>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={12}
-                                      style={{ textAlign: "right" }}
-                                    >
-                                      <Typography
-                                        className={classes.typography}
-                                      >
-                                        {user && user.role}
-                                      </Typography>
-                                    </Grid>
-                                  </Grid>
-                                </Grid>
-                                <Grid item xs={2} className={classes.item}>
+                                </div>
+                                <div className={classes.div3}>
+                                  <Typography className={classes.typography}>
+                                    {user && user.name}
+                                    {" - "}
+                                    {role}
+                                  </Typography>
+                                </div>
+                                <div className={classes.div4}>
                                   <i className="fa fa-angle-down edu-icon edu-down-arrow" />
-                                </Grid>
-                              </Grid>
+                                </div>
+                              </div>
                             </a>
                             <ul
                               role="menu"
                               className="dropdown-header-top author-log dropdown-menu animated zoomIn"
                             >
-                              {listMenu.map((row) => row)}
+                              {listMenu.map((row, index) => (
+                                <Fragment key={index}>{row}</Fragment>
+                              ))}
                             </ul>
                           </li>
                         </ul>
