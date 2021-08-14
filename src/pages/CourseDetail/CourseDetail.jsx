@@ -1,19 +1,17 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
 import StarRatings from 'react-star-ratings'
 import CourseItem from '../../parts/components/CourseItem/CourseItem'
-import Comment from '../../parts/components/Comments/Comment'
-import CommentItem from '../../parts/components/Comments/CommentItem'
-import Lesson from '../../parts/components/Lesson/Lesson'
-import PurchaseCourse from '../../parts/components/Modals/PurchaseCourse'
+import Comment from './containers/Comment/Comment'
+import CommentItem from './containers/CommentItem/CommentItem'
+import Lesson from './containers/Lesson/Lesson'
+import PurchaseCourse from './containers/PurchaseCourse/PurchaseCourse'
 import Heart from 'react-heart'
 import { getCourseByIdApi, getMostSubscribedCoursesApi, updateCourseViewApi } from '../../services/api/courseApi'
 import { useParams } from 'react-router-dom'
-import { getSubscribersByCourseId } from '../../services/api/subscriberApi'
+import { getSubscribersByCourseIdApi } from '../../services/api/subscriberApi'
 import { useRecoilValue } from "recoil";
 import roleState from '../../state/roleState';
 import { getVideosByCourseId } from '../../services/api/videoApi'
-import subscriberState from '../../state/subscriberState'
 import { addWatchListApi, deleteWatchListApi, getWatchListApi } from '../../services/api/watchListApi'
 import { createBrowserHistory } from "history";
 import jwtEnum from '../../utils/enums/jwtEnum';
@@ -22,7 +20,7 @@ import apiStateEnum from '../../utils/enums/apiStateEnum'
 const CourseDetail = () => {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
-  const [subscribers, setSubscribers] = useRecoilState(subscriberState);
+  const [subscribers, setSubscribers] = useState(null);
   const [videos, setVideos] = useState(null);
   const [mostSubscribedCourse, setMostSubscribedCourse] = useState(null);
   const role = useRecoilValue(roleState);
@@ -44,10 +42,10 @@ const CourseDetail = () => {
             setWatchList(result)
           })
           setUpdateDay(new Date(result.data.updatedAt));
-          getMostSubscribedCoursesApi({ id: id, category_id: result.category_id }).then(result => {
+          getMostSubscribedCoursesApi({ id: id, category_id: result.data.category_id }).then(result => {
             setMostSubscribedCourse(result);
           });
-          getSubscribersByCourseId(id).then(result => {
+          getSubscribersByCourseIdApi(id).then(result => {
             setSubscribers(result);
           });
           getVideosByCourseId(id).then(result => {
@@ -157,7 +155,7 @@ const CourseDetail = () => {
                     {/* Dialog mua khóa học */}
                     <div className="row">
                       <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        {subscribers && subscribers.is_subscribed ? '' : <PurchaseCourse id={id} />}
+                        {subscribers && subscribers.is_subscribed ? '' : <PurchaseCourse id={id} subscribers={subscribers} setSubscribers={setSubscribers} />}
                       </div>
                     </div>
 
@@ -179,7 +177,7 @@ const CourseDetail = () => {
                       && subscribers
                       && subscribers.is_subscribed
                       && !subscribers.is_rated
-                      && <Comment id={id} />}
+                      && <Comment id={id} subscribers={subscribers} setSubscribers={setSubscribers}/>}
                   </div>
                 </div>
               </div>

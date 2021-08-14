@@ -54,7 +54,7 @@ const CourseList = () => {
                       </thead>
                       <tbody>
                         {courses && courses.courses && courses.courses.map((course, index) => {
-                          return <Fragment key={index}>
+                          return <Fragment key={course._id}>
                             <CourseRow course={course} index={index + 1 + (page - 1) * 5} />
                             <UpdateCourseModal course={course} index={index + 1 + (page - 1) * 5} forceUpdate={forceUpdate} />
                           </Fragment>

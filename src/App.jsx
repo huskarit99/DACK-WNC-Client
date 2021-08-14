@@ -16,6 +16,7 @@ import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
 import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
 import CategoryList from "./pages/Admin/CategoryList/CategoryList";
 import WatchList from "./pages/Students/WatchList/WatchList";
+import SubscribedCourseList from "./pages/Students/SubscribedCourseList/SubscriedCourseList";
 
 const App = () => {
   useEffect(() => {
@@ -65,6 +66,7 @@ const App = () => {
           <PrivateRoute exact path="/teachers" component={TeacherList}/>
           {/* user */}
           <PrivateRoute exact path="/watch-list" component={WatchList}/>
+          <PrivateRoute exact path="/subscribed-courses" component={SubscribedCourseList}/>
           <Route exact path="/courses/category" component={CoursesListByCategory} />
           <Route exact path="/course/:id" component={CourseDetail} />
           <Route exact path="/courses/search" component={CoursesListBySearch} />

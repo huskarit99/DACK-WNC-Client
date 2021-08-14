@@ -59,7 +59,7 @@ const TeacherList = () => {
                       </tr></thead>
                       <tbody>
                         {teacherList && teacherList.users && teacherList.users.map((teacher, index) => {
-                          return <Fragment key={index}>
+                          return <Fragment key={teacher._id}>
                             <TeacherRow teacher={teacher} index={index + 1 + (page - 1) * 5} />
                             <UpdateTeacherModal teacher={teacher} index={index + 1 + (page - 1) * 5} forceUpdate={forceUpdate} />
                           </Fragment>

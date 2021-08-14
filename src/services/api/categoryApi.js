@@ -6,7 +6,7 @@ const ENDPOINT = 'http://localhost:5000/api/category-controller/';
 Axios.defaults.withCredentials = true;
 
 const getCategoriesApi = async() => {
-  const PATH = ENDPOINT + 'category/menu';
+  const PATH = ENDPOINT + 'categories';
   try {
     const result = await Axios({
       method: 'get',
@@ -19,7 +19,7 @@ const getCategoriesApi = async() => {
 }
 
 const getCategoriesByPageApi = async(page) => {
-  const PATH = ENDPOINT + `category/category?page=${page}`;
+  const PATH = ENDPOINT + `categories/${page}`;
   try {
     const result = await Axios({
       method: 'get',
@@ -60,7 +60,7 @@ const getCategoriesByPageApi = async(page) => {
 }
 
 const addRootCategoryApi = async(name) => {
-  const PATH = ENDPOINT + "category/add/root-category";
+  const PATH = ENDPOINT + "root-category";
   try {
     await Axios({
       method: 'post',
@@ -70,7 +70,8 @@ const addRootCategoryApi = async(name) => {
       }
     });
     return {
-      isSuccess: true
+      isSuccess: true,
+      message: 'Thêm lĩnh vực cha thành công'
     }
   } catch (error) {
     let message = "";
@@ -112,8 +113,8 @@ const addRootCategoryApi = async(name) => {
   }
 }
 
-const updateRootCategoryApi = async(id, name) => {
-  const PATH = ENDPOINT + "category/update/root-category";
+const updateNameRootCategoryApi = async(id, name) => {
+  const PATH = ENDPOINT + "root-category/name";
   try {
     await Axios({
       method: 'put',
@@ -124,7 +125,8 @@ const updateRootCategoryApi = async(id, name) => {
       }
     });
     return {
-      isSuccess: true
+      isSuccess: true,
+      message: 'Chỉnh sửa lĩnh vực cha thành công'
     }
   } catch (error) {
     let message = "";
@@ -142,6 +144,11 @@ const updateRootCategoryApi = async(id, name) => {
       case jwtEnum.TOKEN_IS_EXPIRED:
         {
           message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      case categoryEnum.ID_IS_EMPTY:
+        {
+          message = 'ID danh mục cha trống';
           break;
         }
       case categoryEnum.ROOT_CATEGORY_NAME_IS_EMPTY:
@@ -171,12 +178,16 @@ const updateRootCategoryApi = async(id, name) => {
   }
 }
 
-const deleteRootCategoryApi = async(id) => {
-  const PATH = ENDPOINT + `category/delete/root-category/${id}`;
+const updateStatusRootCategoryApi = async(id, status) => {
+  const PATH = ENDPOINT + `root-category/status`;
   try {
     await Axios({
-      method: 'delete',
+      method: 'put',
       url: PATH,
+      data: {
+        id: id,
+        status: status
+      }
     });
     return {
       isSuccess: true
@@ -197,6 +208,16 @@ const deleteRootCategoryApi = async(id) => {
       case jwtEnum.TOKEN_IS_EXPIRED:
         {
           message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      case categoryEnum.ID_IS_EMPTY:
+        {
+          message = 'ID danh mục cha trống';
+          break;
+        }
+      case categoryEnum.STATUS_IS_EMPTY:
+        {
+          message = 'Trạng thái danh mục cha rỗng';
           break;
         }
       case categoryEnum.ROOT_CATEGORY_HAS_BEEN_DELETED:
@@ -227,7 +248,7 @@ const deleteRootCategoryApi = async(id) => {
 }
 
 const addCategoryApi = async(id, name) => {
-  const PATH = ENDPOINT + "category/add/category";
+  const PATH = ENDPOINT + "category";
   try {
     await Axios({
       method: 'post',
@@ -238,7 +259,8 @@ const addCategoryApi = async(id, name) => {
       }
     });
     return {
-      isSuccess: true
+      isSuccess: true,
+      message: 'Thêm lĩnh vực con thành công'
     }
   } catch (error) {
     let message = "";
@@ -280,7 +302,7 @@ const addCategoryApi = async(id, name) => {
         }
       case categoryEnum.CATEGORY_NAME_IS_UNAVAILABLE:
         {
-          message = 'Tên danh mục con không khả dụng !!!';
+          message = 'Tên danh mục con đã tồn tại !!!';
           break;
         }
       default:
@@ -295,8 +317,8 @@ const addCategoryApi = async(id, name) => {
   }
 }
 
-const updateCategoryApi = async(id, name) => {
-  const PATH = ENDPOINT + "category/update/category";
+const updateNameCategoryApi = async(id, name) => {
+  const PATH = ENDPOINT + "category/name";
   try {
     await Axios({
       method: 'put',
@@ -304,6 +326,71 @@ const updateCategoryApi = async(id, name) => {
       data: {
         id: id,
         name: name
+      }
+    });
+    return {
+      isSuccess: true,
+      message: 'Chỉnh sửa lĩnh vực con thành công'
+    }
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      case categoryEnum.ID_IS_EMPTY:
+        {
+          message = 'ID danh mục con trống !!!';
+          break;
+        }
+      case categoryEnum.CATEGORY_NAME_IS_EMPTY:
+        {
+          message = 'Tên danh mục con trống !!!';
+          break;
+        }
+      case categoryEnum.CATEGORY_NAME_IS_UNAVAILABLE:
+        {
+          message = 'Tên danh mục con đã tồn tại !!!';
+          break;
+        }
+      case categoryEnum.ID_IS_INVALID:
+        {
+          message = 'ID danh mục con không hợp lệ !!!';
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
+  }
+}
+
+const updateStatusCategoryApi = async(id, status) => {
+  const PATH = ENDPOINT + 'category/status';
+  try {
+    await Axios({
+      method: 'put',
+      url: PATH,
+      data: {
+        id: id,
+        status: status
       }
     });
     return {
@@ -327,59 +414,14 @@ const updateCategoryApi = async(id, name) => {
           message = jwtEnum.TOKEN_IS_EXPIRED;
           break;
         }
-      case categoryEnum.CATEGORY_NAME_IS_EMPTY:
+      case categoryEnum.ID_IS_EMPTY:
         {
-          message = 'Tên danh mục con trống !!!';
+          message = 'ID danh mục con trống !!!';
           break;
         }
-      case categoryEnum.CATEGORY_NAME_IS_UNAVAILABLE:
+      case categoryEnum.STATUS_IS_EMPTY:
         {
-          message = 'Tên danh mục con không khả dụng !!!';
-          break;
-        }
-      case categoryEnum.ID_IS_INVALID:
-        {
-          message = 'ID danh mục con không hợp lệ !!!';
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
-    }
-    return {
-      isSuccess: false,
-      message: message,
-    };
-  }
-}
-
-const deleteCategoryApi = async(id) => {
-  const PATH = ENDPOINT + `category/delete/category/${id}`;
-  try {
-    await Axios({
-      method: 'delete',
-      url: PATH,
-    });
-    return {
-      isSuccess: true
-    }
-  } catch (error) {
-    let message = "";
-    if (!error || !error.response || !error.response.data) {
-      return {
-        isSuccess: false,
-        message: "Server Error !!!",
-      };
-    }
-    switch (error.response.data.code) {
-      case jwtEnum.NO_TOKEN:
-        {
-          message = jwtEnum.NO_TOKEN;
-        }
-      case jwtEnum.TOKEN_IS_EXPIRED:
-        {
-          message = jwtEnum.TOKEN_IS_EXPIRED;
+          message = 'Trạng thái danh mục con trống !!!';
           break;
         }
       case categoryEnum.CATEGORY_HAS_BEEN_DELETED:
@@ -413,9 +455,9 @@ export {
   getCategoriesApi,
   getCategoriesByPageApi,
   addRootCategoryApi,
-  updateRootCategoryApi,
-  deleteRootCategoryApi,
+  updateNameRootCategoryApi,
+  updateStatusRootCategoryApi,
   addCategoryApi,
-  updateCategoryApi,
-  deleteCategoryApi
+  updateNameCategoryApi,
+  updateStatusCategoryApi
 }
