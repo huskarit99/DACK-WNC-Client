@@ -39,6 +39,8 @@ const CourseItem = ({ course, forceUpdate }) => {
         </div>
         <div className="product-buttons">
           <a href={`/course/` + course._id}><button type="button" className="button-default cart-btn">Chi tiết</button></a>
+          {course && course.newest && <p style={{float:'right', color: 'green'}}>Mới nhất</p>}
+          {course && course.best_seller && <p style={{float:'right', color: 'red'}}>Bán chạy</p>}
         </div>
       </div>
     </div>
