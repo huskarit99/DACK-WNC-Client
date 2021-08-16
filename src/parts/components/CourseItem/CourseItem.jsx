@@ -5,9 +5,12 @@ import { useLocation } from 'react-router-dom'
 import { deleteWatchListApi } from '../../../services/api/watchListApi'
 import jwtEnum from '../../../utils/enums/jwtEnum'
 import { createBrowserHistory } from "history";
+import { useRecoilValue } from "recoil";
+import roleState from '../../../state/roleState'
 const CourseItem = ({ course, forceUpdate }) => {
   const location = useLocation();
   const history = createBrowserHistory({ forceRefresh: true });
+  const role = useRecoilValue(roleState);
   const handleClick = () => {
     deleteWatchListApi(course._id).then(result => {
       if (result.isSuccess) {
@@ -39,8 +42,12 @@ const CourseItem = ({ course, forceUpdate }) => {
         </div>
         <div className="product-buttons">
           <a href={`/course/` + course._id}><button type="button" className="button-default cart-btn">Chi tiết</button></a>
-          {course && course.newest && <p style={{float:'right', color: 'green'}}>Mới nhất</p>}
-          {course && course.best_seller && <p style={{float:'right', color: 'red'}}>Bán chạy</p>}
+          {course && course.newest && <p style={{ float: 'right', color: 'green' }}>Mới nhất</p>}
+          {course && course.best_seller && <p style={{ float: 'right', color: 'red' }}>Bán chạy</p>}
+          {role === 'student' && location.pathname.includes('/subscribed-courses') &&
+            course.is_completed ? <p style={{ float: 'right', color: 'green' }}>Hoàn thành</p>
+            : <p style={{ float: 'right', color: 'red' }}>Chưa hoàn thành</p>
+          }
         </div>
       </div>
     </div>
