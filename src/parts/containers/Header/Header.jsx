@@ -79,7 +79,6 @@ const Header = () => {
       </a>
     </li>,
   ];
-  console.log(user);
 
   return (
     <div className="header-advance-area">

@@ -131,6 +131,11 @@ const EditCourse = () => {
                                 <select
                                   onClick={(e) => setCategoryId(e.target.value)}
                                   className="form-control custom-select-value"
+                                  value={
+                                    course && course.category_id
+                                      ? course.category_id
+                                      : ""
+                                  }
                                   defaultValue={
                                     course && course.category_id
                                       ? course.category_id
@@ -198,7 +203,6 @@ const EditCourse = () => {
                                     reader.readAsDataURL(files[0]);
                                     reader.onload = () => {
                                       baseURL = reader.result;
-                                      console.log(baseURL);
                                       resolve(baseURL);
                                     };
                                   });

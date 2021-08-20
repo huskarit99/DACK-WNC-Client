@@ -10,7 +10,6 @@ const Home = (props) => {
 
   useEffect(() => {
     getAllByCriteria().then((result) => {
-      console.log(result);
       setCriteria(result);
     });
   }, []);
