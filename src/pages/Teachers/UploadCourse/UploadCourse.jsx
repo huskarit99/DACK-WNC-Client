@@ -1,23 +1,27 @@
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import { Editor } from "react-draft-wysiwyg";
-import React, { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
 import { EditorState, convertToRaw } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import React, { useState, useEffect, useRef } from "react";
 
 import "./style.css";
+import { addOne } from "../../../services/api/courseApi";
+import colorAlertEnum from "../../../utils/enums/colorAlertEnum";
 import { getCategoriesForTeacherApi } from "../../../services/api/categoryApi";
 
 const UploadCourse = () => {
   const nameRef = useRef(null);
   const priceRef = useRef(null);
+  const history = useHistory();
   const [image, setImage] = useState("");
+  const [detail, setDetail] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
-  const [detail, setDetail] = useState("");
   const [description, setDescription] = useState("");
-
+  const [messageAlert, setMessageAlert] = useState("");
   const [detailState, setDetailState] = useState(EditorState.createEmpty());
   const [descriptionState, setDescriptionState] = useState(
     EditorState.createEmpty()
@@ -44,13 +48,23 @@ const UploadCourse = () => {
     setDetailState(detailState);
   };
 
-  const handleUpload = (e) => {
-    console.log(nameRef.current.value);
-    console.log(categoryId);
-    console.log(priceRef.current.value);
-    console.log(image);
-    console.log(detail);
-    console.log(description);
+  const handleUpload = () => {
+    addOne({
+      name: nameRef.current.value,
+      categoryId: categoryId,
+      price: priceRef.current.value,
+      image: image,
+      detail: detail,
+      description: description,
+    }).then((result) => {
+      if (result.isSuccess) {
+        history.push("/teacher/courses");
+      } else {
+        setMessageAlert(
+          <p style={{ color: colorAlertEnum.ERROR }}>{result.message}</p>
+        );
+      }
+    });
   };
 
   return (
@@ -165,6 +179,7 @@ const UploadCourse = () => {
                             </div>
                           </div>
                         </div>
+                        {messageAlert}
                         <div className="row">
                           <div className="col-lg-12">
                             <div className="payment-adress">

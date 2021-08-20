@@ -12,25 +12,25 @@ import {
 const ENDPOINT = "http://localhost:5000/api/user-controller/";
 Axios.defaults.withCredentials = true;
 
-const authTokenApi = async() => {
+const authTokenApi = async () => {
   const PATH = ENDPOINT + "auth/token";
   try {
     const result = await Axios({
       method: "post",
       url: PATH,
     });
-    return ({
+    return {
       state: stateOfAuthentication.SUCCESS,
-      role: result.data.role
-    });
+      role: result.data.role,
+    };
   } catch (error) {
-    return ({
+    return {
       state: stateOfAuthentication.FAIL,
-      role: ""
-    });
+      role: "",
+    };
   }
 };
-const getUsersByRoleNameApi = async(role, page) => {
+const getUsersByRoleNameApi = async (role, page) => {
   const PATH = ENDPOINT + `users?rolename=${role}&page=${page}`;
   try {
     const response = await Axios({
@@ -39,8 +39,8 @@ const getUsersByRoleNameApi = async(role, page) => {
     });
     return {
       isSuccess: true,
-      data: response.data
-    }
+      data: response.data,
+    };
   } catch (error) {
     let message = "";
     if (!error || !error.response || !error.response.data) {
@@ -50,20 +50,17 @@ const getUsersByRoleNameApi = async(role, page) => {
       };
     }
     switch (error.response.data.code) {
-      case jwtEnum.NO_TOKEN:
-        {
-          message = jwtEnum.NO_TOKEN;
-          break;
-        }
-      case jwtEnum.TOKEN_IS_EXPIRED:
-        {
-          message = jwtEnum.TOKEN_IS_EXPIRED;
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
+      case jwtEnum.NO_TOKEN: {
+        message = jwtEnum.NO_TOKEN;
+        break;
+      }
+      case jwtEnum.TOKEN_IS_EXPIRED: {
+        message = jwtEnum.TOKEN_IS_EXPIRED;
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
     }
     return {
       isSuccess: false,
@@ -71,7 +68,7 @@ const getUsersByRoleNameApi = async(role, page) => {
     };
   }
 };
-const getSelfInfoApi = async() => {
+const getSelfInfoApi = async () => {
   try {
     const PATH = ENDPOINT + "user";
     const response = await Axios({
@@ -129,7 +126,7 @@ const getSelfInfoApi = async() => {
 //     };
 //   }
 // };
-const registerApi = async(email, name, password, rePassword) => {
+const registerApi = async (email, name, password, rePassword) => {
   const PATH = ENDPOINT + "user";
   let message = "";
   try {
@@ -155,55 +152,45 @@ const registerApi = async(email, name, password, rePassword) => {
         message: "Server Error !!!",
       };
     switch (error.response.data.code) {
-      case registerResponseEnum.NAME_IS_EMPTY:
-        {
-          message = "Name must be not empty !!!";
-          break;
-        }
-      case registerResponseEnum.EMAIL_IS_EMPTY:
-        {
-          message = "Email must be not empty !!!";
-          break;
-        }
-      case registerResponseEnum.PASSWORD_IS_EMPTY:
-        {
-          message = "Password must be not empty !!!";
-          break;
-        }
-      case registerResponseEnum.EMAIL_IS_NOT_VALID:
-        {
-          message = "Email went wrong !!!";
-          break;
-        }
-      case registerResponseEnum.EMAIL_IS_UNAVAILABLE:
-        {
-          message = "Email is unavailable !!!";
-          break;
-        }
-      case registerResponseEnum.PASSWORD_IS_LESS_THAN_6_LETTERS:
-        {
-          message = "Password must be not less than 6 letters !!!";
-          break;
-        }
-      case registerResponseEnum.PASSWORD_DOES_NOT_MATCH:
-        {
-          message = "Password does not match !!!";
-          break;
-        }
-      case registerResponseEnum.SERVER_ERROR:
-        {
-          message = "Server Error !!!";
-          break;
-        }
-      case stateOfAuthentication.FAIL:
-        {
-          message = "Access denied !!!";
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
+      case registerResponseEnum.NAME_IS_EMPTY: {
+        message = "Name must be not empty !!!";
+        break;
+      }
+      case registerResponseEnum.EMAIL_IS_EMPTY: {
+        message = "Email must be not empty !!!";
+        break;
+      }
+      case registerResponseEnum.PASSWORD_IS_EMPTY: {
+        message = "Password must be not empty !!!";
+        break;
+      }
+      case registerResponseEnum.EMAIL_IS_NOT_VALID: {
+        message = "Email went wrong !!!";
+        break;
+      }
+      case registerResponseEnum.EMAIL_IS_UNAVAILABLE: {
+        message = "Email is unavailable !!!";
+        break;
+      }
+      case registerResponseEnum.PASSWORD_IS_LESS_THAN_6_LETTERS: {
+        message = "Password must be not less than 6 letters !!!";
+        break;
+      }
+      case registerResponseEnum.PASSWORD_DOES_NOT_MATCH: {
+        message = "Password does not match !!!";
+        break;
+      }
+      case registerResponseEnum.SERVER_ERROR: {
+        message = "Server Error !!!";
+        break;
+      }
+      case stateOfAuthentication.FAIL: {
+        message = "Access denied !!!";
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
     }
     return {
       isSuccess: false,
@@ -211,7 +198,7 @@ const registerApi = async(email, name, password, rePassword) => {
     };
   }
 };
-const loginApi = async(email, password) => {
+const loginApi = async (email, password) => {
   const path = ENDPOINT + "auth/user";
   try {
     await Axios({
@@ -234,40 +221,33 @@ const loginApi = async(email, password) => {
         message: "Server Error !!!",
       };
     switch (error.response.data.code) {
-      case loginResponseEnum.EMAIL_IS_EMPTY:
-        {
-          message = "Email must be not empty !!!";
-          break;
-        }
-      case loginResponseEnum.EMAIL_IS_NOT_VALID:
-        {
-          message = "Email is invalid !!!";
-          break;
-        }
-      case loginResponseEnum.PASSWORD_IS_EMPTY:
-        {
-          message = "Password must be not empty !!!";
-          break;
-        }
-      case loginResponseEnum.WRONG_EMAIL:
-        {
-          message = "Email went wrong !!!";
-          break;
-        }
-      case loginResponseEnum.WRONG_PASSWORD:
-        {
-          message = "Password went wrong !!!";
-          break;
-        }
-      case loginResponseEnum.SERVER_ERROR:
-        {
-          message = "Server Error !!!";
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
+      case loginResponseEnum.EMAIL_IS_EMPTY: {
+        message = "Email must be not empty !!!";
+        break;
+      }
+      case loginResponseEnum.EMAIL_IS_NOT_VALID: {
+        message = "Email is invalid !!!";
+        break;
+      }
+      case loginResponseEnum.PASSWORD_IS_EMPTY: {
+        message = "Password must be not empty !!!";
+        break;
+      }
+      case loginResponseEnum.WRONG_EMAIL: {
+        message = "Email went wrong !!!";
+        break;
+      }
+      case loginResponseEnum.WRONG_PASSWORD: {
+        message = "Password went wrong !!!";
+        break;
+      }
+      case loginResponseEnum.SERVER_ERROR: {
+        message = "Server Error !!!";
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
     }
     return {
       isSuccess: false,
@@ -276,7 +256,7 @@ const loginApi = async(email, password) => {
   }
 };
 
-const logoutApi = async() => {
+const logoutApi = async () => {
   const PATH = ENDPOINT + "refresh-token";
   try {
     await Axios({
@@ -288,25 +268,25 @@ const logoutApi = async() => {
     };
   } catch (error) {
     return {
-      isSuccess: false
-    }
+      isSuccess: false,
+    };
   }
 };
 
-const updateUserByIdApi = async(id, status) => {
+const updateUserByIdApi = async (id, status) => {
   const PATH = ENDPOINT + `user`;
   try {
     await Axios({
-      method: 'put',
+      method: "put",
       url: PATH,
       data: {
         id: id,
-        status: status
-      }
+        status: status,
+      },
     });
     return {
-      isSuccess: true
-    }
+      isSuccess: true,
+    };
   } catch (error) {
     let message = "";
     if (!error || !error.response || !error.response.data) {
@@ -316,44 +296,40 @@ const updateUserByIdApi = async(id, status) => {
       };
     }
     switch (error.response.data.code) {
-      case jwtEnum.NO_TOKEN:
-        {
-          message = jwtEnum.NO_TOKEN;
-          break;
-        }
-      case jwtEnum.TOKEN_IS_EXPIRED:
-        {
-          message = jwtEnum.TOKEN_IS_EXPIRED;
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
+      case jwtEnum.NO_TOKEN: {
+        message = jwtEnum.NO_TOKEN;
+        break;
+      }
+      case jwtEnum.TOKEN_IS_EXPIRED: {
+        message = jwtEnum.TOKEN_IS_EXPIRED;
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
     }
     return {
       isSuccess: false,
       message: message,
     };
   }
-}
+};
 
-const addTeacherApi = async(email, name) => {
-  const PATH = ENDPOINT + 'teacher';
+const addTeacherApi = async (email, name) => {
+  const PATH = ENDPOINT + "teacher";
   try {
     await Axios({
-      method: 'post',
+      method: "post",
       url: PATH,
       data: {
         email: email,
         name: name,
-      }
+      },
     });
     return {
       isSuccess: true,
-      message: "Thêm giảng viên thành công"
-    }
-
+      message: "Thêm giảng viên thành công",
+    };
   } catch (error) {
     let message = "";
     if (!error || !error.response || !error.response.data) {
@@ -363,48 +339,40 @@ const addTeacherApi = async(email, name) => {
       };
     }
     switch (error.response.data.code) {
-      case addTeacherResponseEnum.EMAIL_IS_UNAVAILABLE:
-        {
-          message = "Email giảng viên đã tồn tại !!!";
-          break;
-        }
-      case addTeacherResponseEnum.EMAIL_IS_EMPTY:
-        {
-          message = "Email giảng viên rỗng !!!";
-          break;
-        }
-      case addTeacherResponseEnum.NAME_IS_EMPTY:
-        {
-          message = "Tên giảng viên rỗng !!!";
-          break;
-        }
-      case addTeacherResponseEnum.SERVER_ERROR:
-        {
-          message = "Server Error !!!";
-          break;
-        }
-      case jwtEnum.NO_TOKEN:
-        {
-          message = jwtEnum.NO_TOKEN;
-          break;
-        }
-      case jwtEnum.TOKEN_IS_EXPIRED:
-        {
-          message = jwtEnum.TOKEN_IS_EXPIRED;
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
+      case addTeacherResponseEnum.EMAIL_IS_UNAVAILABLE: {
+        message = "Email giảng viên đã tồn tại !!!";
+        break;
+      }
+      case addTeacherResponseEnum.EMAIL_IS_EMPTY: {
+        message = "Email giảng viên rỗng !!!";
+        break;
+      }
+      case addTeacherResponseEnum.NAME_IS_EMPTY: {
+        message = "Tên giảng viên rỗng !!!";
+        break;
+      }
+      case addTeacherResponseEnum.SERVER_ERROR: {
+        message = "Server Error !!!";
+        break;
+      }
+      case jwtEnum.NO_TOKEN: {
+        message = jwtEnum.NO_TOKEN;
+        break;
+      }
+      case jwtEnum.TOKEN_IS_EXPIRED: {
+        message = jwtEnum.TOKEN_IS_EXPIRED;
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
     }
     return {
       isSuccess: false,
       message: message,
     };
-
   }
-}
+};
 export {
   authTokenApi,
   getUsersByRoleNameApi,
@@ -413,6 +381,6 @@ export {
   logoutApi,
   getSelfInfoApi,
   updateUserByIdApi,
-  addTeacherApi
+  addTeacherApi,
   // updateUserApi,
 };

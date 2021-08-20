@@ -1,9 +1,10 @@
-import React, { useEffect, useState, Fragment } from "react";
 import { useLocation } from "react-router";
-import { getCoursesByCategoryIdApi } from "../../services/api/courseApi";
-import CourseItem from "../../parts/components/CourseItem/CourseItem";
-import Pagination from "./containers/Pagination/Pagination";
+import React, { useEffect, useState, Fragment } from "react";
+
 import apiStateEnum from "../../utils/enums/apiStateEnum";
+import Pagination from "./containers/Pagination/Pagination";
+import CourseItem from "../../parts/components/CourseItem/CourseItem";
+import { getCoursesByCategoryIdApi } from "../../services/api/courseApi";
 
 const CoursesListByCategory = () => {
   const location = useLocation();
@@ -12,7 +13,7 @@ const CoursesListByCategory = () => {
   const categoryid = params.get("categoryid");
   const page = Number(params.get("page")) || 1;
   const [courses, setCourses] = useState(null);
-  const [messageAlert, setMessageAlert] = useState('');
+  const [messageAlert, setMessageAlert] = useState("");
   const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
 
   useEffect(() => {
@@ -29,9 +30,10 @@ const CoursesListByCategory = () => {
       });
     }
   }, [useLocation()]);
+
   return (
     <Fragment>
-      {apiState === apiStateEnum.SUCCESS ?
+      {apiState === apiStateEnum.SUCCESS ? (
         <div className="courses-area">
           <div className="container-fluid">
             <div className="row">
@@ -46,19 +48,29 @@ const CoursesListByCategory = () => {
                 page_number={courses && courses.page_number}
                 pathName={pathName}
                 page={page}
-                categoryid={categoryid} />
+                categoryid={categoryid}
+              />
             </div>
           </div>
         </div>
-        : apiState === apiStateEnum.FAIL ?
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div className="alert alert-danger alert-mg-b alert-st-four" role="alert">
-              <i className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none" aria-hidden="true" />
-              <p className="message-mg-rt message-alert-none"><strong>Oh!</strong> {messageAlert}</p>
-            </div>
-          </div> :
-          <Fragment />
-      }
+      ) : apiState === apiStateEnum.FAIL ? (
+        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div
+            className="alert alert-danger alert-mg-b alert-st-four"
+            role="alert"
+          >
+            <i
+              className="fa fa-times edu-danger-error admin-check-pro admin-check-pro-none"
+              aria-hidden="true"
+            />
+            <p className="message-mg-rt message-alert-none">
+              <strong>Oh!</strong> {messageAlert}
+            </p>
+          </div>
+        </div>
+      ) : (
+        <Fragment />
+      )}
     </Fragment>
   );
 };
