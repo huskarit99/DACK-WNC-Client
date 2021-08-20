@@ -13,13 +13,25 @@ const routeAdmin = [
   "/teachers",
   "/profile",
 ];
-const routeTeacher = ["/profile", "/upload-course", "/teacher/courses"];
+const routeTeacher = [
+  "/profile",
+  "/upload-course",
+  "/teacher/courses",
+  "/teacher/course",
+];
 const routeStudent = ["/watch-list", "/profile", "/subscribed-courses"];
 
 const roleBelongToRoute = {
   teacher: routeTeacher,
   admin: routeAdmin,
   student: routeStudent,
+};
+
+const checkRouteByRole = (routes, pathname) => {
+  for (let i = 0; i < routes.length; i++) {
+    if (pathname.includes(routes[i])) return true;
+  }
+  return false;
 };
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -50,7 +62,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               return <Redirect to="/" />;
             } else {
               if (isAuthenticated === stateOfAuthentication.SUCCESS) {
-                if (roleBelongToRoute[role].includes(location.pathname)) {
+                if (
+                  checkRouteByRole(roleBelongToRoute[role], location.pathname)
+                ) {
                   return <Component />;
                 }
               }
