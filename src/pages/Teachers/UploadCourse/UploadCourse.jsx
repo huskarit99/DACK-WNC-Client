@@ -132,7 +132,7 @@ const UploadCourse = () => {
                               dropzoneText={
                                 "Drag and drop an image here or click"
                               }
-                              filesLimit="1"
+                              filesLimit={1}
                               onChange={(files) => {
                                 if (files && files.length > 0)
                                   return new Promise((resolve) => {

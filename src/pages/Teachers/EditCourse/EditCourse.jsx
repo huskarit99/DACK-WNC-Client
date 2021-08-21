@@ -4,20 +4,29 @@ import { useParams } from "react-router-dom";
 import { Editor } from "react-draft-wysiwyg";
 import { useHistory } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
-import { EditorState, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  convertFromHTML,
+  ContentState,
+  convertFromRaw,
+} from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import React, { useState, useEffect, useRef } from "react";
 
 import "./style.css";
 import { Theaters } from "@material-ui/icons";
+import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { getCourseByIdApi } from "../../../services/api/courseApi";
 import { getVideosByCourseId } from "../../../services/api/videoApi";
 import { getCategoriesForTeacherApi } from "../../../services/api/categoryApi";
 
 const EditCourse = () => {
+  const history = useHistory();
   const nameRef = useRef(null);
   const priceRef = useRef(null);
-  const history = useHistory();
+  const discountRef = useRef(null);
+  const isCompletedRef = useRef(null);
   const [image, setImage] = useState("/");
   const [detail, setDetail] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -33,12 +42,10 @@ const EditCourse = () => {
   const [course, setCourse] = useState(null);
   const [videos, setVideos] = useState(null);
   const [updateDay, setUpdateDay] = useState(new Date());
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
     getCategoriesForTeacherApi().then((result) => {
       if (result.isSuccess) {
-        setCategoryId(result.categories[0]._id);
         setCategories(result.categories);
       }
     });
@@ -48,6 +55,19 @@ const EditCourse = () => {
     getCourseByIdApi(id).then((result) => {
       if (result.isSuccess) {
         setCourse(result.data);
+        setCategoryId(result.data.category_id);
+        let blocksFromHTML = convertFromHTML(result.data.detail);
+        let state = ContentState.createFromBlockArray(
+          blocksFromHTML.contentBlocks,
+          blocksFromHTML.entityMap
+        );
+        setDetailState(EditorState.createWithContent(state));
+        blocksFromHTML = convertFromHTML(result.data.description);
+        state = ContentState.createFromBlockArray(
+          blocksFromHTML.contentBlocks,
+          blocksFromHTML.entityMap
+        );
+        setDescriptionState(EditorState.createWithContent(state));
         setImage(result.data.image);
         setMessageAlert("");
         setUpdateDay(new Date(result.data.updatedAt));
@@ -63,9 +83,19 @@ const EditCourse = () => {
     if (type.startsWith("video/")) return <Theaters {...iconProps} />;
   };
 
-  const onEditorStateChange = (editorState) => {
-    // console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-    setEditorState(editorState);
+  const onDescriptionStateChange = (descriptionState) => {
+    setDescription(
+      draftToHtml(convertToRaw(descriptionState.getCurrentContent()))
+    );
+    setDescriptionState(descriptionState);
+  };
+
+  const onDetailStateChange = (detailState) => {
+    setDetail(draftToHtml(convertToRaw(detailState.getCurrentContent())));
+    setDetailState(detailState);
+  };
+  const handleSaveChanges = () => {
+    console.log(isCompletedRef.current.checked);
   };
 
   return (
@@ -131,17 +161,8 @@ const EditCourse = () => {
                                 <select
                                   onClick={(e) => setCategoryId(e.target.value)}
                                   className="form-control custom-select-value"
-                                  value={
-                                    course && course.category_id
-                                      ? course.category_id
-                                      : ""
-                                  }
-                                  defaultValue={
-                                    course && course.category_id
-                                      ? course.category_id
-                                      : ""
-                                  }
-                                  name="account"
+                                  value={categoryId ? categoryId : ""}
+                                  name="category"
                                 >
                                   <option key="">None</option>
                                   {categories.length > 0 &&
@@ -155,10 +176,39 @@ const EditCourse = () => {
                             </div>
                             <div className="form-group">
                               <input
-                                name="price"
+                                name="courseprice"
                                 type="number"
                                 className="form-control"
                                 placeholder="Giá khóa học"
+                                defaultValue={course ? course.price : ""}
+                                ref={priceRef}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <input
+                                name="coursediscount"
+                                type="number"
+                                className="form-control"
+                                placeholder="Khuyến mãi giảm giá khóa học theo phần trăm (VD: 10, 20)"
+                                defaultValue={course ? course.discount : ""}
+                                ref={discountRef}
+                              />
+                            </div>
+                            <div className="form-group">
+                              <FormControlLabel
+                                label="Khóa học đã hoàn thành ?"
+                                labelPlacement="start"
+                                control={
+                                  <Checkbox
+                                    checked={
+                                      course && course.is_completed
+                                        ? true
+                                        : false
+                                    }
+                                    inputRef={isCompletedRef}
+                                    color="primary"
+                                  />
+                                }
                               />
                             </div>
                           </div>
@@ -168,7 +218,7 @@ const EditCourse = () => {
                               dropzoneText={
                                 "Drag and drop an image here or click"
                               }
-                              filesLimit="1"
+                              filesLimit={1}
                               onChange={(files) => {
                                 if (files && files.length > 0) {
                                   return new Promise((resolve) => {
@@ -194,7 +244,7 @@ const EditCourse = () => {
                               dropzoneText={
                                 "Drag and drop an file here or click"
                               }
-                              filesLimit="1"
+                              filesLimit={1}
                               onChange={(files) => {
                                 if (files && files.length > 0)
                                   return new Promise((resolve) => {
@@ -217,10 +267,10 @@ const EditCourse = () => {
                             </div>
                             <div className="form-group">
                               <Editor
-                                editorState={editorState}
+                                editorState={descriptionState}
                                 wrapperClassName="demo-wrapper"
                                 editorClassName="demo-editor"
-                                onEditorStateChange={onEditorStateChange}
+                                onEditorStateChange={onDescriptionStateChange}
                               />
                             </div>
                           </div>
@@ -232,10 +282,10 @@ const EditCourse = () => {
                             </div>
                             <div className="form-group">
                               <Editor
-                                // editorState={editorState}
+                                editorState={detailState}
                                 wrapperClassName="demo-wrapper"
                                 editorClassName="demo-editor"
-                                // onEditorStateChange={onEditorStateChange}
+                                onEditorStateChange={onDetailStateChange}
                               />
                             </div>
                           </div>
@@ -244,10 +294,11 @@ const EditCourse = () => {
                           <div className="col-lg-12">
                             <div className="payment-adress">
                               <button
+                                onClick={handleSaveChanges}
                                 type="submit"
                                 className="btn btn-primary waves-effect waves-light"
                               >
-                                {"Đăng khóa học"}
+                                {"Chỉnh sửa khóa học"}
                               </button>
                             </div>
                           </div>
