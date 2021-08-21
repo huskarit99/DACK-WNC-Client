@@ -32,7 +32,7 @@ const CourseItem = ({ course, forceUpdate }) => {
           <h2>{course.name}</h2>
         </div>
         <div className="courses-alaltic">
-          {course.price}
+          {Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", }).format(course.price)}
         </div>
         <div className="course-des">
           <p><b>Lĩnh vực:</b> {course.category_name}</p>
@@ -44,7 +44,7 @@ const CourseItem = ({ course, forceUpdate }) => {
           <a href={`/course/` + course._id}><button type="button" className="button-default cart-btn">Chi tiết</button></a>
           {course && course.newest && <p style={{ float: 'right', color: 'green' }}>Mới nhất</p>}
           {course && course.best_seller && <p style={{ float: 'right', color: 'red' }}>Bán chạy</p>}
-          {location.pathname.includes('/subscribed-courses') ?
+          {location.pathname.includes('/subscribed-courses') && role === 'student' ?
             course.is_completed ? <p style={{ float: 'right', color: 'green' }}>Hoàn thành</p>
               : <p style={{ float: 'right', color: 'red' }}>Chưa hoàn thành</p>
             : ''}

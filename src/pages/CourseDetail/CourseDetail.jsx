@@ -42,6 +42,9 @@ const CourseDetail = () => {
     getCourseByIdApi(id).then((result) => {
       if (result.isSuccess) {
         setApiState(apiStateEnum.SUCCESS);
+        if (result.data) {
+          result.data.price = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", }).format(result.data.price)
+        }
         setCourse(result.data);
         setMessageAlert("");
         if (result.data) {
