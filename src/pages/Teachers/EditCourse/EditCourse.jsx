@@ -264,7 +264,13 @@ const EditCourse = () => {
                               }}
                             />
                           </div>
-                          <div className="form-group">
+                          <div
+                            className="form-group"
+                            style={{
+                              margin: "180px 0 60px 0",
+                              padding: "100px 0 0 0",
+                            }}
+                          >
                             <ListVideo id={id} />
                           </div>
                           {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">

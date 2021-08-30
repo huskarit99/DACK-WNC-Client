@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import { Button } from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
 import ReactPlayer from "react-player";
 
 const Lesson = ({ video, index }) => {
@@ -28,6 +30,19 @@ const Lesson = ({ video, index }) => {
         ) : (
           "Mua khóa học"
         )}
+      </td>
+      <td style={{ textAlign: "center" }}>
+        <Button
+          style={{
+            padding: "0",
+            margin: "0",
+            width: "20px",
+            height: "20px",
+            minWidth: "0",
+          }}
+        >
+          <Delete />
+        </Button>
       </td>
       <td></td>
       <div
@@ -66,7 +81,8 @@ const Lesson = ({ video, index }) => {
               ref={videoRef}
               playing={show}
               style={{ position: "absolute", top: "0", left: "0" }}
-              url="https://res.cloudinary.com/drzosgsbu/video/upload/v1628703777/zjhqd9chta8dufdfnpcf.mp4"
+              url={video.video}
+              // url="https://res.cloudinary.com/drzosgsbu/video/upload/v1628703777/zjhqd9chta8dufdfnpcf.mp4"
               // url="https://www.youtube.com/watch?v=pSFXJ7teisw"
               controls
               width="100%"

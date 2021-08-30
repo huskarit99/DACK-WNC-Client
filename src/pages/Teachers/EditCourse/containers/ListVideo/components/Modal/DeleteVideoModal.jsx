@@ -1,21 +1,9 @@
 import React from "react";
 import { createBrowserHistory } from "history";
-import jwtEnum from "../../../../../../utils/enums/jwtEnum";
 
 const DeleteVideoModal = ({ video, index, forceUpdate }) => {
   const history = createBrowserHistory({ forceRefresh: true });
-  const handleClick = () => {
-    // updateUserByIdApi(teacher._id, !teacher.status).then((result) => {
-    //   if (result.isSuccess) {
-    //     forceUpdate();
-    //   } else if (
-    //     result.message === jwtEnum.TOKEN_IS_EXPIRED ||
-    //     result.message === jwtEnum.NO_TOKEN
-    //   ) {
-    //     history.push("/login");
-    //   }
-    // });
-  };
+  const handleClick = () => {};
 
   return (
     <div
