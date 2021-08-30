@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 import BreadCome from "../BreadCome/BreadCome";
 import roleState from "../../../state/roleState";
 import { authTokenApi } from "../../../services/api/userApi";
-import { getCategoriesApi } from "../../../services/api/categoryApi";
+import { getCategoriesMenuApi } from "../../../services/api/categoryApi";
 import isAuthenticatedState from "../../../state/isAuthenticatedState";
 import stateOfAuthentication from "../../../utils/enums/stateOfAuthentication";
 
@@ -96,7 +96,7 @@ const MenuBar = (props) => {
         }
       }
     });
-    getCategoriesApi().then((result) => {
+    getCategoriesMenuApi().then((result) => {
       setRootCategories(result);
     });
   }, [setIsAuthenticated, setRootCategories, setRole]);

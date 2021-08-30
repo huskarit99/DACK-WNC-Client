@@ -20,7 +20,7 @@ import StudentList from "./pages/Admin/UsersList/StudentList/StudentList";
 import TeacherList from "./pages/Admin/UsersList/TeacherList/TeacherList";
 import CoursesListBySearch from "./pages/CoursesListBySearch/CoursesListBySearch";
 import CoursesListByCategory from "./pages/CoursesListByCategory/CoursesListByCategory";
-import SubscribedCourseList from "./pages/Students/SubscribedCourseList/SubscriedCourseList";
+import SubscribedCourseList from "./pages/Students/SubscribedCourseList/SubscribedCourseList";
 
 const App = () => {
   useEffect(() => {

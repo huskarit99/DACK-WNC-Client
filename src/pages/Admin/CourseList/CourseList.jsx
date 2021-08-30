@@ -14,13 +14,15 @@ const CourseList = () => {
   const pathName = location.pathname;
   const params = new URLSearchParams(location.search);
   const page = Number(params.get("page")) || 1;
+  const categoryid = params.get('categoryid') || 'none';
+  const teacherid = params.get('teacherid') || 'none';
   const [courses, setCourses] = useState(null);
   const history = createBrowserHistory({ forceRefresh: true });
   const [messageAlert, setMessageAlert] = useState("");
   const [apiState, setApiState] = useState(apiStateEnum.PROCESSING);
 
   useEffect(() => {
-    getCoursesApi(page).then((result) => {
+    getCoursesApi(page, categoryid, teacherid).then((result) => {
       if (result.isSuccess) {
         setCourses(result.data);
         setMessageAlert("");
@@ -87,6 +89,8 @@ const CourseList = () => {
                     page={page}
                     page_number={courses && courses.page_number}
                     pathName={pathName}
+                    teacherid={teacherid}
+                    categoryid={categoryid}
                   />
                 </div>
               </div>

@@ -68,7 +68,50 @@ const getUsersByRoleNameApi = async (role, page) => {
     };
   }
 };
-const getSelfInfoApi = async () => {
+
+const getTeachersApi = async() => {
+  const PATH = ENDPOINT + `teachers`;
+  try {
+    const result = await Axios({
+      method: "get",
+      url: PATH,
+    });
+    return {
+      isSuccess: true,
+      data: result.data.teachers
+    }
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case jwtEnum.NO_TOKEN:
+        {
+          message = jwtEnum.NO_TOKEN;
+          break;
+        }
+      case jwtEnum.TOKEN_IS_EXPIRED:
+        {
+          message = jwtEnum.TOKEN_IS_EXPIRED;
+          break;
+        }
+      default:
+        {
+          message = "Server Error !!!!";
+        }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
+  }
+};
+
+const getSelfInfoApi = async() => {
   try {
     const PATH = ENDPOINT + "user";
     const response = await Axios({
@@ -384,6 +427,7 @@ const updateUserApi = async (email, password, name) => {
 export {
   authTokenApi,
   getUsersByRoleNameApi,
+  getTeachersApi,
   registerApi,
   loginApi,
   logoutApi,
