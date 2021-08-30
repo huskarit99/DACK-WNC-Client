@@ -1,13 +1,16 @@
 import React from "react";
-import { createBrowserHistory } from "history";
+import { deleteVideo } from "../../../../../../../services/api/videoApi";
 
 const DeleteVideoModal = ({ video, index, forceUpdate }) => {
-  const history = createBrowserHistory({ forceRefresh: true });
-  const handleClick = () => {};
+  const handleClick = () => {
+    deleteVideo(video._id).then((res) => {
+      forceUpdate();
+    });
+  };
 
   return (
     <div
-      id={`del` + index}
+      id={`delVideo` + index}
       className="modal modal-edu-general Customwidth-popup-WarningModal fade"
       role="dialog"
     >
@@ -21,7 +24,13 @@ const DeleteVideoModal = ({ video, index, forceUpdate }) => {
           <div className="modal-body">
             <span className="educate-icon educate-warning modal-check-pro information-icon-pro"></span>
             <h2>Cảnh báo!</h2>
-            <p>Bạn có chắc muốn video {video.name} này không?</p>
+            <p>
+              {"Bạn có chắc muốn video "}
+              <span>
+                <strong>{video.title}</strong>
+              </span>
+              {" này không?"}
+            </p>
           </div>
           <div className="modal-footer warning-md">
             <button

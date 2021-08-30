@@ -29,6 +29,8 @@ const Lesson = ({ video, index }) => {
       </td>
       <td style={{ textAlign: "center" }}>
         <Button
+          data-toggle="modal"
+          data-target={"#delVideo" + index}
           style={{
             padding: "0",
             margin: "0",

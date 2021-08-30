@@ -18,6 +18,19 @@ const getVideosByCourseId = async (id) => {
   }
 };
 
+const deleteVideo = async (id) => {
+  const PATH = ENDPOINT + `video/${id}`;
+  try {
+    await Axios({
+      method: "delete",
+      url: PATH,
+    });
+    return { isSuccess: true };
+  } catch (e) {
+    return { isSuccess: false };
+  }
+};
+
 const addVideo = async ({ courseId, video, title, isPreviewed }) => {
   const PATH = ENDPOINT + `video`;
   try {
@@ -66,4 +79,4 @@ const addVideo = async ({ courseId, video, title, isPreviewed }) => {
   }
 };
 
-export { getVideosByCourseId, addVideo };
+export { getVideosByCourseId, addVideo, deleteVideo };
