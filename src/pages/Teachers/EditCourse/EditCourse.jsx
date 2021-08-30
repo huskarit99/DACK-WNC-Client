@@ -1,27 +1,25 @@
 import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Editor } from "react-draft-wysiwyg";
-import { useHistory } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
 import {
   EditorState,
   convertToRaw,
   convertFromHTML,
   ContentState,
-  convertFromRaw,
 } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 
 import "./style.css";
 import ListVideo from "./containers/ListVideo/ListVideo";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
-import { getCourseByIdApi } from "../../../services/api/courseApi";
+import colorAlertEnum from "../../../utils/enums/colorAlertEnum";
+import { updateOne, getCourseByIdApi } from "../../../services/api/courseApi";
 import { getCategoriesForTeacherApi } from "../../../services/api/categoryApi";
 
 const EditCourse = () => {
-  const history = useHistory();
+  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
   const nameRef = useRef(null);
   const priceRef = useRef(null);
   const discountRef = useRef(null);
@@ -64,11 +62,10 @@ const EditCourse = () => {
         );
         setDescriptionState(EditorState.createWithContent(state));
         setImage(result.data.image);
-        setMessageAlert("");
         setUpdateDay(new Date(result.data.updatedAt));
       }
     });
-  }, []);
+  }, [ignored]);
 
   const onDescriptionStateChange = (descriptionState) => {
     setDescription(
@@ -82,7 +79,42 @@ const EditCourse = () => {
     setDetailState(detailState);
   };
   const handleSaveChanges = () => {
-    console.log(isCompletedRef.current.checked);
+    updateOne({
+      id: course._id,
+      name: nameRef.current.value,
+      categoryId: categoryId,
+      price: priceRef.current.value,
+      image: image,
+      detail: detail,
+      description: description,
+      discount: discountRef.current.value,
+      isCompleted: isCompletedRef.current.checked,
+    }).then((result) => {
+      if (result.isSuccess) {
+        forceUpdate();
+        setMessageAlert(
+          <p
+            style={{
+              color: colorAlertEnum.SUCCESS,
+              fontSize: "1.25rem",
+            }}
+          >
+            <strong>{"Chỉnh sửa thành công !!!"}</strong>
+          </p>
+        );
+      } else {
+        setMessageAlert(
+          <p
+            style={{
+              color: colorAlertEnum.ERROR,
+              fontSize: "1.25rem",
+            }}
+          >
+            <strong>{"Chỉnh sửa thất bại !!!"}</strong>
+          </p>
+        );
+      }
+    });
   };
 
   return (
@@ -259,28 +291,6 @@ const EditCourse = () => {
                           >
                             <ListVideo id={id} />
                           </div>
-                          {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <DropzoneArea
-                              getPreviewIcon={handlePreviewIcon}
-                              acceptedFiles={["video/*"]}
-                              dropzoneText={
-                                "Drag and drop an file here or click"
-                              }
-                              filesLimit={1}
-                              onChange={(files) => {
-                                if (files && files.length > 0)
-                                  return new Promise((resolve) => {
-                                    let baseURL = "";
-                                    let reader = new FileReader();
-                                    reader.readAsDataURL(files[0]);
-                                    reader.onload = () => {
-                                      baseURL = reader.result;
-                                      resolve(baseURL);
-                                    };
-                                  });
-                              }}
-                            />
-                          </div> */}
                         </div>
                         <div className="row">
                           <div className="tinymce-single responsive-mg-b-30">
@@ -311,6 +321,9 @@ const EditCourse = () => {
                               />
                             </div>
                           </div>
+                        </div>
+                        <div className="row" style={{ textAlign: "center" }}>
+                          {messageAlert}
                         </div>
                         <div className="row">
                           <div className="col-lg-12">

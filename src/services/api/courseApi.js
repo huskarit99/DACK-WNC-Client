@@ -325,8 +325,64 @@ const addOne = async ({
   }
 };
 
+const updateOne = async ({
+  id,
+  name,
+  categoryId,
+  price,
+  image,
+  detail,
+  description,
+  discount,
+  isCompleted,
+}) => {
+  const PATH = ENDPOINT + `course`;
+  try {
+    await Axios({
+      method: "put",
+      data: {
+        id,
+        name,
+        categoryId,
+        price,
+        image,
+        detail,
+        description,
+        discount,
+        isCompleted,
+      },
+      url: PATH,
+    });
+    return {
+      isSuccess: true,
+    };
+  } catch (error) {
+    let message = "";
+    if (!error || !error.response || !error.response.data) {
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    }
+    switch (error.response.data.code) {
+      case courseEnum.NAME_IS_EMPTY: {
+        message = "Name must be not empty !!!";
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
+  }
+};
+
 export {
   addOne,
+  updateOne,
   getCoursesApi,
   getAllByCriteria,
   getCoursesByCategoryIdApi,
