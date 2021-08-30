@@ -12,6 +12,7 @@ import CourseDetail from "./pages/CourseDetail/CourseDetail";
 import CourseList from "./pages/Admin/CourseList/CourseList";
 import WatchList from "./pages/Students/WatchList/WatchList";
 import MyCourses from "./pages/Teachers/MyCourses/MyCourses";
+import EditCourse from "./pages/Teachers/EditCourse/EditCourse";
 import CategoryList from "./pages/Admin/CategoryList/CategoryList";
 import UploadCourse from "./pages/Teachers/UploadCourse/UploadCourse";
 import PrivateRoute from "./parts/components/PrivateRoute/PrivateRoute";
@@ -74,6 +75,11 @@ const App = () => {
           />
           {/* teacher */}
           <PrivateRoute exact path="/teacher/courses" component={MyCourses} />
+          <PrivateRoute
+            exact
+            path="/teacher/course/:id"
+            component={EditCourse}
+          />
           <PrivateRoute exact path="/upload-course" component={UploadCourse} />
           {/* general */}
           <Route
