@@ -5,8 +5,8 @@ import jwtEnum from "../../utils/enums/jwtEnum";
 const ENDPOINT = 'http://localhost:5000/api/category-controller/';
 Axios.defaults.withCredentials = true;
 
-const getCategoriesApi = async() => {
-  const PATH = ENDPOINT + 'categories';
+const getCategoriesMenuApi = async() => {
+  const PATH = ENDPOINT + 'categories/menu';
   try {
     const result = await Axios({
       method: 'get',
@@ -15,6 +15,24 @@ const getCategoriesApi = async() => {
     return result.data
   } catch (e) {
     return null;
+  }
+}
+
+const getCategoriesApi = async() => {
+  const PATH = ENDPOINT + 'categories';
+  try {
+    const result = await Axios({
+      method: 'get',
+      url: PATH
+    });
+    return {
+      isSuccess: true,
+      data: result.data.categories
+    }
+  } catch (e) {
+    return {
+      isSuccess: false
+    }
   }
 }
 
@@ -452,6 +470,7 @@ const updateStatusCategoryApi = async(id, status) => {
 }
 
 export {
+  getCategoriesMenuApi,
   getCategoriesApi,
   getCategoriesByPageApi,
   addRootCategoryApi,
