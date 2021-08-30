@@ -80,52 +80,7 @@ const getSelfInfoApi = async () => {
     return null;
   }
 };
-// const updateUserApi = async (password, name) => {
-//   const PATH = ENDPOINT + "user";
-//   let message = "";
-//   try {
-//     await Axios({
-//       method: "put",
-//       url: PATH,
-//       data: {
-//         password: password,
-//         name: name,
-//       },
-//     });
-//     message = "Update user successful !!!";
-//     return {
-//       isSuccess: true,
-//       message: message,
-//     };
-//   } catch (error) {
-//     if (!error || !error.response || !error.response.data)
-//       return {
-//         isSuccess: false,
-//         message: "Server Error !!!",
-//       };
-//     switch (error.response.data.code) {
-//       case updateOneUserResponseEnum.NAME_IS_EMPTY: {
-//         message = "Name must be not empty !!!";
-//         break;
-//       }
-//       case updateOneUserResponseEnum.PASSWORD_IS_LESS_THAN_6_LETTERS: {
-//         message = "Password must be not less than 6 letters !!!";
-//         break;
-//       }
-//       case stateOfAuthentication.FAIL: {
-//         message = "Access denied !!!";
-//         break;
-//       }
-//       default: {
-//         message = "Server Error !!!!";
-//       }
-//     }
-//     return {
-//       isSuccess: false,
-//       message: message,
-//     };
-//   }
-// };
+
 const registerApi = async (email, name, password, rePassword) => {
   const PATH = ENDPOINT + "user";
   let message = "";
@@ -373,6 +328,59 @@ const addTeacherApi = async (email, name) => {
     };
   }
 };
+
+const updateUserApi = async (email, password, name) => {
+  const PATH = ENDPOINT + "update-user";
+  let message = "";
+  try {
+    await Axios({
+      method: "put",
+      url: PATH,
+      data: {
+        email: email,
+        password: password ? password : "",
+        name: name,
+      },
+    });
+    message = "Update user successful !!!";
+    return {
+      isSuccess: true,
+      message: message,
+    };
+  } catch (error) {
+    if (!error || !error.response || !error.response.data)
+      return {
+        isSuccess: false,
+        message: "Server Error !!!",
+      };
+    switch (error.response.data.code) {
+      case loginResponseEnum.NAME_IS_EMPTY: {
+        message = "Name must be not empty !!!";
+        break;
+      }
+      case loginResponseEnum.PASSWORD_IS_EMPTY: {
+        message = "Password must be not empty !!!";
+        break;
+      }
+      case loginResponseEnum.PASSWORD_IS_LESS_THAN_6_LETTERS: {
+        message = "Password must be not less than 6 letters !!!";
+        break;
+      }
+      case stateOfAuthentication.FAIL: {
+        message = "Access denied !!!";
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
+    }
+    return {
+      isSuccess: false,
+      message: message,
+    };
+  }
+};
+
 export {
   authTokenApi,
   getUsersByRoleNameApi,
@@ -382,5 +390,5 @@ export {
   getSelfInfoApi,
   updateUserByIdApi,
   addTeacherApi,
-  // updateUserApi,
+  updateUserApi,
 };
