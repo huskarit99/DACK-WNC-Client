@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import ReactPlayer from "react-player";
 
-const Lesson = ({ video, index }) => {
+const Lesson = ({ video, index, is_subscribed }) => {
   const videoRef = useRef(null);
   const [show, setShow] = useState(false);
   const getProgress = () => {
@@ -13,7 +13,19 @@ const Lesson = ({ video, index }) => {
       <td>{index + 1}</td>
       <td>{video.title}</td>
       <td>
-        {video.is_previewed ? (
+        {is_subscribed ? (
+          <a
+            href="#"
+            data-toggle="modal"
+            data-target={`#lesson` + index}
+            onClick={() => {
+              setShow(true);
+              videoRef.current.seekTo(5);
+            }}
+          >
+            Xem
+          </a>
+        ) : video.is_previewed ? (
           <a
             href="#"
             data-toggle="modal"

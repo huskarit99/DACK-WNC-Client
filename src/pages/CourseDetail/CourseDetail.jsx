@@ -43,7 +43,10 @@ const CourseDetail = () => {
       if (result.isSuccess) {
         setApiState(apiStateEnum.SUCCESS);
         if (result.data) {
-          result.data.price = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", }).format(result.data.price)
+          result.data.price = new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(result.data.price);
         }
         setCourse(result.data);
         setMessageAlert("");
@@ -234,6 +237,10 @@ const CourseDetail = () => {
                                               video={video}
                                               index={index}
                                               key={index}
+                                              is_subscribed={
+                                                subscribers &&
+                                                subscribers.is_subscribed
+                                              }
                                             />
                                           );
                                         })}
