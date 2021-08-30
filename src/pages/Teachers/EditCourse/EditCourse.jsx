@@ -16,6 +16,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./style.css";
 import { Theaters } from "@material-ui/icons";
+import ListVideo from "./containers/ListVideo/ListVideo";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { getCourseByIdApi } from "../../../services/api/courseApi";
 import { getVideosByCourseId } from "../../../services/api/videoApi";
@@ -106,7 +107,7 @@ const EditCourse = () => {
             <div className="product-payment-inner-st">
               <ul id="myTabedu1" className="tab-review-design">
                 <li className="active">
-                  <a href="#description">Chi tiết khóa học</a>
+                  <a href="#description">Chỉnh sửa chi tiết khóa học</a>
                 </li>
               </ul>
               <div
@@ -184,7 +185,33 @@ const EditCourse = () => {
                                 ref={priceRef}
                               />
                             </div>
-                            <div className="form-group">
+                            <div
+                              className="form-group"
+                              style={{ display: "inline-flex" }}
+                            >
+                              <div
+                                style={{
+                                  alignSelf: "center",
+                                  width: "200px",
+                                  height: "100%",
+                                  marginRight: "11px",
+                                  marginLeft: "16px",
+                                }}
+                              >
+                                <p
+                                  style={{
+                                    margin: "0",
+                                    fontSize: "1rem",
+                                    fontWeight: "400",
+                                    lineHeight: "1.5",
+                                    letterSpacing: "0.00938em",
+                                    color: "#333",
+                                  }}
+                                >
+                                  {"Discount (%): "}
+                                </p>
+                              </div>
+
                               <input
                                 name="coursediscount"
                                 type="number"
@@ -200,7 +227,7 @@ const EditCourse = () => {
                                 labelPlacement="start"
                                 control={
                                   <Checkbox
-                                    checked={
+                                    defaultChecked={
                                       course && course.is_completed
                                         ? true
                                         : false
@@ -237,7 +264,10 @@ const EditCourse = () => {
                               }}
                             />
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <div className="form-group">
+                            <ListVideo id={id} />
+                          </div>
+                          {/* <div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <DropzoneArea
                               getPreviewIcon={handlePreviewIcon}
                               acceptedFiles={["video/*"]}
@@ -258,7 +288,7 @@ const EditCourse = () => {
                                   });
                               }}
                             />
-                          </div>
+                          </div> */}
                         </div>
                         <div className="row">
                           <div className="tinymce-single responsive-mg-b-30">
