@@ -1,8 +1,8 @@
 import Axios from "axios";
 import categoryEnum from "../../utils/enums/categoryEnum";
 
-import courseEnum from "../../utils/enums/courseEnum";
 import jwtEnum from "../../utils/enums/jwtEnum";
+import courseEnum from "../../utils/enums/courseEnum";
 
 const ENDPOINT = "http://localhost:5000/api/course-controller/";
 Axios.defaults.withCredentials = true;

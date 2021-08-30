@@ -2,14 +2,27 @@ import { Theaters } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { FormControlLabel, Checkbox } from "@material-ui/core";
 import React, { useState, useEffect, useRef, Fragment } from "react";
-
 import "./style.css";
+import { addVideo } from "../../../../../../../services/api/videoApi";
 
-const AddVideoModal = ({ forceUpdate }) => {
-  const nameRef = useRef("");
+const AddVideoModal = ({ courseId, forceUpdate }) => {
+  const isPreviewedRef = useRef(null);
+  const titleRef = useRef(null);
+  const [video, setVideo] = useState("");
   const [messageAlert, setMessageAlert] = useState(<Fragment />);
-  const handleClick = () => {};
+
+  const handleClick = () => {
+    addVideo({
+      courseId,
+      video,
+      title: titleRef.current.value,
+      isPreviewed: isPreviewedRef.current.checked,
+    }).then((res) => {
+      forceUpdate();
+    });
+  };
 
   const handlePreviewIcon = (fileObject, classes) => {
     const { type } = fileObject.file;
@@ -39,12 +52,19 @@ const AddVideoModal = ({ forceUpdate }) => {
             <h2>Thêm video bài giảng</h2>
             <div className="form-group">
               <input
-                name="name"
+                name="title"
                 type="text"
                 className="form-control"
-                placeholder="Tên video bài giảng"
+                placeholder="Tiêu đề video bài giảng"
                 required
-                ref={nameRef}
+                ref={titleRef}
+              />
+            </div>
+            <div className="form-group" style={{ textAlign: "left" }}>
+              <FormControlLabel
+                label="Video được xem trước ?"
+                labelPlacement="start"
+                control={<Checkbox inputRef={isPreviewedRef} color="primary" />}
               />
             </div>
             <div className="form-group">
@@ -61,6 +81,7 @@ const AddVideoModal = ({ forceUpdate }) => {
                       reader.readAsDataURL(files[0]);
                       reader.onload = () => {
                         baseURL = reader.result;
+                        setVideo(baseURL);
                         resolve(baseURL);
                       };
                     });
@@ -86,7 +107,7 @@ const AddVideoModal = ({ forceUpdate }) => {
             </button>
             <button
               className="btn"
-              // data-dismiss="modal"
+              data-dismiss="modal"
               style={{
                 backgroundColor: "#006DF0",
                 color: "white",

@@ -7,29 +7,25 @@ const Lesson = ({ video, index }) => {
   const videoRef = useRef(null);
   const [show, setShow] = useState(false);
   const getProgress = () => {
-    console.log(videoRef.current.getCurrentTime());
+    // console.log(videoRef.current.getCurrentTime());
   };
 
   return (
     <tr>
       <td>{index + 1}</td>
       <td>{video.title}</td>
-      <td>
-        {video.is_previewed ? (
-          <a
-            href="#"
-            data-toggle="modal"
-            data-target={`#lesson` + index}
-            onClick={() => {
-              setShow(true);
-              videoRef.current.seekTo(5);
-            }}
-          >
-            Xem trước
-          </a>
-        ) : (
-          "Mua khóa học"
-        )}
+      <td style={{ textAlign: "center" }}>
+        <a
+          href="#"
+          data-toggle="modal"
+          data-target={`#lesson` + index}
+          onClick={() => {
+            setShow(true);
+            // videoRef.current.seekTo(5);
+          }}
+        >
+          Xem
+        </a>
       </td>
       <td style={{ textAlign: "center" }}>
         <Button
@@ -82,8 +78,6 @@ const Lesson = ({ video, index }) => {
               playing={show}
               style={{ position: "absolute", top: "0", left: "0" }}
               url={video.video}
-              // url="https://res.cloudinary.com/drzosgsbu/video/upload/v1628703777/zjhqd9chta8dufdfnpcf.mp4"
-              // url="https://www.youtube.com/watch?v=pSFXJ7teisw"
               controls
               width="100%"
               height="100%"

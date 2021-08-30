@@ -15,7 +15,7 @@ const ListVideo = (props) => {
     getVideosByCourseId(props.id).then((result) => {
       setVideos(result);
     });
-  }, []);
+  }, [ignored]);
 
   return (
     <Fragment>
@@ -28,7 +28,7 @@ const ListVideo = (props) => {
                   <tr>
                     <th>#</th>
                     <th>Tên Bài</th>
-                    <th>Trạng thái</th>
+                    <th style={{ textAlign: "center" }}>Trạng thái</th>
                     <th style={{ textAlign: "center" }}>Chỉnh sửa</th>
                     <th style={{ textAlign: "center" }}>
                       <Button
@@ -68,7 +68,7 @@ const ListVideo = (props) => {
           </div>
         </div>
       )}
-      <AddVideoModal forceUpdate={forceUpdate} />
+      <AddVideoModal courseId={props.id} forceUpdate={forceUpdate} />
     </Fragment>
   );
 };

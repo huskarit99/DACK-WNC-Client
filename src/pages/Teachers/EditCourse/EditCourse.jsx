@@ -15,11 +15,9 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import React, { useState, useEffect, useRef } from "react";
 
 import "./style.css";
-import { Theaters } from "@material-ui/icons";
 import ListVideo from "./containers/ListVideo/ListVideo";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { getCourseByIdApi } from "../../../services/api/courseApi";
-import { getVideosByCourseId } from "../../../services/api/videoApi";
 import { getCategoriesForTeacherApi } from "../../../services/api/categoryApi";
 
 const EditCourse = () => {
@@ -41,7 +39,6 @@ const EditCourse = () => {
 
   const { id } = useParams();
   const [course, setCourse] = useState(null);
-  const [videos, setVideos] = useState(null);
   const [updateDay, setUpdateDay] = useState(new Date());
 
   useEffect(() => {
@@ -49,9 +46,6 @@ const EditCourse = () => {
       if (result.isSuccess) {
         setCategories(result.categories);
       }
-    });
-    getVideosByCourseId(id).then((result) => {
-      setVideos(result);
     });
     getCourseByIdApi(id).then((result) => {
       if (result.isSuccess) {
@@ -75,14 +69,6 @@ const EditCourse = () => {
       }
     });
   }, []);
-
-  const handlePreviewIcon = (fileObject, classes) => {
-    const { type } = fileObject.file;
-    const iconProps = {
-      className: classes.image,
-    };
-    if (type.startsWith("video/")) return <Theaters {...iconProps} />;
-  };
 
   const onDescriptionStateChange = (descriptionState) => {
     setDescription(
