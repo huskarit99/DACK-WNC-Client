@@ -12,23 +12,40 @@ const Login = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    loginApi(emailRef.current.value, passwordRef.current.value).then((res) => {
-      if (res.isSuccess) {
-        history.push("/");
-      } else {
-        setMessageAlert(
-          <p
-            style={{
-              color: colorAlertEnum.ERROR,
-              marginTop: "5px",
-              marginLeft: "20px",
-            }}
-          >
-            {res.message}
-          </p>
-        );
-      }
-    });
+    var format = /[!#$%^&*()_+\-=\[\]{};':"\\|,<>\/? ]+/;
+    if (format.test(emailRef.current.value)) {
+      setMessageAlert(
+        <p
+          style={{
+            color: colorAlertEnum.ERROR,
+            marginTop: "5px",
+            marginLeft: "20px",
+          }}
+        >
+          {"Không được sử dụng kí tự đặc biệt !!!"}
+        </p>
+      );
+    } else {
+      loginApi(emailRef.current.value, passwordRef.current.value).then(
+        (res) => {
+          if (res.isSuccess) {
+            history.push("/");
+          } else {
+            setMessageAlert(
+              <p
+                style={{
+                  color: colorAlertEnum.ERROR,
+                  marginTop: "5px",
+                  marginLeft: "20px",
+                }}
+              >
+                {res.message}
+              </p>
+            );
+          }
+        }
+      );
+    }
   };
 
   return (

@@ -14,38 +14,53 @@ const Register = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    registerApi(
-      emailRef.current.value,
-      nameRef.current.value,
-      passwordRef.current.value,
-      rePasswordRef.current.value
-    ).then((res) => {
-      if (res.isSuccess) {
-        setMessageAlert(
-          <p
-            style={{
-              color: colorAlertEnum.SUCCESS,
-              marginTop: "5px",
-              marginLeft: "20px",
-            }}
-          >
-            {"You'll generally receive the code within a few seconds"}
-          </p>
-        );
-      } else {
-        setMessageAlert(
-          <p
-            style={{
-              color: colorAlertEnum.ERROR,
-              marginTop: "5px",
-              marginLeft: "20px",
-            }}
-          >
-            {res.message}
-          </p>
-        );
-      }
-    });
+    var format = /[!#$%^&*()_+\-=\[\]{};':"\\|,<>\/? ]+/;
+    if (format.test(emailRef.current.value)) {
+      setMessageAlert(
+        <p
+          style={{
+            color: colorAlertEnum.ERROR,
+            marginTop: "5px",
+            marginLeft: "20px",
+          }}
+        >
+          {"Không được sử dụng kí tự đặc biệt !!!"}
+        </p>
+      );
+    } else {
+      registerApi(
+        emailRef.current.value,
+        nameRef.current.value,
+        passwordRef.current.value,
+        rePasswordRef.current.value
+      ).then((res) => {
+        if (res.isSuccess) {
+          setMessageAlert(
+            <p
+              style={{
+                color: colorAlertEnum.SUCCESS,
+                marginTop: "5px",
+                marginLeft: "20px",
+              }}
+            >
+              {"You'll generally receive the code within a few seconds"}
+            </p>
+          );
+        } else {
+          setMessageAlert(
+            <p
+              style={{
+                color: colorAlertEnum.ERROR,
+                marginTop: "5px",
+                marginLeft: "20px",
+              }}
+            >
+              {res.message}
+            </p>
+          );
+        }
+      });
+    }
   };
 
   return (
