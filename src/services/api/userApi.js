@@ -9,7 +9,8 @@ import {
   addTeacherResponseEnum,
 } from "../../utils/enums/userEnum";
 
-const ENDPOINT = "http://localhost:5000/api/user-controller/";
+// const ENDPOINT = "http://localhost:5000/api/user-controller/";
+const ENDPOINT = process.env.REACT_APP_ENDPOINT + "api/user-controller/";
 Axios.defaults.withCredentials = true;
 
 const authTokenApi = async () => {
@@ -69,7 +70,7 @@ const getUsersByRoleNameApi = async (role, page) => {
   }
 };
 
-const getTeachersApi = async() => {
+const getTeachersApi = async () => {
   const PATH = ENDPOINT + `teachers`;
   try {
     const result = await Axios({
@@ -78,8 +79,8 @@ const getTeachersApi = async() => {
     });
     return {
       isSuccess: true,
-      data: result.data.teachers
-    }
+      data: result.data.teachers,
+    };
   } catch (error) {
     let message = "";
     if (!error || !error.response || !error.response.data) {
@@ -89,20 +90,17 @@ const getTeachersApi = async() => {
       };
     }
     switch (error.response.data.code) {
-      case jwtEnum.NO_TOKEN:
-        {
-          message = jwtEnum.NO_TOKEN;
-          break;
-        }
-      case jwtEnum.TOKEN_IS_EXPIRED:
-        {
-          message = jwtEnum.TOKEN_IS_EXPIRED;
-          break;
-        }
-      default:
-        {
-          message = "Server Error !!!!";
-        }
+      case jwtEnum.NO_TOKEN: {
+        message = jwtEnum.NO_TOKEN;
+        break;
+      }
+      case jwtEnum.TOKEN_IS_EXPIRED: {
+        message = jwtEnum.TOKEN_IS_EXPIRED;
+        break;
+      }
+      default: {
+        message = "Server Error !!!!";
+      }
     }
     return {
       isSuccess: false,
@@ -111,7 +109,7 @@ const getTeachersApi = async() => {
   }
 };
 
-const getSelfInfoApi = async() => {
+const getSelfInfoApi = async () => {
   try {
     const PATH = ENDPOINT + "user";
     const response = await Axios({

@@ -4,11 +4,14 @@ import categoryEnum from "../../utils/enums/categoryEnum";
 import jwtEnum from "../../utils/enums/jwtEnum";
 import courseEnum from "../../utils/enums/courseEnum";
 
-const ENDPOINT = "http://localhost:5000/api/course-controller/";
+// const ENDPOINT = "http://localhost:5000/api/course-controller/";
+const ENDPOINT = process.env.REACT_APP_ENDPOINT + "api/course-controller/";
 Axios.defaults.withCredentials = true;
 
-const getCoursesApi = async(page, categoryid, teacherid) => {
-  const PATH = ENDPOINT + `courses?categoryid=${categoryid}&teacherid=${teacherid}&page=${page}`;
+const getCoursesApi = async (page, categoryid, teacherid) => {
+  const PATH =
+    ENDPOINT +
+    `courses?categoryid=${categoryid}&teacherid=${teacherid}&page=${page}`;
   try {
     const result = await Axios({
       method: "get",
@@ -98,8 +101,10 @@ const getAllByCriteria = async () => {
   }
 };
 
-const getCoursesByCategoryIdApi = async(search) => {
-  const PATH = ENDPOINT + `courses/category?categoryid=${search.categoryid}&page=${search.page}`;
+const getCoursesByCategoryIdApi = async (search) => {
+  const PATH =
+    ENDPOINT +
+    `courses/category?categoryid=${search.categoryid}&page=${search.page}`;
   try {
     const result = await Axios({
       method: "get",
@@ -136,8 +141,10 @@ const getCoursesByCategoryIdApi = async(search) => {
   }
 };
 
-const getCoursesBySearchApi = async(search) => {
-  const PATH = ENDPOINT + `search?keyword=${search.keyword}&sort=${search.sort}&page=${search.page}`;
+const getCoursesBySearchApi = async (search) => {
+  const PATH =
+    ENDPOINT +
+    `search?keyword=${search.keyword}&sort=${search.sort}&page=${search.page}`;
   try {
     const result = await Axios({
       method: "get",

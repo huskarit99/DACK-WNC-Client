@@ -2,7 +2,8 @@ import Axios from "axios";
 
 import videoEnum from "../../utils/enums/videoEnum";
 
-const ENDPOINT = "http://localhost:5000/api/video-controller/";
+// const ENDPOINT = "http://localhost:5000/api/video-controller/";
+const ENDPOINT = process.env.REACT_APP_ENDPOINT + "api/video-controller/";
 Axios.defaults.withCredentials = true;
 
 const getVideosByCourseId = async (id) => {

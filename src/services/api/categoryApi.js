@@ -3,11 +3,12 @@ import Axios from "axios";
 import categoryEnum from "../../utils/enums/categoryEnum";
 import jwtEnum from "../../utils/enums/jwtEnum";
 
-const ENDPOINT = "http://localhost:5000/api/category-controller/";
+// const ENDPOINT = "http://localhost:5000/api/category-controller/";
+const ENDPOINT = process.env.REACT_APP_ENDPOINT + "api/category-controller/";
 Axios.defaults.withCredentials = true;
 
-const getCategoriesMenuApi = async() => {
-  const PATH = ENDPOINT + 'categories/menu';
+const getCategoriesMenuApi = async () => {
+  const PATH = ENDPOINT + "categories/menu";
   try {
     const result = await Axios({
       method: "get",
@@ -37,25 +38,25 @@ const getCategoriesForTeacherApi = async () => {
   }
 };
 
-const getCategoriesApi = async() => {
-  const PATH = ENDPOINT + 'categories';
+const getCategoriesApi = async () => {
+  const PATH = ENDPOINT + "categories";
   try {
     const result = await Axios({
-      method: 'get',
-      url: PATH
+      method: "get",
+      url: PATH,
     });
     return {
       isSuccess: true,
-      data: result.data.categories
-    }
+      data: result.data.categories,
+    };
   } catch (e) {
     return {
-      isSuccess: false
-    }
+      isSuccess: false,
+    };
   }
-}
+};
 
-const getCategoriesByPageApi = async(page) => {
+const getCategoriesByPageApi = async (page) => {
   const PATH = ENDPOINT + `categories/${page}`;
   try {
     const result = await Axios({
