@@ -169,13 +169,22 @@ const CourseDetail = () => {
                                     Mô tả ngắn gọn
                                   </a>
                                 </h1>
-                                <p>{course.description}</p>
+                                {/* <p>{course.description}</p> */}
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: course.description,
+                                  }}
+                                />
                                 <h1>
                                   <a className="blog-ht" href="#">
                                     Mô tả chi tiết
                                   </a>
                                 </h1>
-                                <p>{course.detail}</p>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: course.detail,
+                                  }}
+                                />
                                 <h1>
                                   <a className="blog-ht" href="#">
                                     Thông tin giảng viên
